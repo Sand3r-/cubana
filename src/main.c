@@ -1,7 +1,6 @@
-#include <stdio.h>
+#include "app.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    printf("Hello world!");
-    return 0;
+    return Run(argc, argv);
 }
