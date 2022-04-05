@@ -18,6 +18,7 @@ static int InitLogger()
 {
     log_set_level(0);
     log_set_quiet(0);
+    log_init();
     g_log_file = FileOpen("./log.txt", "ab");
     if (!g_log_file.valid)
     {

@@ -22,6 +22,13 @@
 
 #include "log.h"
 #include "../file.h"
+#include "../culibc.h"
+
+#ifdef _MSC_VER
+#define _AMD64_
+#include <debugapi.h>
+#undef _AMD64_
+#endif
 
 // Enable file and msvc debug console callbacks
 #define MAX_CALLBACKS 2
@@ -78,6 +85,25 @@ static void file_callback(log_Event *ev) {
   FileWriteStrf(ev->udata, "\n");
 }
 
+#ifdef _MSC_VER
+// TODO: do error checking
+static void msvc_debug_callback(log_Event* ev) {
+  char buffer[1024];
+  char* write_ptr = buffer;
+  write_ptr += strftime(write_ptr, sizeof(buffer), "%H:%M:%S", ev->time);
+
+  write_ptr += cu_snprintf(write_ptr, sizeof(buffer) - (write_ptr - buffer),
+    "%-5s %s:%d: ", level_strings[ev->level], ev->file, ev->line);
+  write_ptr += cu_vsnprintf(write_ptr, sizeof(buffer) - (write_ptr - buffer),
+    ev->fmt, ev->ap);
+
+  *write_ptr++ = '\n';
+  *write_ptr   = '\0';
+
+  OutputDebugString(buffer);
+}
+#endif
+
 const char* log_level_string(int level) {
   return level_strings[level];
 }
@@ -108,6 +134,13 @@ int log_add_fp(File* file, int level) {
   return log_add_callback(file_callback, file, level);
 }
 
+int log_init()
+{
+#ifdef _MSC_VER
+  return log_add_callback(msvc_debug_callback, NULL, L.level);
+#endif
+  return 0;
+}
 
 static void init_event(log_Event *ev, void *udata) {
   if (!ev->time) {
