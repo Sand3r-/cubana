@@ -17,6 +17,8 @@
 
 #define LOG_VERSION "0.1.0"
 
+struct File;
+
 typedef struct {
   va_list ap;
   const char *fmt;
@@ -43,7 +45,7 @@ const char* log_level_string(int level);
 void log_set_level(int level);
 void log_set_quiet(bool enable);
 int log_add_callback(log_LogFn fn, void *udata, int level);
-int log_add_fp(FILE *fp, int level);
+int log_add_fp(struct File* file, int level);
 
 void log_log(int level, const char *file, int line, const char *fmt, ...);
 

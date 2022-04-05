@@ -13,6 +13,7 @@ list(APPEND SOURCES main.c)
 list(APPEND SOURCES app.c)
 list(APPEND SOURCES errorcodes.c)
 list(APPEND SOURCES argparser.c)
+list(APPEND SOURCES file.c)
 list(APPEND SOURCES log/log.c)
 target_sources(${TARGET} PRIVATE ${SOURCES})
 

@@ -21,9 +21,10 @@
  */
 
 #include "log.h"
+#include "../file.h"
 
-// Disable callbacks for now
-#define MAX_CALLBACKS 0
+// Enable file and msvc debug console callbacks
+#define MAX_CALLBACKS 2
 
 typedef struct {
   log_LogFn fn;
@@ -68,16 +69,13 @@ static void stdout_callback(log_Event *ev) {
   fflush(ev->udata);
 }
 
-
 static void file_callback(log_Event *ev) {
   char buf[64];
   buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", ev->time)] = '\0';
-  fprintf(
-    ev->udata, "%s %-5s %s:%d: ",
+  FileWriteStrf((File*)ev->udata, "%s %-5s %s:%d: ",
     buf, level_strings[ev->level], ev->file, ev->line);
-  vfprintf(ev->udata, ev->fmt, ev->ap);
-  fprintf(ev->udata, "\n");
-  fflush(ev->udata);
+  FileWriteStrfv((File*)ev->udata, ev->fmt, ev->ap);
+  FileWriteStrf(ev->udata, "\n");
 }
 
 const char* log_level_string(int level) {
@@ -106,8 +104,8 @@ int log_add_callback(log_LogFn fn, void *udata, int level) {
 }
 
 
-int log_add_fp(FILE *fp, int level) {
-  return log_add_callback(file_callback, fp, level);
+int log_add_fp(File* file, int level) {
+  return log_add_callback(file_callback, file, level);
 }
 
 
