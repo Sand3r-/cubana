@@ -54,7 +54,7 @@ u64 FileWriteStrf(File* file, const char* fmt, ...)
     char buffer[FORMATTED_BUFFER_LENGTH];
     va_list var_args;
     va_start(var_args, fmt); // Fill argument list
-    int res = _FileWriteStrFormatted(file, buffer, FORMATTED_BUFFER_LENGTH, fmt, var_args);
+    u64 res = _FileWriteStrFormatted(file, buffer, sizeof(buffer), fmt, var_args);
     va_end(var_args); // Free memory allocated for var_args
     return res;
 }
@@ -62,7 +62,7 @@ u64 FileWriteStrf(File* file, const char* fmt, ...)
 u64 FileWriteStrfv(File* file, const char* fmt, va_list args)
 {
     char buffer[FORMATTED_BUFFER_LENGTH];
-    return _FileWriteStrFormatted(file, buffer, FORMATTED_BUFFER_LENGTH, fmt, args);
+    return _FileWriteStrFormatted(file, buffer, sizeof(buffer), fmt, args);
 }
 
 u64 FileWriteLine(File* file, const char* string)
@@ -75,7 +75,7 @@ u64 FileWriteLinef(File* file, const char* fmt, ...)
     char buffer[FORMATTED_BUFFER_LENGTH];
     va_list var_args;
     va_start(var_args, fmt); // Fill argument list
-    int res = _FileWriteStrFormatted(file, buffer, FORMATTED_BUFFER_LENGTH, fmt, var_args);
+    u64 res = _FileWriteStrFormatted(file, buffer, sizeof(buffer), fmt, var_args);
     va_end(var_args); // Free memory allocated for var_args
     res += FileWriteStr(file, "\n");
     return res;

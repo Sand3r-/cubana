@@ -34,12 +34,12 @@ typedef void (*log_LockFn)(bool lock, void *udata);
 
 enum { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL };
 
-#define L_TRACE(...) log_log(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
-#define L_DEBUG(...) log_log(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-#define L_INFO(...)  log_log(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
-#define L_WARN(...)  log_log(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
-#define L_ERROR(...) log_log(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-#define L_FATAL(...) log_log(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
+#define L_TRACE(...) log_log(LOG_TRACE, FILE_BASENAME, __LINE__, __VA_ARGS__)
+#define L_DEBUG(...) log_log(LOG_DEBUG, FILE_BASENAME, __LINE__, __VA_ARGS__)
+#define L_INFO(...)  log_log(LOG_INFO,  FILE_BASENAME, __LINE__, __VA_ARGS__)
+#define L_WARN(...)  log_log(LOG_WARN,  FILE_BASENAME, __LINE__, __VA_ARGS__)
+#define L_ERROR(...) log_log(LOG_ERROR, FILE_BASENAME, __LINE__, __VA_ARGS__)
+#define L_FATAL(...) log_log(LOG_FATAL, FILE_BASENAME, __LINE__, __VA_ARGS__)
 
 const char* log_level_string(int level);
 void log_set_level(int level);

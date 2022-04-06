@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 3.21)
 project(cubana)
 
+# Include cmake modules
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+include(FileBaseNameUtil)
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
