@@ -1,4 +1,8 @@
 #pragma once
+#include "log/log.h"
+#include <assert.h>
+
+#define ERROR(...) do { L_ERROR(__VA_ARGS__); assert(0); } while(false)
 
 enum
 {

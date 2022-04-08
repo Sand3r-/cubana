@@ -16,3 +16,4 @@ void* StackAllocatorNamedAlloc(u64 size, const char* name);
 void StackAllocatorFree(void* ptr);
 void StackAllocatorSummary();
 void StackAllocatorHead(i32 num);
+void DEBUG_StopWatchdog();

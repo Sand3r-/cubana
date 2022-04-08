@@ -1,10 +1,15 @@
 #include "window.h"
-#include "errorcodes.h"
+#include "error.h"
 #include <SDL.h>
 
 WindowResult CreateWindow(i32 width, i32 height, const char* name)
 {
-    SDL_Window* handle = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    int flags = SDL_WINDOW_SHOWN;
+#ifdef USE_VK_RENDERER
+    flags |= SDL_WINDOW_VULKAN;
+#endif
+    SDL_Window* handle = SDL_CreateWindow(
+        name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
     if (handle == NULL)
     {
         WindowResult window = {

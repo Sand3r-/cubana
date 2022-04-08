@@ -1,11 +1,13 @@
 #include "app.h"
 #include "argparser.h"
-#include "errorcodes.h"
+#include "error.h"
 #include "log/log.h"
 #include "file.h"
 #include "external.h"
 #include "memory/stackallocator.h"
+#include "memory/linearallocator.h"
 #include "platform.h"
+#include "renderer/renderer.h"
 #include "window.h"
 
 #define ReturnOnFailure(result) do { \
@@ -27,7 +29,7 @@ static File g_log_file;
 static int InitLogger()
 {
     log_set_level(0);
-    log_set_quiet(0);
+    log_set_quiet(false);
     log_init();
     g_log_file = FileOpen("./log.txt", "ab");
     if (!g_log_file.valid)
@@ -62,23 +64,33 @@ static int InitWindow()
     return CU_SUCCESS;
 }
 
+static int InitRenderer()
+{
+    return RendererInit(g_app.window);
+}
+
 static int Init(int argc, char* argv[])
 {
     ReturnOnFailure(InitLogger());
     ReturnOnFailure(InitExternalLibs());
     ReturnOnFailure(InitConfig(argc, argv));
-    ReturnOnFailure(StackAllocatorInit(1)); // Enable debug
+    ReturnOnFailure(StackAllocatorInit(true)); // Enable debug
+    ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
     ReturnOnFailure(InitWindow());
+    ReturnOnFailure(InitRenderer());
+
+    DEBUG_StopWatchdog();
 
     return CU_SUCCESS;
 }
 
 static int GameLoop()
 {
-    b8 done = 0;
+    b8 done = false;
     while (!done)
     {
         done = ProcessPlatformEvents();
+        RendererDraw();
     }
     return CU_SUCCESS;
 }

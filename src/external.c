@@ -1,11 +1,11 @@
 #include "external.h"
 #include "log/log.h"
-#include "errorcodes.h"
+#include "error.h"
 #include <SDL.h>
 
 int InitExternalLibs()
 {
-    if (SDL_Init(0))
+    if (SDL_Init(SDL_INIT_VIDEO))
     {
         L_ERROR("SDL initialisation failed: %s", SDL_GetError());
         return CU_INITIALIZATION_ERROR;

@@ -1,6 +1,6 @@
 #include "file.h"
 #include "SDL.h"
-#include "errorcodes.h"
+#include "error.h"
 #include <assert.h>
 
 #define FORMATTED_BUFFER_LENGTH 1024
@@ -94,7 +94,7 @@ s64 FileTell(File* file)
 i32 FileClose(File* file)
 {
     file->error_msg = "File was already closed.";
-    file->valid = 0;
+    file->valid = false;
 
     int error_code = SDL_RWclose(file->_io);
     if (error_code)

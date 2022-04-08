@@ -33,3 +33,8 @@ size_t cu_strlen(const char *string)
 {
     return SDL_strlen(string);
 }
+
+size_t cu_strcmp(const char* str1, const char* str2)
+{
+    return SDL_strcmp(str1, str2);
+}

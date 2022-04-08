@@ -20,13 +20,19 @@ endforeach(OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
 # Fix problems with relative paths
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Find Vulkan
+find_package(Vulkan REQUIRED FATAL_ERROR)
+
 # Set-up SDL build
 # Define static build-only
 set(SDL_STATIC OFF CACHE BOOL "" FORCE)
 set(SDL_SHARED ON CACHE BOOL "" FORCE)
 
+# Enable threads for debugging purposes (watchdogs)
+set(SDL_THREADS ON CACHE BOOL "" FORCE)
+
 # Remove unnecessary dependencies
-set(DISABLED_SDL_SUBSYSTEMS SDL_ATOMIC SDL_POWER SDL_THREADS
+set(DISABLED_SDL_SUBSYSTEMS SDL_ATOMIC SDL_POWER
     SDL_CPUINFO SDL_SENSOR SDL_LOCALE SDL_MISC)
 foreach(SDL_SUBSYSTEM ${DISABLED_SDL_SUBSYSTEMS})
     set(${SDL_SUBSYSTEM} OFF CACHE BOOL "" FORCE)
