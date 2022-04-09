@@ -21,3 +21,4 @@ u64 FileWriteLinef(File* file, const char* fmt, ...);
 s64 FileSeek(File* file, s64 offset, int whence);
 s64 FileTell(File* file);
 i32 FileClose(File* file);
+s64 FileSize(File* file);

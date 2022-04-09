@@ -105,3 +105,8 @@ i32 FileClose(File* file)
 
     return CU_SUCCESS;
 }
+
+s64 FileSize(File* file)
+{
+    return SDL_RWsize(file->_io);
+}

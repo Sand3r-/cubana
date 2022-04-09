@@ -9,6 +9,7 @@
 #include <signal.h>
 
 #define TRACABLE_ALLOCS_NUM 1024
+#define UNALLOC_BYTE 0xCC
 
 static struct
 {
@@ -37,11 +38,12 @@ int StackAllocatorInit(b8 debug)
     A.top = A.buffer;
     A.debug = debug;
 
-    // Fill whole buffer with 0xCC so that it is known that the memory is uninitialised
+
     if (debug)
     {
-        A.separator = SDL_SwapBE32(0x00FACADE);; // Used as a preamble to every allocation
-        memset(A.buffer, 0xCC, A.capacity);
+        A.separator = SDL_SwapBE32(0x00FACADE); // Used as a preamble to every allocation
+        // Fill whole buffer with magic number so that it is known that the memory is uninitialised
+        memset(A.buffer, UNALLOC_BYTE, A.capacity);
         StackAllocatorNamedAlloc(0, "Buffer start");
 
         // Launch watchdog
@@ -110,17 +112,16 @@ void StackAllocatorFree(void* ptr)
 {
     if (A.debug)
     {
-        *((u32*)ptr)--;
-        u64 dealloc_size = (u8*)A.top - (u8*)ptr;
-        memset(ptr, 0xCC, dealloc_size); // Fill memory with 0xCC before
-        *((u32*)ptr)++;
+        u64 dealloc_size = (u8*)A.top - (u8*)ptr + sizeof(A.separator);
+        // Mark freed memory
+        memset((u8*)ptr - sizeof(A.separator), UNALLOC_BYTE, dealloc_size);
         for (i32 i = A.allocations_num - 1; i >= 0; i--)
         {
             A.allocations_num--;
             if (A.allocation_ptrs[i] == ptr)
                 break;
         }
-        *((u32*)ptr)--;
+        *((u32*)ptr)--; // Move the ptr to point at the separator before freeing
     }
 
     if (ptr < A.top)
@@ -162,10 +163,10 @@ void StackAllocatorHead(i32 num)
 /*
     A routine continuously checking for any memory corruption.
     It does 2 things:
-    1. Traverses through allocation done, checks if every allocation is 
+    1. Traverses through allocation done, checks if every allocation is
         preceeded by a 0x00FACADE magic number
     2. Traversers through unallocated region of memory to see if all bytes are
-        set to 0xCC.
+        set to UNALLOC_BYTE.
 */
 static int Watchdog(void* dummy)
 {
@@ -175,7 +176,7 @@ static int Watchdog(void* dummy)
         u8* top = (u8*)A.top;
         u8* end = (u8*)A.buffer + A.capacity;
 
-        for (u32 i = 0; i < A.allocations_num; i++)
+        for (i32 i = 0; i < A.allocations_num; i++)
         {
             if (*(((u32*)A.allocation_ptrs[i]) - 1) != A.separator)
             {
@@ -185,7 +186,7 @@ static int Watchdog(void* dummy)
 
         for (u8* head = top; head < end; head++)
         {
-            if (*head != 0xCC)
+            if (*head != UNALLOC_BYTE)
             {
                 ERROR("Memory corruption detected at adress %p", head);
             }

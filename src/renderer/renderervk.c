@@ -1,11 +1,11 @@
 #include "renderervk.h"
 #include "culibc.h"
 #include "error.h"
+#include "file.h"
 #include "log/log.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
 #include "math/scalar.h"
-#include <SDL_vulkan.h>
 #include <vulkan/vulkan.h>
 
 static int MAX_FRAMES_IN_FLIGHT = 2;
@@ -42,7 +42,7 @@ struct Context
 
     VkBool32 enableValidationLayers;
 
-    SDL_Window* window;
+    Window window;
 } VkContext;
 
 static const int INVALID_QUEUE_FAMILY_INDEX = -1;
@@ -109,7 +109,7 @@ VkResult CreateDebugUtilsMessengerEXT(
 
 void InitVkContext(Window window)
 {
-    VkContext.window = window._internal;
+    VkContext.window = window;
     VkContext.physicalDevice = VK_NULL_HANDLE;
     VkContext.currentFrame = 0;
     VkContext.validationLayers[0] = "VK_LAYER_KHRONOS_validation";
@@ -175,13 +175,13 @@ VkBool32 CheckValidationLayerSupport()
 
 char** GetRequiredExtensions(uint32_t* extensionCount)
 {
-    SDL_Vulkan_GetInstanceExtensions(VkContext.window, extensionCount, NULL);
+    GetVulkanExtensions(VkContext.window, extensionCount, NULL);
     size_t allocSize =
         (*extensionCount + VkContext.enableValidationLayers) * sizeof(char*);
     char** extensions = StackMalloc(allocSize, "Vk Extensions array");
-    // Please note that the call to SDL_Vulkan_GetInstanceExtensions
+    // Please note that the call to GetVulkanExtensions
     // resets the extensionCount to it's original value.
-    SDL_Vulkan_GetInstanceExtensions(VkContext.window, extensionCount, extensions);
+    GetVulkanExtensions(VkContext.window, extensionCount, extensions);
 
     if (VkContext.enableValidationLayers)
         extensions[(*extensionCount)++] = VK_EXT_DEBUG_UTILS_EXTENSION_NAME;
@@ -245,9 +245,9 @@ void CreateInstance()
 
     VkApplicationInfo appInfo = {
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-        .pApplicationName = "Hello Triangle", // TODO CHange
+        .pApplicationName = GetWindowTitle(VkContext.window),
         .applicationVersion = VK_MAKE_VERSION(1, 0, 0),
-        .pEngineName = "-",
+        .pEngineName = "Cubana Rendering Engine",
         .engineVersion = VK_MAKE_VERSION(0, 0, 1),
         .apiVersion = VK_API_VERSION_1_2,
     };
@@ -295,8 +295,7 @@ void SetupDebugMessenger()
 
 void CreateSurface()
 {
-    if (SDL_Vulkan_CreateSurface(VkContext.window, VkContext.instance, &VkContext.surface)
-        != SDL_TRUE)
+    if (!CreateVulkanSurface(VkContext.window, VkContext.instance, &VkContext.surface))
         ERROR("Vulkan surface creation error.");
 }
 
@@ -347,7 +346,7 @@ VkBool32 CheckDeviceExtensionSupport(VkPhysicalDevice device)
     {
         for (int j = 0; j < ArrayCount(VkContext.deviceExtensions); j++)
         {
-            if (!SDL_strcmp(availableExtensions[i].extensionName, VkContext.deviceExtensions[j]))
+            if (!cu_strcmp(availableExtensions[i].extensionName, VkContext.deviceExtensions[j]))
                 matchedExtensionsNum++;
         }
     }
@@ -516,7 +515,7 @@ VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR* capabilities)
     else
     {
         VkExtent2D actualExtent;
-        SDL_Vulkan_GetDrawableSize(VkContext.window, &actualExtent.width, &actualExtent.height);
+        GetVulkanDrawableSize(VkContext.window, &actualExtent.width, &actualExtent.height);
         VkExtent2D minExtent = capabilities->minImageExtent;
         VkExtent2D maxExtent = capabilities->maxImageExtent;
         actualExtent.width = max(minExtent.width, min(maxExtent.width, actualExtent.width));
@@ -671,26 +670,26 @@ void CreateRenderPass()
 static Buffer File2Buffer(const char* filename)
 {
     Buffer result = {0};
-    SDL_RWops *fileRWops = SDL_RWFromFile(filename, "rb");
-    if (fileRWops == NULL)
+    File file = FileOpen(filename, "rb");
+    if (!file.valid)
     {
-        ERROR("File %s not found.", filename);
+        ERROR("%s", file.error_msg);
         return result;
     }
 
-    Sint64 fileSize = SDL_RWsize(fileRWops);
+    s64 fileSize =  FileSize(&file);
     result = AllocBuffer(fileSize);
     char* fileContents = (char*)result.ptr;
 
-    Sint64 totalObjectsRead = 0, objectsRead = 1;
+    s64 totalObjectsRead = 0, objectsRead = 1;
     char* buffer = fileContents;
     while (totalObjectsRead < fileSize && objectsRead != 0)
     {
-        objectsRead = SDL_RWread(fileRWops, buffer, 1, (fileSize - totalObjectsRead));
+        objectsRead = FileRead(&file, buffer, 1, (fileSize - totalObjectsRead));
         totalObjectsRead += objectsRead;
         buffer += objectsRead;
     }
-    SDL_RWclose(fileRWops);
+    FileClose(&file);
     if (totalObjectsRead != fileSize)
     {
         result = FreeBuffer(result);
@@ -983,7 +982,7 @@ void CreateSyncObjects()
     VkContext.renderFinishedSemaphores = LinearMalloc(sizeof(VkSemaphore) * MAX_FRAMES_IN_FLIGHT);
     VkContext.inFlightFences = LinearMalloc(sizeof(VkFence) * MAX_FRAMES_IN_FLIGHT);
     VkContext.imagesInFlight = LinearMalloc(sizeof(VkFence) * VkContext.swapChainImagesNum);
-    SDL_memset(VkContext.imagesInFlight, 0, sizeof(VkFence) * VkContext.swapChainImagesNum);
+    cu_memset(VkContext.imagesInFlight, 0, sizeof(VkFence) * VkContext.swapChainImagesNum);
 
     VkSemaphoreCreateInfo semaphoreInfo = {
         .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO

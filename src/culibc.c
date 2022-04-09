@@ -38,3 +38,8 @@ size_t cu_strcmp(const char* str1, const char* str2)
 {
     return SDL_strcmp(str1, str2);
 }
+
+void cu_memset(void* dst, int c, size_t len)
+{
+    SDL_memset(dst, c, len);
+}
