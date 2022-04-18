@@ -2,8 +2,10 @@
 #include "argparser.h"
 #include "error.h"
 #include "log/log.h"
-#include "file.h"
 #include "external.h"
+#include "file.h"
+#include "input.h"
+#include "gamepad.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
 #include "platform.h"
@@ -90,6 +92,7 @@ static int GameLoop()
     while (!done)
     {
         done = ProcessPlatformEvents();
+        DEBUG_GamepadInput();
         RendererDraw();
     }
     return CU_SUCCESS;
@@ -97,6 +100,7 @@ static int GameLoop()
 
 static int Shutdown()
 {
+    CloseGamepadControllers();
     i32 error_code = FileClose(&g_log_file);
     if (error_code != CU_SUCCESS)
     {

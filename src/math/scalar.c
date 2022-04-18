@@ -28,3 +28,19 @@ f32 maxf32(f32 a, f32 b)
 {
     return a > b ? a : b;
 }
+
+u32 clampu32(u32 value, u32 min, u32 max)
+{
+    return value < min ? min : ((value > max) ? max : value);
+}
+
+i32 clampi32(i32 value, i32 min, i32 max)
+{
+    return value < min ? min : ((value > max) ? max : value);
+}
+
+f32 clampf32(f32 value, f32 min, f32 max)
+{
+    return value < min ? min : ((value > max) ? max : value);
+}
+

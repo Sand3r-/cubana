@@ -1,3 +1,4 @@
+#pragma once
 #include "types.h"
 
 typedef union v2 v2;
