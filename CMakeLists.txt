@@ -42,3 +42,8 @@ add_subdirectory(external/SDL)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)
+
+# Copy shaders to binary directory
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/shaders)
+configure_file(shaders/shader.vert.spv ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
+configure_file(shaders/shader.frag.spv ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
