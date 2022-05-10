@@ -113,8 +113,6 @@ void StackAllocatorFree(void* ptr)
     if (A.debug)
     {
         u64 dealloc_size = (u8*)A.top - (u8*)ptr + sizeof(A.separator);
-        // Mark freed memory
-        memset((u8*)ptr - sizeof(A.separator), UNALLOC_BYTE, dealloc_size);
         for (i32 i = A.allocations_num - 1; i >= 0; i--)
         {
             A.allocations_num--;
@@ -122,6 +120,9 @@ void StackAllocatorFree(void* ptr)
                 break;
         }
         *((u32*)ptr)--; // Move the ptr to point at the separator before freeing
+
+        // Mark freed memory
+        memset((u8*)ptr - sizeof(A.separator), UNALLOC_BYTE, dealloc_size);
     }
 
     if (ptr < A.top)
