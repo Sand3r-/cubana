@@ -34,6 +34,8 @@ static struct Context
     VkCommandBuffer* command_buffers;
     VkBuffer vertex_buffer;
     VkDeviceMemory vertex_buffer_memory;
+    VkBuffer index_buffer;
+    VkDeviceMemory index_buffer_memory;
     VkSemaphore* image_available_semaphores;
     VkSemaphore* render_finished_semaphores;
     VkFence* in_flight_fences;
@@ -80,9 +82,14 @@ typedef struct Vertex
 } Vertex;
 
 static Vertex vertices[] = {
-    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+    {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+    {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+};
+
+static u16 indices[]= {
+    0, 1, 2, 2, 3, 0
 };
 
 typedef struct Buffer
@@ -1090,60 +1097,85 @@ static void CreateVertexBuffer()
     vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
+static void CreateIndexBuffer()
+{
+    VkDeviceSize buffer_size = sizeof(indices);
+
+    VkBuffer staging_buffer;
+    VkDeviceMemory staging_buffer_memory;
+    CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &staging_buffer, &staging_buffer_memory);
+
+    void* data;
+    vkMapMemory(C.device, staging_buffer_memory, 0, buffer_size, 0, &data);
+    memcpy(data, indices, buffer_size);
+    vkUnmapMemory(C.device, staging_buffer_memory);
+
+    CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &C.index_buffer, &C.index_buffer_memory);
+
+    CopyBuffer(staging_buffer, C.index_buffer, buffer_size);
+
+    vkDestroyBuffer(C.device, staging_buffer, NULL);
+    vkFreeMemory(C.device, staging_buffer_memory, NULL);
+}
+
 static void CreateCommandBuffers()
 {
     C.command_buffers = LinearMalloc(C.swapchain_images_num * sizeof(VkCommandBuffer));
 
-    VkCommandBufferAllocateInfo allocInfo = {
+    VkCommandBufferAllocateInfo alloc_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
         .commandPool = C.command_pool,
         .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
         .commandBufferCount = (uint32_t)C.swapchain_images_num,
     };
 
-    if (vkAllocateCommandBuffers(C.device, &allocInfo, C.command_buffers)
+    if (vkAllocateCommandBuffers(C.device, &alloc_info, C.command_buffers)
         != VK_SUCCESS)
         ERROR("Command buffer allocation failure");
 
-    VkCommandBufferBeginInfo beginInfo = {
+    VkCommandBufferBeginInfo begin_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
         .flags = 0,
         .pInheritanceInfo = NULL,
     };
 
-    VkRenderPassBeginInfo renderPassInfo = {
+    VkRenderPassBeginInfo render_pass_info = {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
         .renderPass = C.render_pass,
         .renderArea.offset = {0, 0},
         .renderArea.extent = C.swapchain_extent,
     };
 
-    VkClearValue clearColor = {0.0f, 0.0f, 0.0f, 1.0f};
-    renderPassInfo.clearValueCount = 1;
-    renderPassInfo.pClearValues = &clearColor;
+    VkClearValue clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
+    render_pass_info.clearValueCount = 1;
+    render_pass_info.pClearValues = &clear_color;
 
     for (size_t i = 0; i < C.swapchain_images_num; i++) {
-        VkCommandBuffer cmdBuffer = C.command_buffers[i];
-        if (vkBeginCommandBuffer(cmdBuffer, &beginInfo)
+        VkCommandBuffer cmd_buffer = C.command_buffers[i];
+        if (vkBeginCommandBuffer(cmd_buffer, &begin_info)
             != VK_SUCCESS)
             ERROR("BeginCommandBuffer failure");
 
-        renderPassInfo.framebuffer = C.swapchain_framebuffers[i];
+        render_pass_info.framebuffer = C.swapchain_framebuffers[i];
 
         vkCmdBeginRenderPass(
-            cmdBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+            cmd_buffer, &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
         vkCmdBindPipeline(
-            cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, C.graphics_pipeline);
+            cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, C.graphics_pipeline);
 
         VkBuffer vertex_buffers[] = { C.vertex_buffer };
         VkDeviceSize offsets[] = { 0 };
-        vkCmdBindVertexBuffers(cmdBuffer, 0, 1, vertex_buffers, offsets);
-        vkCmdDraw(cmdBuffer, ArrayCount(vertices), 1, 0, 0);
+        vkCmdBindVertexBuffers(cmd_buffer, 0, 1, vertex_buffers, offsets);
+        vkCmdBindIndexBuffer(cmd_buffer, C.index_buffer, 0, VK_INDEX_TYPE_UINT16);
+        vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 1, 0, 0, 0);
 
-        vkCmdEndRenderPass(cmdBuffer);
+        vkCmdEndRenderPass(cmd_buffer);
 
-        if (vkEndCommandBuffer(cmdBuffer) != VK_SUCCESS)
+        if (vkEndCommandBuffer(cmd_buffer) != VK_SUCCESS)
             ERROR("EndCommandBuffer failure");
     }
 
@@ -1196,6 +1228,7 @@ int VkRendererInit(Window window)
     CreateFramebuffers();
     CreateCommandPool();
     CreateVertexBuffer();
+    CreateIndexBuffer();
     CreateCommandBuffers();
     CreateSyncObjects();
 
@@ -1255,6 +1288,8 @@ void VkRendererDraw()
 
 void VkRendererShutdown()
 {
+    vkDestroyBuffer(C.device, C.index_buffer, NULL);
+    vkFreeMemory(C.device, C.index_buffer_memory, NULL);
     vkDestroyBuffer(C.device, C.vertex_buffer, NULL);
     vkFreeMemory(C.device, C.vertex_buffer_memory, NULL);
 }
