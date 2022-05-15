@@ -119,8 +119,7 @@ static VkVertexInputBindingDescription GetBindingDescription()
     return binding_description;
 }
 
-static void GetAttributeDescriptions(
-    VkVertexInputAttributeDescription* descs, u8* num)
+static void GetAttributeDescriptions(VkVertexInputAttributeDescription* descs, u8* num)
 {
     static VkVertexInputAttributeDescription attribute_descriptions[] = {
         [0] = {
@@ -245,7 +244,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
 {
     if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT)
         return VK_FALSE;
-    
+
     L_DEBUG("Vulkan: %s", pCallbackData->pMessage);
 
     return VK_FALSE;
@@ -357,7 +356,7 @@ static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device) {
     VkQueueFamilyProperties* queueFamilies = StackMalloc(queueFamilyCount * sizeof(VkQueueFamilyProperties), "VkQueueFamilyProperties");
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies);
 
-    
+
     for (u32 i = 0; i < queueFamilyCount; i++) {
         if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
             indices.graphicsFamily = i;
@@ -374,7 +373,7 @@ static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device) {
             break;
         }
     }
-    
+
     StackFree(queueFamilies);
 
     return indices;
@@ -931,7 +930,7 @@ static void CreateGraphicsPipeline()
 
 static void CreateFramebuffers()
 {
-    C.swapchain_framebuffers = 
+    C.swapchain_framebuffers =
         LinearMalloc(C.swapchain_images_num * sizeof(VkFramebuffer));
 
     for (size_t i = 0; i < C.swapchain_images_num; i++)
@@ -980,7 +979,7 @@ static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
 
     for (u32 i = 0; i < mem_properties.memoryTypeCount; i++)
     {
-        if (type_filter & (1 << i) && 
+        if (type_filter & (1 << i) &&
            (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
         {
             return i;
@@ -991,44 +990,104 @@ static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
     return 0;
 }
 
-static void CreateVertexBuffer()
+static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
+    VkMemoryPropertyFlags properties, VkBuffer* buffer, VkDeviceMemory* buffer_memory)
 {
     VkBufferCreateInfo buffer_info = {
         .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
-        .size = sizeof(vertices),
-        .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+        .size = size,
+        .usage = usage,
         .sharingMode = VK_SHARING_MODE_EXCLUSIVE
     };
 
-    if (vkCreateBuffer(C.device, &buffer_info, NULL, &C.vertex_buffer)
+    if (vkCreateBuffer(C.device, &buffer_info, NULL, buffer)
         != VK_SUCCESS)
     {
         ERROR("Vertex buffer creation failure");
     }
 
     VkMemoryRequirements memory_requirements;
-    vkGetBufferMemoryRequirements(C.device, C.vertex_buffer, &memory_requirements);
+    vkGetBufferMemoryRequirements(C.device, *buffer, &memory_requirements);
 
     VkMemoryAllocateInfo alloc_info = {
         .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
         .allocationSize = memory_requirements.size,
         .memoryTypeIndex = FindMemoryType(memory_requirements.memoryTypeBits,
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+            properties)
     };
 
-    if (vkAllocateMemory(C.device, &alloc_info, NULL, &C.vertex_buffer_memory)
+    if (vkAllocateMemory(C.device, &alloc_info, NULL, buffer_memory)
         != VK_SUCCESS)
     {
         ERROR("Vertex buffer memory allocation failed");
     }
 
     // Associate buffer with a memory region
-    vkBindBufferMemory(C.device, C.vertex_buffer, C.vertex_buffer_memory, 0);
+    vkBindBufferMemory(C.device, *buffer, *buffer_memory, 0);
+}
+
+static void CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize size)
+{
+    VkCommandBufferAllocateInfo alloc_info = {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+        .commandPool = C.command_pool,
+        .commandBufferCount = 1
+    };
+
+    VkCommandBuffer cmd_buffer;
+    vkAllocateCommandBuffers(C.device, &alloc_info, &cmd_buffer);
+
+    VkCommandBufferBeginInfo begin_info = {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+        .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+    };
+
+    vkBeginCommandBuffer(cmd_buffer, &begin_info);
+
+    VkBufferCopy copy_region = {
+        .srcOffset = 0,
+        .dstOffset = 0,
+        .size = size
+    };
+    vkCmdCopyBuffer(cmd_buffer, src_buffer, dst_buffer, 1, &copy_region);
+
+    vkEndCommandBuffer(cmd_buffer);
+
+    VkSubmitInfo submit_info = {
+        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+        .commandBufferCount = 1,
+        .pCommandBuffers = &cmd_buffer
+    };
+
+    vkQueueSubmit(C.graphics_queue, 1, &submit_info, VK_NULL_HANDLE);
+    vkQueueWaitIdle(C.graphics_queue);
+
+    vkFreeCommandBuffers(C.device, C.command_pool, 1, &cmd_buffer);
+}
+
+static void CreateVertexBuffer()
+{
+    VkDeviceSize buffer_size = sizeof(vertices);
+
+    VkBuffer staging_buffer;
+    VkDeviceMemory staging_buffer_memory;
+    CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &staging_buffer, &staging_buffer_memory);
 
     void* data;
-    vkMapMemory(C.device, C.vertex_buffer_memory, 0, buffer_info.size, 0, &data);
-    memcpy(data, vertices, buffer_info.size);
-    vkUnmapMemory(C.device, C.vertex_buffer_memory);
+    vkMapMemory(C.device, staging_buffer_memory, 0, buffer_size, 0, &data);
+    memcpy(data, vertices, buffer_size);
+    vkUnmapMemory(C.device, staging_buffer_memory);
+
+    CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &C.vertex_buffer, &C.vertex_buffer_memory);
+
+    CopyBuffer(staging_buffer, C.vertex_buffer, buffer_size);
+
+    vkDestroyBuffer(C.device, staging_buffer, NULL);
+    vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
 static void CreateCommandBuffers()
@@ -1158,7 +1217,7 @@ void VkRendererDraw()
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO
     };
 
-    VkSemaphore waitSemaphores[] = { 
+    VkSemaphore waitSemaphores[] = {
         C.image_available_semaphores[C.current_frame]
     };
     VkPipelineStageFlags waitStages[] =
