@@ -4,8 +4,9 @@
 #include "log/log.h"
 #include "external.h"
 #include "file.h"
-#include "input.h"
 #include "gamepad.h"
+#include "input.h"
+#include "math/mat.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
 #include "platform.h"
@@ -26,6 +27,11 @@ struct Application
     Window window;
     CmdArgs cmd_args;
 } g_app;
+
+static void DEBUG_TestCode()
+{
+    // To fill whenever one feels like testing
+}
 
 static File g_log_file;
 static int InitLogger()
@@ -82,6 +88,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitRenderer());
 
     DEBUG_StopWatchdog();
+    DEBUG_TestCode();
 
     return CU_SUCCESS;
 }

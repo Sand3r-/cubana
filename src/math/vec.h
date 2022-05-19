@@ -134,3 +134,10 @@ union iv4
 #define iv2(...) (iv2){ __VA_ARGS__ }
 #define iv3(...) (iv3){ __VA_ARGS__ }
 #define iv4(...) (iv4){ __VA_ARGS__ }
+
+f32 V3Length(v3 v);
+v3 V3Normalize(v3 v);
+f32 V3Dot(v3 a, v3 b);
+v3 V3Cross(v3 a, v3 b);
+v3 V3Add(v3 a, v3 b);
+v3 V3Subtract(v3 a, v3 b);

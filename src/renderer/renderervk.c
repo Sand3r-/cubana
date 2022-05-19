@@ -6,10 +6,11 @@
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
 #include "math/scalar.h"
+#include "math/mat.h"
 #include <memory.h>
 #include <vulkan/vulkan.h>
 
-static int MAX_FRAMES_IN_FLIGHT = 2;
+#define MAX_FRAMES_IN_FLIGHT 2
 
 static struct Context
 {
@@ -27,6 +28,7 @@ static struct Context
     VkExtent2D swapchain_extent;
     VkImageView* swapchain_image_views;
     VkRenderPass render_pass;
+    VkDescriptorSetLayout descriptor_set_layout;
     VkPipelineLayout pipeline_layout;
     VkPipeline graphics_pipeline;
     VkFramebuffer* swapchain_framebuffers;
@@ -36,6 +38,9 @@ static struct Context
     VkDeviceMemory vertex_buffer_memory;
     VkBuffer index_buffer;
     VkDeviceMemory index_buffer_memory;
+
+    VkBuffer uniform_buffers[MAX_FRAMES_IN_FLIGHT];
+    VkDeviceMemory uniform_buffers_memory[MAX_FRAMES_IN_FLIGHT];
     VkSemaphore* image_available_semaphores;
     VkSemaphore* render_finished_semaphores;
     VkFence* in_flight_fences;
@@ -74,6 +79,13 @@ typedef struct SwapChainSupportDetails
     VkPresentModeKHR* present_modes;
     int present_modes_num;
 } SwapChainSupportDetails;
+
+typedef struct UniformBufferObject
+{
+    m4 model;
+    m4 view;
+    m4 projection;
+} UniformBufferObject;
 
 typedef struct Vertex
 {
@@ -770,6 +782,28 @@ static VkShaderModule CreateShaderModule(Buffer code)
     return shaderModule;
 }
 
+static void CreateDescriptorSetLayout()
+{
+    VkDescriptorSetLayoutBinding ubo_layout_binding = {
+        .binding = 0,
+        .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+        .descriptorCount = 1,
+        .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+    };
+
+    VkDescriptorSetLayoutCreateInfo layout_info = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .bindingCount = 1,
+        .pBindings = &ubo_layout_binding
+    };
+
+    if (vkCreateDescriptorSetLayout(C.device, &layout_info, NULL, &C.descriptor_set_layout)
+        != VK_SUCCESS)
+    {
+        ERROR("Descriptor Set Layout creation failure!");
+    }
+}
+
 static void CreateGraphicsPipeline()
 {
     Buffer vertShaderCode = File2Buffer("shaders/shader.vert.spv");
@@ -896,8 +930,8 @@ static void CreateGraphicsPipeline()
 
     VkPipelineLayoutCreateInfo pipelineLayoutInfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-        .setLayoutCount = 0,
-        .pSetLayouts = NULL,
+        .setLayoutCount = 1,
+        .pSetLayouts = &C.descriptor_set_layout,
         .pushConstantRangeCount = 0,
         .pPushConstantRanges = NULL,
     };
@@ -1121,6 +1155,18 @@ static void CreateIndexBuffer()
     vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
+static void CreateUniformBuffers()
+{
+    VkDeviceSize buffer_size = sizeof(UniformBufferObject);
+
+    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        CreateBuffer(buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            &C.uniform_buffers[i], &C.uniform_buffers_memory[i]);
+    }
+}
+
 static void CreateCommandBuffers()
 {
     C.command_buffers = LinearMalloc(C.swapchain_images_num * sizeof(VkCommandBuffer));
@@ -1213,6 +1259,22 @@ static void CreateSyncObjects()
     L_INFO("Synchronisation objects created.");
 }
 
+static void UpdateUniformBuffer(u32 current_image)
+{
+    UniformBufferObject ubo = {
+        .model = M4Init(1.0f),
+        .view = LookAt(v3(2.0f, 2.0f, 2.0f), v3(0.0f), v3(0.0f, 0.0f, 1.0f)),
+        .projection = Perspective(C.swapchain_extent.width,
+                                  C.swapchain_extent.height, 0.1f, 10.0f)
+    };
+
+    void* data;
+    vkMapMemory(C.device, C.uniform_buffers_memory[current_image], 0, sizeof(ubo),
+        0, &data);
+        memcpy(data, &ubo, sizeof(ubo));
+    vkUnmapMemory(C.device, C.uniform_buffers_memory[current_image]);
+}
+
 int VkRendererInit(Window window)
 {
     InitVkContext(window);
@@ -1224,11 +1286,13 @@ int VkRendererInit(Window window)
     CreateSwapChain();
     CreateImageViews();
     CreateRenderPass();
+    CreateDescriptorSetLayout();
     CreateGraphicsPipeline();
     CreateFramebuffers();
     CreateCommandPool();
     CreateVertexBuffer();
     CreateIndexBuffer();
+    CreateUniformBuffers();
     CreateCommandBuffers();
     CreateSyncObjects();
 
@@ -1239,55 +1303,63 @@ void VkRendererDraw()
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
-    uint32_t imageIndex;
+    uint32_t image_index;
     vkAcquireNextImageKHR(C.device, C.swapchain, UINT64_MAX,
-        C.image_available_semaphores[C.current_frame], VK_NULL_HANDLE, &imageIndex);
+        C.image_available_semaphores[C.current_frame], VK_NULL_HANDLE, &image_index);
 
-    if (C.images_in_flight[imageIndex] != VK_NULL_HANDLE)
-        vkWaitForFences(C.device, 1, &C.images_in_flight[imageIndex], VK_TRUE, UINT64_MAX);
+    if (C.images_in_flight[image_index] != VK_NULL_HANDLE)
+        vkWaitForFences(C.device, 1, &C.images_in_flight[image_index], VK_TRUE, UINT64_MAX);
 
-    VkSubmitInfo submitInfo = {
+    UpdateUniformBuffer(C.current_frame);
+
+    VkSubmitInfo submit_info = {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO
     };
 
-    VkSemaphore waitSemaphores[] = {
+    VkSemaphore wait_semaphores[] = {
         C.image_available_semaphores[C.current_frame]
     };
-    VkPipelineStageFlags waitStages[] =
+    VkPipelineStageFlags wait_stages[] =
         { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-    submitInfo.waitSemaphoreCount = 1;
-    submitInfo.pWaitSemaphores = waitSemaphores;
-    submitInfo.pWaitDstStageMask = waitStages;
-    submitInfo.commandBufferCount = 1;
-    submitInfo.pCommandBuffers = &C.command_buffers[imageIndex];
+    submit_info.waitSemaphoreCount = 1;
+    submit_info.pWaitSemaphores = wait_semaphores;
+    submit_info.pWaitDstStageMask = wait_stages;
+    submit_info.commandBufferCount = 1;
+    submit_info.pCommandBuffers = &C.command_buffers[image_index];
 
-    VkSemaphore signalSemaphores[] = { C.render_finished_semaphores[C.current_frame] };
-    submitInfo.signalSemaphoreCount = 1;
-    submitInfo.pSignalSemaphores = signalSemaphores;
+    VkSemaphore signal_semaphores[] = { C.render_finished_semaphores[C.current_frame] };
+    submit_info.signalSemaphoreCount = 1;
+    submit_info.pSignalSemaphores = signal_semaphores;
 
     vkResetFences(C.device, 1, &C.in_flight_fences[C.current_frame]);
-    if (vkQueueSubmit(C.graphics_queue, 1, &submitInfo, C.in_flight_fences[C.current_frame])
+    if (vkQueueSubmit(C.graphics_queue, 1, &submit_info, C.in_flight_fences[C.current_frame])
         != VK_SUCCESS)
         ERROR("Queue submit failure");
 
-    VkSwapchainKHR swapChains[] = {C.swapchain};
-    VkPresentInfoKHR presentInfo = {
+    VkSwapchainKHR swap_chains[] = {C.swapchain};
+    VkPresentInfoKHR present_info = {
         .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
         .waitSemaphoreCount = 1,
-        .pWaitSemaphores = signalSemaphores,
+        .pWaitSemaphores = signal_semaphores,
         .swapchainCount = 1,
-        .pSwapchains = swapChains,
-        .pImageIndices = &imageIndex,
+        .pSwapchains = swap_chains,
+        .pImageIndices = &image_index,
         .pResults = NULL,
     };
 
-    vkQueuePresentKHR(C.present_queue, &presentInfo);
+    vkQueuePresentKHR(C.present_queue, &present_info);
 
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
 void VkRendererShutdown()
 {
+    for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        vkDestroyBuffer(C.device, C.uniform_buffers[i], NULL);
+        vkFreeMemory(C.device, C.uniform_buffers_memory[i], NULL);
+    }
+    vkDestroyDescriptorSetLayout(C.device, C.descriptor_set_layout, NULL);
     vkDestroyBuffer(C.device, C.index_buffer, NULL);
     vkFreeMemory(C.device, C.index_buffer_memory, NULL);
     vkDestroyBuffer(C.device, C.vertex_buffer, NULL);
