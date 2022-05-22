@@ -122,7 +122,7 @@ void StackAllocatorFree(void* ptr)
         *((u32*)ptr)--; // Move the ptr to point at the separator before freeing
 
         // Mark freed memory
-        memset((u8*)ptr - sizeof(A.separator), UNALLOC_BYTE, dealloc_size);
+        memset((u8*)ptr, UNALLOC_BYTE, dealloc_size);
     }
 
     if (ptr < A.top)
