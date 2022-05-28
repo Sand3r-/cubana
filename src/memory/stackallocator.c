@@ -182,6 +182,7 @@ static int Watchdog(void* dummy)
             if (*(((u32*)A.allocation_ptrs[i]) - 1) != A.separator)
             {
                 ERROR("Memory corruption detected overwriting allocation %s", A.allocation_names[i]);
+                StackAllocatorSummary();
             }
         }
 
@@ -190,6 +191,7 @@ static int Watchdog(void* dummy)
             if (*head != UNALLOC_BYTE)
             {
                 ERROR("Memory corruption detected at adress %p", head);
+                StackAllocatorSummary();
             }
         }
     }
