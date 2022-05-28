@@ -38,11 +38,13 @@ m4 M4Multiply(m4 a, m4 b)
 // Assumes Reverse-Depth (near = 1.0f, far = 0.0f)
 // Remember to set compare op to Greater/equal and depth clearing to 0.0f appropriately
 // Consult https://github.com/sebbbi/rust_test/commit/d64119ce22a6a4972e97b8566e3bbd221123fcbb
-m4 Perspective(f32 width, f32 height, f32 near_z, f32 far_z)
+m4 Perspective(f32 fov_deg, f32 aspect, f32 near_z, f32 far_z)
 {
+    f32 fov_rad = fov_deg * 2.0f * PI / 360.0f;
+    f32 focal_length = 1.0f / (tanf(fov_rad / 2.0f));
     m4 r = {
-        .elems[0][0] = 2 * near_z / width,
-        .elems[1][1] = -2 * near_z / height,
+        .elems[0][0] = focal_length / aspect,
+        .elems[1][1] = -focal_length,
         .elems[2][2] = near_z / (far_z - near_z),
         .elems[2][3] = -1,
         .elems[3][2] = near_z * far_z / (far_z - near_z)

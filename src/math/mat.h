@@ -18,5 +18,5 @@ union m3
 // Column-Major is assumed
 m4 M4Init(f32 diagonal);
 m4 M4Multiply(m4 a, m4 b);
-m4 Perspective(f32 width, f32 height, f32 near_z, f32 far_z);
+m4 Perspective(f32 fov_deg, f32 aspect, f32 near_z, f32 far_z);
 m4 LookAt(v3 eye, v3 target, v3 up);
