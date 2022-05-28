@@ -1,3 +1,3 @@
 #pragma once
 
-int InitExternalLibs();
+int InitExternalLibs(void);

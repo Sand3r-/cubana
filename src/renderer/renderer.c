@@ -8,14 +8,14 @@ int RendererInit(Window window)
 #endif
 }
 
-void RendererDraw()
+void RendererDraw(void)
 {
 #ifdef USE_VK_RENDERER
     VkRendererDraw();
 #endif
 }
 
-void RendererShutdown()
+void RendererShutdown(void)
 {
 #ifdef USE_VK_RENDERER
     VkRendererShutdown();

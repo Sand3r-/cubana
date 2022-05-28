@@ -129,7 +129,7 @@ static Buffer FreeBuffer(Buffer buffer)
     return buffer;
 }
 
-static VkVertexInputBindingDescription GetBindingDescription()
+static VkVertexInputBindingDescription GetBindingDescription(void)
 {
     VkVertexInputBindingDescription binding_description = {
         .binding = 0,
@@ -208,7 +208,7 @@ static void FreeSwapChainSupportDetails(SwapChainSupportDetails* details)
     if (details->formats != NULL) StackFree(details->formats);
 }
 
-static VkBool32 CheckValidationLayerSupport()
+static VkBool32 CheckValidationLayerSupport(void)
 {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, NULL);
@@ -289,7 +289,7 @@ static void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT*
     *createInfo = info;
 }
 
-static void PrintExtensions()
+static void PrintExtensions(void)
 {
     u32 num_extensions;
     vkEnumerateInstanceExtensionProperties(NULL, &num_extensions, NULL);
@@ -306,7 +306,7 @@ static void PrintExtensions()
     StackFree(extensions);
 }
 
-static void CreateInstance()
+static void CreateInstance(void)
 {
     if (C.enable_validation_layers && !CheckValidationLayerSupport())
         ERROR("The validation layers couldn't have been enabled");
@@ -349,7 +349,7 @@ static void CreateInstance()
     StackFree(extensions);
 }
 
-static void SetupDebugMessenger()
+static void SetupDebugMessenger(void)
 {
     if (!C.enable_validation_layers) return;
 
@@ -361,7 +361,7 @@ static void SetupDebugMessenger()
         ERROR("The debug messenger couldn't have been created.");
 }
 
-static void CreateSurface()
+static void CreateSurface(void)
 {
     if (!CreateVulkanSurface(C.window, C.instance, &C.surface))
         ERROR("Vulkan surface creation error.");
@@ -478,7 +478,7 @@ static VkBool32 IsDeviceSuitable(VkPhysicalDevice device)
     return AreQueueFamilyIndicesComplete(&indices) && extensionsSupported && swapChainAdequate;
 }
 
-static void PickPhysicalDevice()
+static void PickPhysicalDevice(void)
 {
     u32 deviceCount = 0;
     vkEnumeratePhysicalDevices(C.instance, &deviceCount, NULL);
@@ -505,7 +505,7 @@ static void PickPhysicalDevice()
     StackFree(devices);
 }
 
-static void CreateLogicalDevice()
+static void CreateLogicalDevice(void)
 {
     QueueFamilyIndices indices = FindQueueFamilies(C.physical_device);
 
@@ -594,7 +594,7 @@ static VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR* capabilities)
     }
 }
 
-static void CreateSwapChain()
+static void CreateSwapChain(void)
 {
     SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(C.physical_device);
 
@@ -657,7 +657,7 @@ static void CreateSwapChain()
     C.swapchain_extent = extent;
 }
 
-static void CreateImageViews()
+static void CreateImageViews(void)
 {
     C.swapchain_image_views = LinearMalloc(C.swapchain_images_num * sizeof(VkImageView));
     VkImageViewCreateInfo createInfo = {
@@ -686,7 +686,7 @@ static void CreateImageViews()
     L_INFO("SwapChain image views have been created.");
 }
 
-static void CreateRenderPass()
+static void CreateRenderPass(void)
 {
     VkAttachmentDescription colorAttachment = {
         .format = C.swapchain_image_format,
@@ -784,7 +784,7 @@ static VkShaderModule CreateShaderModule(Buffer code)
     return shaderModule;
 }
 
-static void CreateDescriptorSetLayout()
+static void CreateDescriptorSetLayout(void)
 {
     VkDescriptorSetLayoutBinding ubo_layout_binding = {
         .binding = 0,
@@ -806,7 +806,7 @@ static void CreateDescriptorSetLayout()
     }
 }
 
-static void CreateGraphicsPipeline()
+static void CreateGraphicsPipeline(void)
 {
     Buffer vertShaderCode = File2Buffer("shaders/shader.vert.spv");
     Buffer fragShaderCode = File2Buffer("shaders/shader.frag.spv");
@@ -971,7 +971,7 @@ static void CreateGraphicsPipeline()
     vkDestroyShaderModule(C.device, vertShaderModule, NULL);
 }
 
-static void CreateFramebuffers()
+static void CreateFramebuffers(void)
 {
     C.swapchain_framebuffers =
         LinearMalloc(C.swapchain_images_num * sizeof(VkFramebuffer));
@@ -1000,7 +1000,7 @@ static void CreateFramebuffers()
     L_INFO("Framebuffers created");
 }
 
-static void CreateCommandPool()
+static void CreateCommandPool(void)
 {
     QueueFamilyIndices queueFamilyIndices = FindQueueFamilies(C.physical_device);
 
@@ -1109,7 +1109,7 @@ static void CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize si
     vkFreeCommandBuffers(C.device, C.command_pool, 1, &cmd_buffer);
 }
 
-static void CreateVertexBuffer()
+static void CreateVertexBuffer(void)
 {
     VkDeviceSize buffer_size = sizeof(vertices);
 
@@ -1133,7 +1133,7 @@ static void CreateVertexBuffer()
     vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
-static void CreateIndexBuffer()
+static void CreateIndexBuffer(void)
 {
     VkDeviceSize buffer_size = sizeof(indices);
 
@@ -1157,7 +1157,7 @@ static void CreateIndexBuffer()
     vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
-static void CreateUniformBuffers()
+static void CreateUniformBuffers(void)
 {
     VkDeviceSize buffer_size = sizeof(UniformBufferObject);
 
@@ -1169,7 +1169,7 @@ static void CreateUniformBuffers()
     }
 }
 
-static void CreateDescriptorPool()
+static void CreateDescriptorPool(void)
 {
     VkDescriptorPoolSize pool_size = {
         .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
@@ -1188,7 +1188,7 @@ static void CreateDescriptorPool()
         ERROR("Descriptor Pool creation failure");
 }
 
-static void CreateDescriptorSets()
+static void CreateDescriptorSets(void)
 {
     VkDescriptorSetLayout layouts[MAX_FRAMES_IN_FLIGHT];
     for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
@@ -1227,7 +1227,7 @@ static void CreateDescriptorSets()
     }
 }
 
-static void CreateCommandBuffers()
+static void CreateCommandBuffers(void)
 {
     C.command_buffers = LinearMalloc(C.swapchain_images_num * sizeof(VkCommandBuffer));
 
@@ -1290,7 +1290,7 @@ static void CreateCommandBuffers()
     L_INFO("CommandBuffers recorded");
 }
 
-static void CreateSyncObjects()
+static void CreateSyncObjects(void)
 {
     C.image_available_semaphores = LinearMalloc(sizeof(VkSemaphore) * MAX_FRAMES_IN_FLIGHT);
     C.render_finished_semaphores = LinearMalloc(sizeof(VkSemaphore) * MAX_FRAMES_IN_FLIGHT);
@@ -1364,7 +1364,7 @@ int VkRendererInit(Window window)
     return CU_SUCCESS;
 }
 
-void VkRendererDraw()
+void VkRendererDraw(void)
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
@@ -1417,7 +1417,7 @@ void VkRendererDraw()
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
-void VkRendererShutdown()
+void VkRendererShutdown(void)
 {
     for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
     {

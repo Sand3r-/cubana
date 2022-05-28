@@ -7,4 +7,4 @@ typedef union SDL_Event SDL_Event;
 
 void HandleGamepadEvents(SDL_Event event);
 u8 GetGamepadSlot(s32 joystick_id);
-void CloseGamepadControllers();
+void CloseGamepadControllers(void);

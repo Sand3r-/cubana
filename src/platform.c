@@ -3,7 +3,7 @@
 #include "input.h"
 #include <SDL.h>
 
-b8 ProcessPlatformEvents()
+b8 ProcessPlatformEvents(void)
 {
     SDL_Event e;
     while (SDL_PollEvent(&e) > 0)

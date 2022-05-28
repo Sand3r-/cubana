@@ -17,7 +17,7 @@ static s32 GetJoyId(SDL_GameController* c)
     return SDL_JoystickInstanceID(j);
 }
 
-void CloseGamepadControllers()
+void CloseGamepadControllers(void)
 {
     for (u8 i = 0; i < MAX_GAMEPADS_NUM; i++)
         if (G.controller[i] != NULL)

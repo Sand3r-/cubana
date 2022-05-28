@@ -27,7 +27,7 @@ int LinearAllocatorInit(b8 debug)
     return CU_SUCCESS;
 }
 
-void LinearAllocatorClear()
+void LinearAllocatorClear(void)
 {
     A.head = A.buffer;
     // Fill whole buffer with 0xCC so that it is known that the memory is uninitialised
@@ -38,7 +38,7 @@ void LinearAllocatorClear()
     }
 }
 
-int LinearAllocatorShutdown()
+int LinearAllocatorShutdown(void)
 {
     SDL_free(A.buffer);
     return CU_SUCCESS;

@@ -134,7 +134,7 @@ int log_add_fp(File* file, int level) {
   return log_add_callback(file_callback, file, level);
 }
 
-int log_init()
+int log_init(void)
 {
 #ifdef _MSC_VER
   return log_add_callback(msvc_debug_callback, NULL, L.level);

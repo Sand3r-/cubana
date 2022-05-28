@@ -2,5 +2,5 @@
 #include "window.h"
 
 int RendererInit(Window window);
-void RendererDraw();
-void RendererShutdown();
+void RendererDraw(void);
+void RendererShutdown(void);

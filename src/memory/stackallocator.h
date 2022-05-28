@@ -10,10 +10,10 @@
 #define StackFree(ptr) StackAllocatorFree(ptr)
 
 int StackAllocatorInit(b8 debug);
-int StackAllocatorShutdown();
+int StackAllocatorShutdown(void);
 void* StackAllocatorAlloc(u64 size);
 void* StackAllocatorNamedAlloc(u64 size, const char* name);
 void StackAllocatorFree(void* ptr);
-void StackAllocatorSummary();
+void StackAllocatorSummary(void);
 void StackAllocatorHead(i32 num);
-void DEBUG_StopWatchdog();
+void DEBUG_StopWatchdog(void);

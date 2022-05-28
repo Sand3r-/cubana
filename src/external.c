@@ -3,7 +3,7 @@
 #include "error.h"
 #include <SDL.h>
 
-int InitExternalLibs()
+int InitExternalLibs(void)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER))
     {

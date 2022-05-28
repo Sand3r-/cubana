@@ -163,7 +163,7 @@ v2 GetAnalogStickState(u8 id, AnalogStickId which)
     return IO.gamepad[id].analog[which];
 }
 
-void DEBUG_GamepadInput()
+void DEBUG_GamepadInput(void)
 {
     const char* names[] = {
         "BUTTON_A",

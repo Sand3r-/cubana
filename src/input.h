@@ -104,4 +104,4 @@ KeyState GetKeyState(Key key);
 KeyState GetButtonState(u8 id, GamePadButton button);
 v2 GetAnalogStickState(u8 id, AnalogStickId which);
 
-void DEBUG_GamepadInput();
+void DEBUG_GamepadInput(void);

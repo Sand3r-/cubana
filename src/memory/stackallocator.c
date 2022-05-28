@@ -135,14 +135,14 @@ void StackAllocatorFree(void* ptr)
     }
 }
 
-int StackAllocatorShutdown()
+int StackAllocatorShutdown(void)
 {
     DEBUG_StopWatchdog();
     SDL_free(A.buffer);
     return CU_SUCCESS;
 }
 
-void StackAllocatorSummary()
+void StackAllocatorSummary(void)
 {
     L_INFO("Total stack allocator summary");
     i32 allocationsToList = A.allocations_num - 1;

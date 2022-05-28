@@ -28,13 +28,13 @@ struct Application
     CmdArgs cmd_args;
 } g_app;
 
-static void DEBUG_TestCode()
+static void DEBUG_TestCode(void)
 {
     // To fill whenever one feels like testing
 }
 
 static File g_log_file;
-static int InitLogger()
+static int InitLogger(void)
 {
     log_set_level(0);
     log_set_quiet(false);
@@ -57,7 +57,7 @@ static int InitConfig(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
-static int InitWindow()
+static int InitWindow(void)
 {
     WindowResult window_result = CreateWindow(1024, 768, "Cubana");
     g_app.window = window_result.window;
@@ -72,7 +72,7 @@ static int InitWindow()
     return CU_SUCCESS;
 }
 
-static int InitRenderer()
+static int InitRenderer(void)
 {
     return RendererInit(g_app.window);
 }
@@ -93,7 +93,7 @@ static int Init(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
-static int GameLoop()
+static int GameLoop(void)
 {
     b8 done = false;
     while (!done)
@@ -105,7 +105,7 @@ static int GameLoop()
     return CU_SUCCESS;
 }
 
-static int Shutdown()
+static int Shutdown(void)
 {
     CloseGamepadControllers();
     i32 error_code = FileClose(&g_log_file);
