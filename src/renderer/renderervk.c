@@ -32,6 +32,8 @@ static struct Context
     VkPipelineLayout pipeline_layout;
     VkPipeline graphics_pipeline;
     VkFramebuffer* swapchain_framebuffers;
+    VkDescriptorPool descriptor_pool;
+    VkDescriptorSet descriptor_sets[MAX_FRAMES_IN_FLIGHT];
     VkCommandPool command_pool;
     VkCommandBuffer* command_buffers;
     VkBuffer vertex_buffer;
@@ -82,9 +84,9 @@ typedef struct SwapChainSupportDetails
 
 typedef struct UniformBufferObject
 {
-    m4 model;
-    m4 view;
-    m4 projection;
+    _Alignas(16) m4 model;
+    _Alignas(16) m4 view;
+    _Alignas(16) m4 projection;
 } UniformBufferObject;
 
 typedef struct Vertex
@@ -885,7 +887,7 @@ static void CreateGraphicsPipeline()
         .polygonMode = VK_POLYGON_MODE_FILL,
         .lineWidth = 1.0f,
         .cullMode = VK_CULL_MODE_BACK_BIT,
-        .frontFace = VK_FRONT_FACE_CLOCKWISE,
+        .frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE,
         .depthBiasEnable = VK_FALSE,
         .depthBiasConstantFactor = 0.0f,
         .depthBiasClamp = 0.0f,
@@ -1167,6 +1169,64 @@ static void CreateUniformBuffers()
     }
 }
 
+static void CreateDescriptorPool()
+{
+    VkDescriptorPoolSize pool_size = {
+        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+        .descriptorCount = MAX_FRAMES_IN_FLIGHT
+    };
+
+    VkDescriptorPoolCreateInfo pool_info = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .poolSizeCount = 1,
+        .pPoolSizes = &pool_size,
+        .maxSets = MAX_FRAMES_IN_FLIGHT
+    };
+
+    if (vkCreateDescriptorPool(C.device, &pool_info, NULL, &C.descriptor_pool)
+        != VK_SUCCESS)
+        ERROR("Descriptor Pool creation failure");
+}
+
+static void CreateDescriptorSets()
+{
+    VkDescriptorSetLayout layouts[MAX_FRAMES_IN_FLIGHT];
+    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+        layouts[i] = C.descriptor_set_layout;
+
+    VkDescriptorSetAllocateInfo alloc_info = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .descriptorPool = C.descriptor_pool,
+        .descriptorSetCount = MAX_FRAMES_IN_FLIGHT,
+        .pSetLayouts = layouts
+    };
+
+    if (vkAllocateDescriptorSets(C.device, &alloc_info, C.descriptor_sets)
+        != VK_SUCCESS)
+        ERROR("Descriptor sets allocation failure");
+
+    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        VkDescriptorBufferInfo buffer_info = {
+            .buffer = C.uniform_buffers[i],
+            .offset = 0,
+            .range = sizeof(UniformBufferObject)
+        };
+
+        VkWriteDescriptorSet descriptor_write = {
+            .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .dstSet = C.descriptor_sets[i],
+            .dstBinding = 0,
+            .dstArrayElement = 0,
+            .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .descriptorCount = 1,
+            .pBufferInfo = &buffer_info,
+        };
+
+        vkUpdateDescriptorSets(C.device, 1, &descriptor_write, 0, NULL);
+    }
+}
+
 static void CreateCommandBuffers()
 {
     C.command_buffers = LinearMalloc(C.swapchain_images_num * sizeof(VkCommandBuffer));
@@ -1217,6 +1277,8 @@ static void CreateCommandBuffers()
         VkDeviceSize offsets[] = { 0 };
         vkCmdBindVertexBuffers(cmd_buffer, 0, 1, vertex_buffers, offsets);
         vkCmdBindIndexBuffer(cmd_buffer, C.index_buffer, 0, VK_INDEX_TYPE_UINT16);
+        vkCmdBindDescriptorSets(cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+            C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
         vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 1, 0, 0, 0);
 
         vkCmdEndRenderPass(cmd_buffer);
@@ -1264,8 +1326,9 @@ static void UpdateUniformBuffer(u32 current_image)
     UniformBufferObject ubo = {
         .model = M4Init(1.0f),
         .view = LookAt(v3(2.0f, 2.0f, 2.0f), v3(0.0f), v3(0.0f, 0.0f, 1.0f)),
-        .projection = Perspective(C.swapchain_extent.width,
-                                  C.swapchain_extent.height, 0.1f, 10.0f)
+        .projection = Perspective(90.0f,
+                                  C.swapchain_extent.width / C.swapchain_extent.height,
+                                  0.1f, 10.0f)
     };
 
     void* data;
@@ -1293,6 +1356,8 @@ int VkRendererInit(Window window)
     CreateVertexBuffer();
     CreateIndexBuffer();
     CreateUniformBuffers();
+    CreateDescriptorPool();
+    CreateDescriptorSets();
     CreateCommandBuffers();
     CreateSyncObjects();
 
@@ -1359,6 +1424,7 @@ void VkRendererShutdown()
         vkDestroyBuffer(C.device, C.uniform_buffers[i], NULL);
         vkFreeMemory(C.device, C.uniform_buffers_memory[i], NULL);
     }
+    vkDestroyDescriptorPool(C.device, C.descriptor_pool, NULL);
     vkDestroyDescriptorSetLayout(C.device, C.descriptor_set_layout, NULL);
     vkDestroyBuffer(C.device, C.index_buffer, NULL);
     vkFreeMemory(C.device, C.index_buffer_memory, NULL);
