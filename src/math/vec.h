@@ -141,3 +141,4 @@ f32 V3Dot(v3 a, v3 b);
 v3 V3Cross(v3 a, v3 b);
 v3 V3Add(v3 a, v3 b);
 v3 V3Subtract(v3 a, v3 b);
+v3 V3Mul(v3 a, v3 b);

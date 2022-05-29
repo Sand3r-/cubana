@@ -33,3 +33,8 @@ v3 V3Subtract(v3 a, v3 b)
 {
     return v3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
+
+v3 V3Mul(v3 a, v3 b)
+{
+    return v3(a.x * b.x, a.y * b.y, a.z * b.z);
+}
