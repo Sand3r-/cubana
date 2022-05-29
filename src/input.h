@@ -97,11 +97,28 @@ typedef enum
     BUTTON_MAX
 } GamePadButton;
 
+// The order stricly corresponds to what SDL is using underneath
+typedef enum
+{
+    BUTTON_LEFT = 1,
+    BUTTON_MIDDLE,
+    BUTTON_RIGHT,
+    BUTTON_X1,
+    BUTTON_X2,
+
+    BUTTON_MOUSE_MAX
+} Button;
+
 typedef union SDL_Event SDL_Event;
 
 void HandleInputEvents(SDL_Event event);
 KeyState GetKeyState(Key key);
 KeyState GetButtonState(u8 id, GamePadButton button);
 v2 GetAnalogStickState(u8 id, AnalogStickId which);
+KeyState GetMouseButtonState(u8 id);
+v2 GetMousePosition(void);
+v2 GetMouseDelta(void);
+void ResetInput(void);
+void SnapCursorToCenter(b8 enabled);
 
 void DEBUG_GamepadInput(void);

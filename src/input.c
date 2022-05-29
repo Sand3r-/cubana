@@ -13,14 +13,26 @@ typedef struct GamePadState
     GamePadButton buttons[BUTTON_MAX];
 } GamePadState;
 
+typedef struct MouseState
+{
+    Button buttons[BUTTON_MOUSE_MAX];
+    union
+    {
+        v2 position;
+        v2 delta;
+    };
+    b8 snap;
+} MouseState;
+
 static struct
 {
     Key keyboard[KEY_MAX];
     GamePadState gamepad[MAX_GAMEPADS_NUM];
+    MouseState mouse;
 } IO;
 
 
-static inline void HandleKeyboardInput(SDL_Event event)
+static void HandleKeyboardInput(SDL_Event event)
 {
 #define MAP_SDL_BINDING(sdl_scancode, key, pressed) case sdl_scancode: \
     IO.keyboard[key] = pressed; \
@@ -94,7 +106,7 @@ static inline f32 NormalizeAxis(int value)
     return 0.0f;
 }
 
-static inline void HandleGamepadAxis(SDL_Event event)
+static void HandleGamepadAxis(SDL_Event event)
 {
     u8 slot = GetGamepadSlot(event.caxis.which);
     switch (event.caxis.axis)
@@ -126,7 +138,7 @@ static inline void HandleGamepadAxis(SDL_Event event)
     }
 }
 
-static inline void HandleGamepadInput(SDL_Event event)
+static void HandleGamepadInput(SDL_Event event)
 {
     u8 slot = GetGamepadSlot(event.caxis.which);
     int button = event.cbutton.button;
@@ -135,8 +147,45 @@ static inline void HandleGamepadInput(SDL_Event event)
         IO.gamepad[slot].buttons[button] = was_pressed;
 }
 
+static void HandleMouseMove(SDL_Event event)
+{
+    // TODO(Sand3r-): Notice that normalisation causes it to be assymetrical
+    // in terms of input handling. consider dividing by min(width, height).
+    SDL_Window* window = SDL_GetWindowFromID(event.motion.windowID);
+    iv2 size;
+    SDL_GetWindowSize(window, &size.width, &size.height);
+    if (IO.mouse.snap)
+    {
+        const f32 center_x = size.width  / 2;
+        const f32 center_y = size.height / 2;
+
+        IO.mouse.delta = v2(-(center_x - event.motion.x) / (f32) size.width,
+                             (center_y - event.motion.y) / (f32) size.height);
+        SDL_WarpMouseInWindow(window, center_x, center_y);
+    }
+    else
+    {
+        IO.mouse.position = v2(event.motion.x / (f32) size.width,
+                               event.motion.y / (f32) size.height);
+    }
+}
+
+static void HandleMouseInput(SDL_Event event)
+{
+    int button = (i32)event.button.button - 1;
+    b8 was_pressed = event.type == SDL_MOUSEBUTTONDOWN;
+    if (button >= 0 && button < BUTTON_MOUSE_MAX)
+        IO.mouse.buttons[button] = was_pressed;
+}
+
 void HandleInputEvents(SDL_Event event)
 {
+    if (event.type == SDL_MOUSEMOTION)
+        HandleMouseMove(event);
+
+    if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
+        HandleMouseInput(event);
+
     if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
         HandleKeyboardInput(event);
 
@@ -146,6 +195,7 @@ void HandleInputEvents(SDL_Event event)
     if (event.type == SDL_CONTROLLERBUTTONDOWN ||
         event.type == SDL_CONTROLLERBUTTONUP)
         HandleGamepadInput(event);
+
 }
 
 KeyState GetKeyState(Key key)
@@ -161,6 +211,37 @@ KeyState GetButtonState(u8 id, GamePadButton button)
 v2 GetAnalogStickState(u8 id, AnalogStickId which)
 {
     return IO.gamepad[id].analog[which];
+}
+
+KeyState GetMouseButtonState(u8 id)
+{
+    return IO.mouse.buttons[id - 1];
+}
+
+v2 GetMousePosition(void)
+{
+    return IO.mouse.position;
+}
+
+v2 GetMouseDelta(void)
+{
+    return IO.mouse.delta;
+}
+
+void SnapCursorToCenter(b8 enabled)
+{
+    IO.mouse.snap = enabled;
+    SDL_SetRelativeMouseMode(enabled);
+}
+
+void ResetInput(void)
+{
+    IO.mouse.delta = v2(0.0f);
+}
+
+void DEBUG_MouseMotion(void)
+{
+
 }
 
 void DEBUG_GamepadInput(void)
