@@ -21,3 +21,10 @@ void RendererShutdown(void)
     VkRendererShutdown();
 #endif
 }
+
+void RendererSetCamera(v3 position, v3 direction)
+{
+#ifdef USE_VK_RENDERER
+    VkRendererSetCamera(position, direction);
+#endif
+}

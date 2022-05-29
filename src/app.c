@@ -4,6 +4,7 @@
 #include "log/log.h"
 #include "external.h"
 #include "file.h"
+#include "game.h"
 #include "gamepad.h"
 #include "input.h"
 #include "math/mat.h"
@@ -24,6 +25,7 @@
 
 struct Application
 {
+    Game game;
     Window window;
     CmdArgs cmd_args;
 } g_app;
@@ -77,6 +79,11 @@ static int InitRenderer(void)
     return RendererInit(g_app.window);
 }
 
+static int InitGame(void)
+{
+    return GameInit(&g_app.game);
+}
+
 static int Init(int argc, char* argv[])
 {
     ReturnOnFailure(InitLogger());
@@ -86,6 +93,9 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
+    ReturnOnFailure(InitGame());
+
+    SnapCursorToCenter(true);
 
     DEBUG_StopWatchdog();
     DEBUG_TestCode();
@@ -93,20 +103,22 @@ static int Init(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
-static int GameLoop(void)
+static int AppLoop(void)
 {
     b8 done = false;
     while (!done)
     {
         done = ProcessPlatformEvents();
-        DEBUG_GamepadInput();
+        GameUpdate(&g_app.game);
         RendererDraw();
+        ResetInput();
     }
     return CU_SUCCESS;
 }
 
 static int Shutdown(void)
 {
+    GameDestroy(&g_app.game);
     CloseGamepadControllers();
     i32 error_code = FileClose(&g_log_file);
     if (error_code != CU_SUCCESS)
@@ -123,7 +135,7 @@ static int Shutdown(void)
 int Run(int argc, char* argv[])
 {
     ReturnOnFailure(Init(argc, argv));
-    ReturnOnFailure(GameLoop());
+    ReturnOnFailure(AppLoop());
     ReturnOnFailure(Shutdown());
     return CU_SUCCESS;
 }

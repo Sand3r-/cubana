@@ -95,6 +95,8 @@ typedef struct Vertex
     v3 colour;
 } Vertex;
 
+static UniformBufferObject g_UBO;
+
 static Vertex vertices[] = {
     {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
     {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
@@ -188,6 +190,19 @@ static void InitVkContext(Window window)
     #else
     C.enable_validation_layers = VK_TRUE;
     #endif
+}
+
+static void InitUboData(void)
+{
+    UniformBufferObject ubo = {
+        .model = M4Init(1.0f),
+        .view = LookAt(v3(2.0f, 2.0f, 2.0f), v3(0.0f), v3(0.0f, 0.0f, 1.0f)),
+        .projection = Perspective(90.0f,
+                                  C.swapchain_extent.width / C.swapchain_extent.height,
+                                  0.1f, 10.0f)
+    };
+
+    g_UBO = ubo;
 }
 
 static void InitQueueFamilyIndices(QueueFamilyIndices* indices)
@@ -1323,18 +1338,10 @@ static void CreateSyncObjects(void)
 
 static void UpdateUniformBuffer(u32 current_image)
 {
-    UniformBufferObject ubo = {
-        .model = M4Init(1.0f),
-        .view = LookAt(v3(2.0f, 2.0f, 2.0f), v3(0.0f), v3(0.0f, 0.0f, 1.0f)),
-        .projection = Perspective(90.0f,
-                                  C.swapchain_extent.width / C.swapchain_extent.height,
-                                  0.1f, 10.0f)
-    };
-
     void* data;
-    vkMapMemory(C.device, C.uniform_buffers_memory[current_image], 0, sizeof(ubo),
+    vkMapMemory(C.device, C.uniform_buffers_memory[current_image], 0, sizeof(g_UBO),
         0, &data);
-        memcpy(data, &ubo, sizeof(ubo));
+        memcpy(data, &g_UBO, sizeof(g_UBO));
     vkUnmapMemory(C.device, C.uniform_buffers_memory[current_image]);
 }
 
@@ -1356,6 +1363,7 @@ int VkRendererInit(Window window)
     CreateVertexBuffer();
     CreateIndexBuffer();
     CreateUniformBuffers();
+    InitUboData();
     CreateDescriptorPool();
     CreateDescriptorSets();
     CreateCommandBuffers();
@@ -1430,4 +1438,10 @@ void VkRendererShutdown(void)
     vkFreeMemory(C.device, C.index_buffer_memory, NULL);
     vkDestroyBuffer(C.device, C.vertex_buffer, NULL);
     vkFreeMemory(C.device, C.vertex_buffer_memory, NULL);
+}
+
+void VkRendererSetCamera(v3 position, v3 direction)
+{
+    v3 up = v3(0.0f, 1.0f, 0.0f);
+    g_UBO.view = LookAt(position, V3Add(position, direction), up);
 }
