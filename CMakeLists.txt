@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.21)
-project(cubana)
+project(cubana C)
 
 # Include cmake modules
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)

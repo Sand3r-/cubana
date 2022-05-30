@@ -39,6 +39,11 @@ target_sources(${TARGET} PRIVATE ${SOURCES})
 list(APPEND LIBRARIES Vulkan::Vulkan)
 list(APPEND LIBRARIES SDL2)
 list(APPEND LIBRARIES SDL2main)
+if (UNIX)
+    list(APPEND LIBRARIES m) # Math library
+endif (UNIX)
+
+
 target_link_libraries(${TARGET} ${LIBRARIES})
 
 # Specify include directories for the target

@@ -1,5 +1,6 @@
 #pragma once
 #include <stdarg.h>
+#include <stddef.h>
 #include "types.h"
 
 i32 cu_snprintf(char *text, size_t maxlen, const char *fmt, ...);

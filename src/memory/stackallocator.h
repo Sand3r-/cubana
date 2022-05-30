@@ -4,7 +4,7 @@
 #ifdef _DEBUG
 #define StackMalloc(size, name) StackAllocatorNamedAlloc(size, name)
 #else
-#define StackMalloc(size, name) StackAllocatorAlloc(size);
+#define StackMalloc(size, name) StackAllocatorAlloc(size)
 #endif
 
 #define StackFree(ptr) StackAllocatorFree(ptr)

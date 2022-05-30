@@ -76,7 +76,9 @@ void* StackAllocatorAlloc(u64 size)
     if (A.debug)
     {
         A.allocations_num++;
-        *((u32*)ptr)++ = A.separator; // Prepend allocation with a separator
+        u32* u32_ptr = (u32*)ptr;
+        *u32_ptr++ = A.separator; // Prepend allocation with a separator
+        ptr = u32_ptr;
     }
 
     return ptr;
@@ -98,7 +100,9 @@ void* StackAllocatorNamedAlloc(u64 size, const char* name)
 
     if (A.debug)
     {
-        *((u32*)ptr)++ = A.separator; // Prepend allocation with a separator
+        u32* u32_ptr = (u32*)ptr;
+        *u32_ptr++ = A.separator; // Prepend allocation with a separator
+        ptr = u32_ptr;
         // Increase number of tracable allocs if this assert is triggered
         assert(A.allocations_num + 1 < TRACABLE_ALLOCS_NUM);
         A.allocation_ptrs[A.allocations_num] = ptr;
@@ -119,7 +123,8 @@ void StackAllocatorFree(void* ptr)
             if (A.allocation_ptrs[i] == ptr)
                 break;
         }
-        *((u32*)ptr)--; // Move the ptr to point at the separator before freeing
+        u32* u32_ptr = (u32*)ptr;
+        ptr = --u32_ptr; // Move the ptr to point at the separator before freeing
 
         // Mark freed memory
         memset((u8*)ptr, UNALLOC_BYTE, dealloc_size);
