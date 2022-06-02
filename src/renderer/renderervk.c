@@ -29,6 +29,7 @@ static struct Context
     VkImageView* swapchain_image_views;
     VkRenderPass render_pass;
     VkDescriptorSetLayout descriptor_set_layout;
+    VkPushConstantRange push_constant_range;
     VkPipelineLayout pipeline_layout;
     VkPipeline graphics_pipeline;
     VkFramebuffer* swapchain_framebuffers;
@@ -84,10 +85,13 @@ typedef struct SwapChainSupportDetails
 
 typedef struct UniformBufferObject
 {
-    _Alignas(16) m4 model;
-    _Alignas(16) m4 view;
     _Alignas(16) m4 projection;
 } UniformBufferObject;
+
+typedef struct PushConstantsObject
+{
+    m4 view;
+} PushConstantsObject;
 
 typedef struct Vertex
 {
@@ -95,7 +99,7 @@ typedef struct Vertex
     v3 colour;
 } Vertex;
 
-static UniformBufferObject g_UBO;
+static PushConstantsObject g_PushConstants;
 
 static Vertex vertices[] = {
     {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
@@ -190,19 +194,6 @@ static void InitVkContext(Window window)
     #else
     C.enable_validation_layers = VK_TRUE;
     #endif
-}
-
-static void InitUboData(void)
-{
-    UniformBufferObject ubo = {
-        .model = M4Init(1.0f),
-        .view = LookAt(v3(2.0f, 2.0f, 2.0f), v3(0.0f), v3(0.0f, 0.0f, 1.0f)),
-        .projection = Perspective(90.0f,
-                                  C.swapchain_extent.width / C.swapchain_extent.height,
-                                  0.1f, 10.0f)
-    };
-
-    g_UBO = ubo;
 }
 
 static void InitQueueFamilyIndices(QueueFamilyIndices* indices)
@@ -821,6 +812,13 @@ static void CreateDescriptorSetLayout(void)
     }
 }
 
+static void CreatePushConstantsRange(void)
+{
+    C.push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    C.push_constant_range.offset = 0;
+    C.push_constant_range.size = sizeof(PushConstantsObject);
+}
+
 static void CreateGraphicsPipeline(void)
 {
     Buffer vertShaderCode = File2Buffer("shaders/shader.vert.spv");
@@ -949,8 +947,8 @@ static void CreateGraphicsPipeline(void)
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
         .setLayoutCount = 1,
         .pSetLayouts = &C.descriptor_set_layout,
-        .pushConstantRangeCount = 0,
-        .pPushConstantRanges = NULL,
+        .pushConstantRangeCount = 1,
+        .pPushConstantRanges = &C.push_constant_range,
     };
 
     if (vkCreatePipelineLayout(C.device, &pipelineLayoutInfo, NULL,
@@ -1022,7 +1020,7 @@ static void CreateCommandPool(void)
     VkCommandPoolCreateInfo poolInfo = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
         .queueFamilyIndex = queueFamilyIndices.graphicsFamily,
-        .flags = 0,
+        .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
     };
 
     if (vkCreateCommandPool(C.device, &poolInfo, NULL, &C.command_pool)
@@ -1172,7 +1170,7 @@ static void CreateIndexBuffer(void)
     vkFreeMemory(C.device, staging_buffer_memory, NULL);
 }
 
-static void CreateUniformBuffers(void)
+static void CreateUniformBuffer(void)
 {
     VkDeviceSize buffer_size = sizeof(UniformBufferObject);
 
@@ -1181,6 +1179,20 @@ static void CreateUniformBuffers(void)
         CreateBuffer(buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             &C.uniform_buffers[i], &C.uniform_buffers_memory[i]);
+    }
+
+    UniformBufferObject ubo = {
+        Perspective(90.0f, C.swapchain_extent.width / C.swapchain_extent.height,
+                    0.1f, 10.0f)
+    };
+
+    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        void* data;
+        vkMapMemory(C.device, C.uniform_buffers_memory[i], 0, sizeof(ubo),
+            0, &data);
+            memcpy(data, &ubo, sizeof(ubo));
+        vkUnmapMemory(C.device, C.uniform_buffers_memory[i]);
     }
 }
 
@@ -1256,53 +1268,52 @@ static void CreateCommandBuffers(void)
     if (vkAllocateCommandBuffers(C.device, &alloc_info, C.command_buffers)
         != VK_SUCCESS)
         ERROR("Command buffer allocation failure");
+}
 
+static void RecordCommandBuffers(u32 current_image)
+{
     VkCommandBufferBeginInfo begin_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
         .flags = 0,
         .pInheritanceInfo = NULL,
     };
 
+    VkClearValue clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
     VkRenderPassBeginInfo render_pass_info = {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
         .renderPass = C.render_pass,
         .renderArea.offset = {0, 0},
         .renderArea.extent = C.swapchain_extent,
+        .clearValueCount = 1,
+        .pClearValues = &clear_color,
+        .framebuffer = C.swapchain_framebuffers[current_image]
     };
 
-    VkClearValue clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
-    render_pass_info.clearValueCount = 1;
-    render_pass_info.pClearValues = &clear_color;
+    VkCommandBuffer cmd_buffer = C.command_buffers[current_image];
+    if (vkBeginCommandBuffer(cmd_buffer, &begin_info)
+        != VK_SUCCESS)
+        ERROR("BeginCommandBuffer failure");
 
-    for (size_t i = 0; i < C.swapchain_images_num; i++) {
-        VkCommandBuffer cmd_buffer = C.command_buffers[i];
-        if (vkBeginCommandBuffer(cmd_buffer, &begin_info)
-            != VK_SUCCESS)
-            ERROR("BeginCommandBuffer failure");
+    vkCmdBeginRenderPass(
+        cmd_buffer, &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
-        render_pass_info.framebuffer = C.swapchain_framebuffers[i];
+    vkCmdBindPipeline(
+        cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, C.graphics_pipeline);
 
-        vkCmdBeginRenderPass(
-            cmd_buffer, &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
+    VkBuffer vertex_buffers[] = { C.vertex_buffer };
+    VkDeviceSize offsets[] = { 0 };
+    vkCmdBindVertexBuffers(cmd_buffer, 0, 1, vertex_buffers, offsets);
+    vkCmdBindIndexBuffer(cmd_buffer, C.index_buffer, 0, VK_INDEX_TYPE_UINT16);
+    vkCmdBindDescriptorSets(cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+        C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
+    vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
+        0, sizeof(PushConstantsObject), &g_PushConstants);
+    vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 1, 0, 0, 0);
 
-        vkCmdBindPipeline(
-            cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, C.graphics_pipeline);
+    vkCmdEndRenderPass(cmd_buffer);
 
-        VkBuffer vertex_buffers[] = { C.vertex_buffer };
-        VkDeviceSize offsets[] = { 0 };
-        vkCmdBindVertexBuffers(cmd_buffer, 0, 1, vertex_buffers, offsets);
-        vkCmdBindIndexBuffer(cmd_buffer, C.index_buffer, 0, VK_INDEX_TYPE_UINT16);
-        vkCmdBindDescriptorSets(cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-            C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
-        vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 1, 0, 0, 0);
-
-        vkCmdEndRenderPass(cmd_buffer);
-
-        if (vkEndCommandBuffer(cmd_buffer) != VK_SUCCESS)
-            ERROR("EndCommandBuffer failure");
-    }
-
-    L_INFO("CommandBuffers recorded");
+    if (vkEndCommandBuffer(cmd_buffer) != VK_SUCCESS)
+        ERROR("EndCommandBuffer failure");
 }
 
 static void CreateSyncObjects(void)
@@ -1336,15 +1347,6 @@ static void CreateSyncObjects(void)
     L_INFO("Synchronisation objects created.");
 }
 
-static void UpdateUniformBuffer(u32 current_image)
-{
-    void* data;
-    vkMapMemory(C.device, C.uniform_buffers_memory[current_image], 0, sizeof(g_UBO),
-        0, &data);
-        memcpy(data, &g_UBO, sizeof(g_UBO));
-    vkUnmapMemory(C.device, C.uniform_buffers_memory[current_image]);
-}
-
 int VkRendererInit(Window window)
 {
     InitVkContext(window);
@@ -1357,13 +1359,13 @@ int VkRendererInit(Window window)
     CreateImageViews();
     CreateRenderPass();
     CreateDescriptorSetLayout();
+    CreatePushConstantsRange();
     CreateGraphicsPipeline();
     CreateFramebuffers();
     CreateCommandPool();
     CreateVertexBuffer();
     CreateIndexBuffer();
-    CreateUniformBuffers();
-    InitUboData();
+    CreateUniformBuffer();
     CreateDescriptorPool();
     CreateDescriptorSets();
     CreateCommandBuffers();
@@ -1383,7 +1385,7 @@ void VkRendererDraw(void)
     if (C.images_in_flight[image_index] != VK_NULL_HANDLE)
         vkWaitForFences(C.device, 1, &C.images_in_flight[image_index], VK_TRUE, UINT64_MAX);
 
-    UpdateUniformBuffer(C.current_frame);
+    RecordCommandBuffers(image_index);
 
     VkSubmitInfo submit_info = {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO
@@ -1443,5 +1445,5 @@ void VkRendererShutdown(void)
 void VkRendererSetCamera(v3 position, v3 direction)
 {
     v3 up = v3(0.0f, 1.0f, 0.0f);
-    g_UBO.view = LookAt(position, V3Add(position, direction), up);
+    g_PushConstants.view = LookAt(position, V3Add(position, direction), up);
 }
