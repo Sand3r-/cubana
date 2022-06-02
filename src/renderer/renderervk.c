@@ -95,21 +95,36 @@ typedef struct PushConstantsObject
 
 typedef struct Vertex
 {
-    v2 pos;
+    v3 pos;
     v3 colour;
 } Vertex;
 
 static PushConstantsObject g_PushConstants;
 
 static Vertex vertices[] = {
-    {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-    {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+    {{-0.5f, -0.5f, +0.5f}, {0.0f, 0.0f, 1.0f}}, // A 0
+    {{+0.5f, -0.5f, +0.5f}, {1.0f, 0.0f, 1.0f}}, // B 1
+    {{+0.5f, +0.5f, +0.5f}, {1.0f, 1.0f, 1.0f}}, // C 2
+    {{-0.5f, +0.5f, +0.5f}, {0.0f, 1.0f, 1.0f}}, // D 3
+    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}}, // E 4
+    {{+0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}}, // F 5
+    {{+0.5f, +0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}}, // G 6
+    {{-0.5f, +0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}}, // H 7
 };
 
 static u16 indices[]= {
-    0, 1, 2, 2, 3, 0
+    0, 1, 2,
+    2, 3, 0,
+    3, 4, 0,
+    4, 3, 7,
+    7, 3, 2,
+    2, 6, 7,
+    7, 6, 5,
+    5, 4, 7,
+    5, 6, 2,
+    1, 5, 2,
+    0, 4, 5,
+    0, 5, 1
 };
 
 typedef struct Buffer
@@ -152,7 +167,7 @@ static void GetAttributeDescriptions(VkVertexInputAttributeDescription* descs, u
         [0] = {
             .binding = 0,
             .location = 0,
-            .format = VK_FORMAT_R32G32_SFLOAT,
+            .format = VK_FORMAT_R32G32B32_SFLOAT,
             .offset = offsetof(Vertex, pos)
         },
         [1] = {
@@ -1183,7 +1198,7 @@ static void CreateUniformBuffer(void)
 
     UniformBufferObject ubo = {
         Perspective(90.0f, C.swapchain_extent.width / C.swapchain_extent.height,
-                    0.1f, 10.0f)
+                    0.1f, 50.0f)
     };
 
     for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
@@ -1308,7 +1323,7 @@ static void RecordCommandBuffers(u32 current_image)
         C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
     vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
         0, sizeof(PushConstantsObject), &g_PushConstants);
-    vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 1, 0, 0, 0);
+    vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 64, 0, 0, 0);
 
     vkCmdEndRenderPass(cmd_buffer);
 
@@ -1387,20 +1402,19 @@ void VkRendererDraw(void)
 
     RecordCommandBuffers(image_index);
 
-    VkSubmitInfo submit_info = {
-        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO
-    };
-
-    VkSemaphore wait_semaphores[] = {
-        C.image_available_semaphores[C.current_frame]
-    };
+    VkSemaphore wait_semaphores[] =
+        { C.image_available_semaphores[C.current_frame] };
     VkPipelineStageFlags wait_stages[] =
         { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-    submit_info.waitSemaphoreCount = 1;
-    submit_info.pWaitSemaphores = wait_semaphores;
-    submit_info.pWaitDstStageMask = wait_stages;
-    submit_info.commandBufferCount = 1;
-    submit_info.pCommandBuffers = &C.command_buffers[image_index];
+
+    VkSubmitInfo submit_info = {
+        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+        .waitSemaphoreCount = 1,
+        .pWaitSemaphores = wait_semaphores,
+        .pWaitDstStageMask = wait_stages,
+        .commandBufferCount = 1,
+        .pCommandBuffers = &C.command_buffers[image_index],
+    };
 
     VkSemaphore signal_semaphores[] = { C.render_finished_semaphores[C.current_frame] };
     submit_info.signalSemaphoreCount = 1;
