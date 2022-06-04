@@ -22,6 +22,9 @@ static struct Context
     VkQueue present_queue;
     VkSurfaceKHR surface;
     VkSwapchainKHR swapchain;
+    VkImage depth_image;
+    VkDeviceMemory depth_image_memory;
+    VkImageView depth_image_view;
     VkImage* swapchain_images;
     uint32_t swapchain_images_num;
     VkFormat swapchain_image_format;
@@ -709,7 +712,7 @@ static void CreateImageViews(void)
 
 static void CreateRenderPass(void)
 {
-    VkAttachmentDescription colorAttachment = {
+    VkAttachmentDescription color_attachment = {
         .format = C.swapchain_image_format,
         .samples = VK_SAMPLE_COUNT_1_BIT,
         .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
@@ -720,37 +723,61 @@ static void CreateRenderPass(void)
         .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
     };
 
-    VkAttachmentReference colorAttachmentRef = {
+    VkAttachmentReference color_attachment_ref = {
         .attachment = 0,
         .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+    };
+
+    VkAttachmentDescription depth_attachment = {
+        .format = FindDepthFormat(),
+        .samples = VK_SAMPLE_COUNT_1_BIT,
+        .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
+        .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+        .stencilLoadOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+        .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+        .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+        .finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+    };
+
+    VkAttachmentReference depth_attachment_ref = {
+        .attachment = 1,
+        .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
     };
 
     VkSubpassDescription subpass = {
         .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
         .colorAttachmentCount = 1,
-        .pColorAttachments = &colorAttachmentRef,
+        .pColorAttachments = &color_attachment_ref,
+        .pDepthStencilAttachment = &depth_attachment_ref
     };
 
     VkSubpassDependency dependency = {
         .srcSubpass = VK_SUBPASS_EXTERNAL,
         .dstSubpass = 0,
-        .srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+                        VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
         .srcAccessMask = 0,
-        .dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-        .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+        .dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+                        VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
+        .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
+                         VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
     };
 
-    VkRenderPassCreateInfo renderPassInfo = {
+    VkAttachmentDescription attachments[] = {
+        color_attachment, depth_attachment
+    };
+
+    VkRenderPassCreateInfo render_pass_info = {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
-        .attachmentCount = 1,
-        .pAttachments = &colorAttachment,
+        .attachmentCount = ArrayCount(attachments),
+        .pAttachments = attachments,
         .subpassCount = 1,
         .pSubpasses = &subpass,
         .dependencyCount = 1,
         .pDependencies = &dependency,
     };
 
-    if (vkCreateRenderPass(C.device, &renderPassInfo, NULL, &C.render_pass)
+    if (vkCreateRenderPass(C.device, &render_pass_info, NULL, &C.render_pass)
         != VK_SUCCESS)
         ERROR("Render pass creation failure.");
 
@@ -970,6 +997,17 @@ static void CreateGraphicsPipeline(void)
         &C.pipeline_layout) != VK_SUCCESS)
         ERROR("PipelineLayout creation failure.");
 
+    VkPipelineDepthStencilStateCreateInfo depth_stencil = {
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO,
+        .depthTestEnable = VK_TRUE,
+        .depthWriteEnable = VK_TRUE,
+        .depthCompareOp = VK_COMPARE_OP_GREATER_OR_EQUAL,
+        .depthBoundsTestEnable = VK_FALSE,
+        .minDepthBounds = 0.0f,
+        .maxDepthBounds = 1.0f,
+        .stencilTestEnable = VK_FALSE,
+    };
+
     VkGraphicsPipelineCreateInfo pipelineInfo = {
         .sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
         .stageCount = 2,
@@ -979,7 +1017,7 @@ static void CreateGraphicsPipeline(void)
         .pViewportState = &viewportState,
         .pRasterizationState = &rasterizer,
         .pMultisampleState = &multisampling,
-        .pDepthStencilState = NULL,
+        .pDepthStencilState = &depth_stencil,
         .pColorBlendState = &colorBlending,
         .pDynamicState = NULL,
         .layout = C.pipeline_layout,
@@ -1007,13 +1045,14 @@ static void CreateFramebuffers(void)
     for (size_t i = 0; i < C.swapchain_images_num; i++)
     {
         VkImageView attachments[] = {
-            C.swapchain_image_views[i]
+            C.swapchain_image_views[i],
+            C.depth_image_view
         };
 
         VkFramebufferCreateInfo framebufferInfo = {
             .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
             .renderPass = C.render_pass,
-            .attachmentCount = 1,
+            .attachmentCount = ArrayCount(attachments),
             .pAttachments = attachments,
             .width = C.swapchain_extent.width,
             .height = C.swapchain_extent.height,
@@ -1041,6 +1080,99 @@ static void CreateCommandPool(void)
     if (vkCreateCommandPool(C.device, &poolInfo, NULL, &C.command_pool)
         != VK_SUCCESS)
         ERROR("Command pool creation failure");
+}
+
+VkFormat FindSupportedFormat(VkFormat* candidates, u16 candidates_num,
+    VkImageTiling tiling, VkFormatFeatureFlags features)
+{
+    for (u16 i = 0; i < candidates_num; i++)
+    {
+        VkFormat format = candidates[i];
+        VkFormatProperties props;
+        vkGetPhysicalDeviceFormatProperties(C.physical_device, format, &props);
+        b32 is_linear_tiling_satisfied = tiling == VK_IMAGE_TILING_LINEAR &&
+            (props.linearTilingFeatures) & features == features;
+        b32 is_optimal_tiling_satisifed = tiling == VK_IMAGE_TILING_OPTIMAL &&
+            (props.optimalTilingFeatures) & features == features;
+
+        if (is_linear_tiling_satisfied || is_optimal_tiling_satisifed)
+            return format;
+    }
+
+    ERROR("Couldn't find supported format");
+    return VK_FORMAT_UNDEFINED;
+}
+
+static VkFormat FindDepthFormat(void)
+{
+    VkFormat desired_depth_formats[] = {
+        VK_FORMAT_D32_SFLOAT,
+        VK_FORMAT_D32_SFLOAT_S8_UINT,
+        VK_FORMAT_D24_UNORM_S8_UINT
+    };
+    return FindSupportedFormat(desired_depth_formats, ArrayCount(desired_depth_formats),
+        VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
+}
+
+static b8 HasStencilComponent(VkFormat format)
+{
+    return format == VK_FORMAT_D32_SFLOAT_S8_UINT ||
+           format == VK_FORMAT_D24_UNORM_S8_UINT;
+}
+
+static void CreateDepthResources(void)
+{
+    VkFormat depth_format = FindDepthFormat();
+
+    // Create Image
+    VkImageCreateInfo image_info = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+        .imageType = VK_IMAGE_TYPE_2D,
+        .extent.width = C.swapchain_extent.width,
+        .extent.height = C.swapchain_extent.height,
+        .extent.depth = 1,
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .format = depth_format,
+        .tiling = VK_IMAGE_TILING_OPTIMAL,
+        .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+        .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+        .samples = VK_SAMPLE_COUNT_1_BIT,
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+    };
+
+    if (vkCreateImage(C.device, &image_info, NULL, &C.depth_image) != VK_SUCCESS)
+        ERROR("Failed to Create Depth Image");
+
+    VkMemoryRequirements mem_requirements;
+    vkGetImageMemoryRequirements(C.device, C.depth_image, &mem_requirements);
+
+    VkMemoryAllocateInfo alloc_info = {
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .allocationSize = mem_requirements.size,
+        .memoryTypeIndex = FindMemoryType(mem_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT),
+    };
+
+    if (vkAllocateMemory(C.device, &alloc_info, NULL, &C.depth_image_memory) != VK_SUCCESS)
+        ERROR("Failed to allocate depth image memory");
+
+    vkBindImageMemory(C.device, C.depth_image, C.depth_image_memory, 0);
+
+    // Create ImageView
+    VkImageViewCreateInfo view_info = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .image = C.depth_image,
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format = depth_format,
+        .subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT,
+        .subresourceRange.baseMipLevel = 0,
+        .subresourceRange.levelCount = 1,
+        .subresourceRange.baseArrayLayer = 0,
+        .subresourceRange.layerCount = 1,
+    };
+
+    if (vkCreateImageView(C.device, &view_info, NULL, &C.depth_image_view) != VK_SUCCESS)
+        ERROR("Failed creating depth image view");
 }
 
 static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
@@ -1285,7 +1417,7 @@ static void CreateCommandBuffers(void)
         ERROR("Command buffer allocation failure");
 }
 
-static void RecordCommandBuffers(u32 current_image)
+static void RecordCommandBuffer(u32 current_image)
 {
     VkCommandBufferBeginInfo begin_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
@@ -1293,14 +1425,18 @@ static void RecordCommandBuffers(u32 current_image)
         .pInheritanceInfo = NULL,
     };
 
-    VkClearValue clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
+    VkClearValue clear_values[] = {
+        [0].color = {{0.0f, 0.0f, 0.0f, 1.0f}},
+        [1].depthStencil = {0.0f, 0}
+    };
+
     VkRenderPassBeginInfo render_pass_info = {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
         .renderPass = C.render_pass,
         .renderArea.offset = {0, 0},
         .renderArea.extent = C.swapchain_extent,
-        .clearValueCount = 1,
-        .pClearValues = &clear_color,
+        .clearValueCount = ArrayCount(clear_values),
+        .pClearValues = clear_values,
         .framebuffer = C.swapchain_framebuffers[current_image]
     };
 
@@ -1376,8 +1512,9 @@ int VkRendererInit(Window window)
     CreateDescriptorSetLayout();
     CreatePushConstantsRange();
     CreateGraphicsPipeline();
-    CreateFramebuffers();
     CreateCommandPool();
+    CreateDepthResources();
+    CreateFramebuffers();
     CreateVertexBuffer();
     CreateIndexBuffer();
     CreateUniformBuffer();
@@ -1400,7 +1537,7 @@ void VkRendererDraw(void)
     if (C.images_in_flight[image_index] != VK_NULL_HANDLE)
         vkWaitForFences(C.device, 1, &C.images_in_flight[image_index], VK_TRUE, UINT64_MAX);
 
-    RecordCommandBuffers(image_index);
+    RecordCommandBuffer(image_index);
 
     VkSemaphore wait_semaphores[] =
         { C.image_available_semaphores[C.current_frame] };
