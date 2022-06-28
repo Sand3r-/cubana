@@ -1,0 +1,12 @@
+#pragma once
+
+typedef enum Colour
+{
+    RENDER_COLOUR_RED = 0,
+    RENDER_COLOUR_GREEN = 1,
+    RENDER_COLOUR_BLUE = 2,
+    RENDER_COLOUR_MAGENTA = 3,
+    RENDER_COLOUR_WHITE = 4,
+    RENDER_COLOUR_CYAN = 5,
+    RENDER_COLOUR_YELLOW = 6
+} Colour;

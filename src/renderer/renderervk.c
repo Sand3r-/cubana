@@ -11,6 +11,7 @@
 #include <vulkan/vulkan.h>
 
 #define MAX_FRAMES_IN_FLIGHT 2
+#define MAX_LINES_PER_FRAME 1024
 
 static struct Context
 {
@@ -33,8 +34,11 @@ static struct Context
     VkRenderPass render_pass;
     VkDescriptorSetLayout descriptor_set_layout;
     VkPushConstantRange push_constant_range;
+    VkPushConstantRange line_push_constant_range;
     VkPipelineLayout pipeline_layout;
+    VkPipelineLayout line_pipeline_layout;
     VkPipeline graphics_pipeline;
+    VkPipeline line_graphics_pipeline;
     VkFramebuffer* swapchain_framebuffers;
     VkDescriptorPool descriptor_pool;
     VkDescriptorSet descriptor_sets[MAX_FRAMES_IN_FLIGHT];
@@ -44,6 +48,10 @@ static struct Context
     VkDeviceMemory vertex_buffer_memory;
     VkBuffer index_buffer;
     VkDeviceMemory index_buffer_memory;
+    VkBuffer line_vertex_buffer;
+    VkDeviceMemory line_vertex_buffer_memory;
+    VkBuffer line_index_buffer;
+    VkDeviceMemory line_index_buffer_memory;
 
     VkBuffer uniform_buffers[MAX_FRAMES_IN_FLIGHT];
     VkDeviceMemory uniform_buffers_memory[MAX_FRAMES_IN_FLIGHT];
@@ -1574,7 +1582,7 @@ int VkRendererInit(Window window)
     return CU_SUCCESS;
 }
 
-void VkRendererDraw(void)
+static void DrawCubes(void)
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
@@ -1626,6 +1634,24 @@ void VkRendererDraw(void)
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
+void DrawLines(void)
+{
+    
+}
+
+void VkRendererDraw(void)
+{
+    DrawLines();
+    DrawCubes();
+}
+
+void RendererDrawLine(v3 beg, v3 end, Colour colour)
+{
+    assert(D.line_storage.num_lines + 1 < MAX_LINES_PER_FRAME);
+    LineRecord r = { .start = beg, .end = end, .colour_index = colour };
+    D.line_storage.line_ubo.lines[D.line_storage.num_lines++] = r;
+}
+
 void VkRendererShutdown(void)
 {
     for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
@@ -1644,5 +1670,5 @@ void VkRendererShutdown(void)
 void VkRendererSetCamera(v3 position, v3 direction)
 {
     v3 up = v3(0.0f, 1.0f, 0.0f);
-    g_PushConstants.view = LookAt(position, V3Add(position, direction), up);
+    D.push_constants.view = LookAt(position, V3Add(position, direction), up);
 }
