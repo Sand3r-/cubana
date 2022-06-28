@@ -61,6 +61,13 @@ static struct Context
     Window window;
 } C;
 
+static struct PhysicalDeviceCapabilities
+{
+    u32 push_constants_size;
+    v2  line_width_range;
+    v2  point_size_range;
+} Capabilities;
+
 static const int INVALID_QUEUE_FAMILY_INDEX = -1;
 
 #define QUEUES_NUM 2
@@ -96,38 +103,62 @@ typedef struct PushConstantsObject
     m4 view;
 } PushConstantsObject;
 
+typedef struct LineRecord
+{
+    v3 start;
+    f32 padding;
+    v3 end;
+    u32 colour_index;
+} LineRecord;
+
+typedef struct LineUniformBufferObject
+{
+    LineRecord lines[MAX_LINES_PER_FRAME];
+} LineUniformBufferObject;
+
+typedef struct LineStorage
+{
+    LineUniformBufferObject line_ubo;
+    u32                     num_lines;
+} LineStorage;
+
 typedef struct Vertex
 {
     v3 pos;
     v3 colour;
 } Vertex;
 
-static PushConstantsObject g_PushConstants;
-
-static Vertex vertices[] = {
-    {{-0.5f, -0.5f, +0.5f}, {0.0f, 0.0f, 1.0f}}, // A 0
-    {{+0.5f, -0.5f, +0.5f}, {1.0f, 0.0f, 1.0f}}, // B 1
-    {{+0.5f, +0.5f, +0.5f}, {1.0f, 1.0f, 1.0f}}, // C 2
-    {{-0.5f, +0.5f, +0.5f}, {0.0f, 1.0f, 1.0f}}, // D 3
-    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}}, // E 4
-    {{+0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}}, // F 5
-    {{+0.5f, +0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}}, // G 6
-    {{-0.5f, +0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}}, // H 7
-};
-
-static u16 indices[]= {
-    0, 1, 2,
-    2, 3, 0,
-    3, 4, 0,
-    4, 3, 7,
-    7, 3, 2,
-    2, 6, 7,
-    7, 6, 5,
-    5, 4, 7,
-    5, 6, 2,
-    1, 5, 2,
-    0, 4, 5,
-    0, 5, 1
+static struct RendererData
+{
+    Vertex               cube_vertices[8];
+    u16                  cube_indices[36];
+    PushConstantsObject  push_constants;
+    LineStorage          line_storage;
+} D = {
+    .cube_vertices = {
+        {{-0.5f, -0.5f, +0.5f}, {0.0f, 0.0f, 1.0f}}, // A 0
+        {{+0.5f, -0.5f, +0.5f}, {1.0f, 0.0f, 1.0f}}, // B 1
+        {{+0.5f, +0.5f, +0.5f}, {1.0f, 1.0f, 1.0f}}, // C 2
+        {{-0.5f, +0.5f, +0.5f}, {0.0f, 1.0f, 1.0f}}, // D 3
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}}, // E 4
+        {{+0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}}, // F 5
+        {{+0.5f, +0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}}, // G 6
+        {{-0.5f, +0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}}, // H 7
+    },
+    .cube_indices = {
+        0, 1, 2,
+        2, 3, 0,
+        3, 4, 0,
+        4, 3, 7,
+        7, 3, 2,
+        2, 6, 7,
+        7, 6, 5,
+        5, 4, 7,
+        5, 6, 2,
+        1, 5, 2,
+        0, 4, 5,
+        0, 5, 1
+    },
 };
 
 typedef struct Buffer
@@ -481,14 +512,31 @@ static VkBool32 IsDeviceSuitable(VkPhysicalDevice device)
     VkPhysicalDeviceFeatures deviceFeatures;
     vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-    VkBool32 suitable = deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-    VkBool32 tex_compression = deviceFeatures.textureCompressionETC2;
-
     QueueFamilyIndices indices = FindQueueFamilies(device);
+
+    const char* device_type_to_string[] = {
+        "OTHER", "INTEGRATED_GPU", "DISCRETE_GPU", "VIRTUAL_GPU", "CPU",
+    };
 
     L_INFO("Selecting device %s", deviceProperties.deviceName);
     L_INFO("Having API version of %u", deviceProperties.apiVersion);
-    L_INFO("And type of %d", deviceProperties.deviceType);
+    L_INFO("And type of %s", device_type_to_string[deviceProperties.deviceType]);
+    L_INFO("Max push constant size: %u", deviceProperties.limits.maxPushConstantsSize);
+    L_INFO("Point size range: %f - %f, Granularity: %f",
+        deviceProperties.limits.pointSizeRange[0],
+        deviceProperties.limits.pointSizeRange[1],
+        deviceProperties.limits.pointSizeGranularity);
+    L_INFO("Line width range: %f - %f, Granularity: %f, Strict lines?: %s",
+        deviceProperties.limits.lineWidthRange[0],
+        deviceProperties.limits.lineWidthRange[1],
+        deviceProperties.limits.lineWidthGranularity,
+        deviceProperties.limits.strictLines ? "true" : "false");
+
+    f32* line_width_range = deviceProperties.limits.lineWidthRange;
+    f32* point_size_range = deviceProperties.limits.pointSizeRange;
+    Capabilities.line_width_range = v2(line_width_range[0], line_width_range[1]);
+    Capabilities.point_size_range = v2(point_size_range[0], point_size_range[1]);
+    Capabilities.push_constants_size = deviceProperties.limits.maxPushConstantsSize;
 
     VkBool32 extensionsSupported = CheckDeviceExtensionSupport(device);
 
@@ -1271,7 +1319,7 @@ static void CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize si
 
 static void CreateVertexBuffer(void)
 {
-    VkDeviceSize buffer_size = sizeof(vertices);
+    VkDeviceSize buffer_size = sizeof(D.cube_vertices);
 
     VkBuffer staging_buffer;
     VkDeviceMemory staging_buffer_memory;
@@ -1281,7 +1329,7 @@ static void CreateVertexBuffer(void)
 
     void* data;
     vkMapMemory(C.device, staging_buffer_memory, 0, buffer_size, 0, &data);
-    memcpy(data, vertices, buffer_size);
+    memcpy(data, D.cube_vertices, buffer_size);
     vkUnmapMemory(C.device, staging_buffer_memory);
 
     CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
@@ -1295,7 +1343,7 @@ static void CreateVertexBuffer(void)
 
 static void CreateIndexBuffer(void)
 {
-    VkDeviceSize buffer_size = sizeof(indices);
+    VkDeviceSize buffer_size = sizeof(D.cube_indices);
 
     VkBuffer staging_buffer;
     VkDeviceMemory staging_buffer_memory;
@@ -1305,7 +1353,7 @@ static void CreateIndexBuffer(void)
 
     void* data;
     vkMapMemory(C.device, staging_buffer_memory, 0, buffer_size, 0, &data);
-    memcpy(data, indices, buffer_size);
+    memcpy(data, D.cube_indices, buffer_size);
     vkUnmapMemory(C.device, staging_buffer_memory);
 
     CreateBuffer(buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
@@ -1458,8 +1506,8 @@ static void RecordCommandBuffer(u32 current_image)
     vkCmdBindDescriptorSets(cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
         C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
     vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
-        0, sizeof(PushConstantsObject), &g_PushConstants);
-    vkCmdDrawIndexed(cmd_buffer, ArrayCount(indices), 64, 0, 0, 0);
+        0, sizeof(PushConstantsObject), &D.push_constants);
+    vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 64, 0, 0, 0);
 
     vkCmdEndRenderPass(cmd_buffer);
 
