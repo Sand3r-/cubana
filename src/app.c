@@ -36,8 +36,11 @@ struct Application
 
 static void DEBUG_TestCode(void)
 {
-    igBegin("Dear @ocornut and & @sonoro1234", NULL, 0);
-    igText("You guys rock.");
+    bool option = true;
+    igShowDemoWindow(&option);
+    igBegin("Chomiczek ostatnio", NULL, 0);
+    igText("Przesadzil z alkoholem.");
+    igText("I musial sie zatrzymywac w drodze na oboz.");
     igEnd();
 }
 

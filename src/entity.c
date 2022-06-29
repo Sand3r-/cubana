@@ -44,19 +44,19 @@ static void UpdateFreeFlyingCameraPosition(Entity* camera)
     v3  right     = CalcCameraRightDirection(camera);
     v3  up        = v3(0.0f, 1.0f, 0.0f);
 
-    if (GetKeyState(KEY_W) == KEY_STATE_DOWN)
+    if (GetKeyState(KEY_W) & KEY_STATE_DOWN)
         *position = V3Add(*position, V3Mul(velocity, direction));
-    else if (GetKeyState(KEY_S) == KEY_STATE_DOWN)
+    else if (GetKeyState(KEY_S) & KEY_STATE_DOWN)
         *position = V3Subtract(*position, V3Mul(velocity, direction));
-    if (GetKeyState(KEY_A) == KEY_STATE_DOWN)
+    if (GetKeyState(KEY_A) & KEY_STATE_DOWN)
         *position = V3Subtract(*position, V3Mul(velocity, right));
-    else if (GetKeyState(KEY_D) == KEY_STATE_DOWN)
+    else if (GetKeyState(KEY_D) & KEY_STATE_DOWN)
         *position = V3Add(*position, V3Mul(velocity, right));
-    if (GetKeyState(KEY_Q) == KEY_STATE_DOWN
-     || GetKeyState(KEY_CTRL) == KEY_STATE_DOWN)
+    if (GetKeyState(KEY_Q) & KEY_STATE_DOWN
+     || GetKeyState(KEY_CTRL) & KEY_STATE_DOWN)
         *position = V3Subtract(*position, V3Mul(velocity, up));
-    else if (GetKeyState(KEY_E) == KEY_STATE_DOWN
-          || GetKeyState(KEY_SPACE) == KEY_STATE_DOWN)
+    else if (GetKeyState(KEY_E) & KEY_STATE_DOWN
+          || GetKeyState(KEY_SPACE) & KEY_STATE_DOWN)
         *position = V3Add(*position, V3Mul(velocity, up));
 }
 

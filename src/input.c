@@ -26,7 +26,7 @@ typedef struct MouseState
 
 static struct
 {
-    Key keyboard[KEY_MAX];
+    u8 keyboard[KEY_MAX];
     GamePadState gamepad[MAX_GAMEPADS_NUM];
     MouseState mouse;
 } IO;
@@ -41,56 +41,56 @@ static void HandleKeyboardInput(SDL_Event event)
     // This game will use scan codes, since I'll most likely only use
     // WASD and surrounding keys for input + the function keys for developer
     // purposes only.
-    b8 was_pressed = event.type == SDL_KEYDOWN;
+    u8 flags = event.type == SDL_KEYDOWN ? KEY_STATE_PRESSED | KEY_STATE_DOWN : KEY_STATE_UP;
     switch(event.key.keysym.scancode)
     {
-        MAP_SDL_BINDING(SDL_SCANCODE_F1, KEY_F1, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F2, KEY_F2, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F3, KEY_F3, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F4, KEY_F4, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F5, KEY_F5, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F6, KEY_F6, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F7, KEY_F7, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F8, KEY_F8, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F9, KEY_F9, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F10, KEY_F10, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F11, KEY_F11, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F12, KEY_F12, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_A, KEY_A, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_B, KEY_B, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_C, KEY_C, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_D, KEY_D, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_E, KEY_E, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_F, KEY_F, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_G, KEY_G, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_H, KEY_H, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_I, KEY_I, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_J, KEY_J, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_K, KEY_K, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_L, KEY_L, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_M, KEY_M, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_N, KEY_N, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_O, KEY_O, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_P, KEY_P, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_Q, KEY_Q, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_R, KEY_R, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_S, KEY_S, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_T, KEY_T, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_U, KEY_U, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_V, KEY_V, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_W, KEY_W, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_X, KEY_X, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_Y, KEY_Y, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_Z, KEY_Z, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_RETURN, KEY_ENTER, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_SPACE, KEY_SPACE, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_LCTRL, KEY_CTRL, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_LSHIFT, KEY_SHIFT, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_LALT, KEY_ALT, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_RIGHT, KEY_RIGHT, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_LEFT, KEY_LEFT, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_DOWN, KEY_DOWN, was_pressed);
-        MAP_SDL_BINDING(SDL_SCANCODE_UP, KEY_UP, was_pressed);
+        MAP_SDL_BINDING(SDL_SCANCODE_F1, KEY_F1, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F2, KEY_F2, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F3, KEY_F3, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F4, KEY_F4, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F5, KEY_F5, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F6, KEY_F6, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F7, KEY_F7, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F8, KEY_F8, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F9, KEY_F9, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F10, KEY_F10, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F11, KEY_F11, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F12, KEY_F12, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_A, KEY_A, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_B, KEY_B, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_C, KEY_C, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_D, KEY_D, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_E, KEY_E, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_F, KEY_F, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_G, KEY_G, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_H, KEY_H, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_I, KEY_I, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_J, KEY_J, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_K, KEY_K, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_L, KEY_L, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_M, KEY_M, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_N, KEY_N, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_O, KEY_O, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_P, KEY_P, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_Q, KEY_Q, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_R, KEY_R, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_S, KEY_S, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_T, KEY_T, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_U, KEY_U, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_V, KEY_V, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_W, KEY_W, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_X, KEY_X, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_Y, KEY_Y, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_Z, KEY_Z, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_RETURN, KEY_ENTER, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_SPACE, KEY_SPACE, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_LCTRL, KEY_CTRL, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_LSHIFT, KEY_SHIFT, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_LALT, KEY_ALT, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_RIGHT, KEY_RIGHT, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_LEFT, KEY_LEFT, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_DOWN, KEY_DOWN, flags);
+        MAP_SDL_BINDING(SDL_SCANCODE_UP, KEY_UP, flags);
     }
 #undef MAP_SDL_BINDING
 }
@@ -198,12 +198,12 @@ void HandleInputEvents(SDL_Event event)
 
 }
 
-KeyState GetKeyState(Key key)
+KeyStateBit GetKeyState(Key key)
 {
     return IO.keyboard[key];
 }
 
-KeyState GetButtonState(u8 id, GamePadButton button)
+KeyStateBit GetButtonState(u8 id, GamePadButton button)
 {
     return IO.gamepad[id].buttons[button];
 }
@@ -213,7 +213,7 @@ v2 GetAnalogStickState(u8 id, AnalogStickId which)
     return IO.gamepad[id].analog[which];
 }
 
-KeyState GetMouseButtonState(u8 id)
+KeyStateBit GetMouseButtonState(u8 id)
 {
     return IO.mouse.buttons[id - 1];
 }
@@ -237,6 +237,10 @@ void SnapCursorToCenter(b8 enabled)
 void ResetInput(void)
 {
     IO.mouse.delta = v2(0.0f);
+    for (u32 i = 0; i < KEY_MAX; i++)
+    {
+        IO.keyboard[i] &= KEY_STATE_DOWN;
+    }
 }
 
 void DEBUG_MouseMotion(void)

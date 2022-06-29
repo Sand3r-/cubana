@@ -4,9 +4,10 @@
 
 typedef enum
 {
-    KEY_STATE_UP,
-    KEY_STATE_DOWN
-} KeyState;
+    KEY_STATE_UP      = 0x0,
+    KEY_STATE_DOWN    = 0x1,
+    KEY_STATE_PRESSED = 0x2
+} KeyStateBit;
 
 
 typedef enum
@@ -112,10 +113,10 @@ typedef enum
 typedef union SDL_Event SDL_Event;
 
 void HandleInputEvents(SDL_Event event);
-KeyState GetKeyState(Key key);
-KeyState GetButtonState(u8 id, GamePadButton button);
+KeyStateBit GetKeyState(Key key);
+KeyStateBit GetButtonState(u8 id, GamePadButton button);
 v2 GetAnalogStickState(u8 id, AnalogStickId which);
-KeyState GetMouseButtonState(u8 id);
+KeyStateBit GetMouseButtonState(u8 id);
 v2 GetMousePosition(void);
 v2 GetMouseDelta(void);
 void ResetInput(void);
