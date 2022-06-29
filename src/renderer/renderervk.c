@@ -2,6 +2,7 @@
 #include "culibc.h"
 #include "error.h"
 #include "file.h"
+#include "igintegration.h"
 #include "log/log.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
@@ -9,6 +10,9 @@
 #include "math/mat.h"
 #include <memory.h>
 #include <vulkan/vulkan.h>
+#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+#include <cimgui.h>
+#include <cimgui_impl.h>
 
 #define MAX_FRAMES_IN_FLIGHT 2
 
@@ -66,6 +70,7 @@ static struct PhysicalDeviceCapabilities
     u32 push_constants_size;
     v2  line_width_range;
     v2  point_size_range;
+    u32 min_image_count;
 } Capabilities;
 
 static const int INVALID_QUEUE_FAMILY_INDEX = -1;
@@ -170,6 +175,13 @@ static Buffer FreeBuffer(Buffer buffer)
     buffer.ptr = NULL;
     buffer.length = 0;
     return buffer;
+}
+
+static void ImGuiCheckVulkanResult(VkResult error)
+{
+    if (error == 0)
+        return;
+    ERROR("Vulkan Error: VkResult = %d", error);
 }
 
 static VkVertexInputBindingDescription GetBindingDescription(void)
@@ -662,6 +674,7 @@ static void CreateSwapChain(void)
     VkPresentModeKHR presentMode = ChooseSwapPresentMode(swapChainSupport.present_modes, swapChainSupport.present_modes_num);
     VkExtent2D extent = ChooseSwapExtent(&swapChainSupport.capabilites);
 
+    Capabilities.min_image_count = swapChainSupport.capabilites.minImageCount;
     uint32_t imageCount = swapChainSupport.capabilites.minImageCount + 1;
 
     if (swapChainSupport.capabilites.maxImageCount > 0 &&
@@ -1381,16 +1394,15 @@ static void CreateUniformBuffer(void)
 
 static void CreateDescriptorPool(void)
 {
-    VkDescriptorPoolSize pool_size = {
-        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-        .descriptorCount = MAX_FRAMES_IN_FLIGHT
+    VkDescriptorPoolSize pool_sizes[] = {
+        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_FRAMES_IN_FLIGHT },
     };
 
     VkDescriptorPoolCreateInfo pool_info = {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-        .poolSizeCount = 1,
-        .pPoolSizes = &pool_size,
-        .maxSets = MAX_FRAMES_IN_FLIGHT
+        .poolSizeCount = ArrayCount(pool_sizes),
+        .pPoolSizes = pool_sizes,
+        .maxSets = ArrayCount(pool_sizes) * MAX_FRAMES_IN_FLIGHT * 2
     };
 
     if (vkCreateDescriptorPool(C.device, &pool_info, NULL, &C.descriptor_pool)
@@ -1497,6 +1509,7 @@ static void RecordCommandBuffer(u32 current_image)
         0, sizeof(PushConstantsObject), &D.push_constants);
     vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 64, 0, 0, 0);
 
+    ImGuiRender(cmd_buffer);
     vkCmdEndRenderPass(cmd_buffer);
 
     if (vkEndCommandBuffer(cmd_buffer) != VK_SUCCESS)
@@ -1534,6 +1547,31 @@ static void CreateSyncObjects(void)
     L_INFO("Synchronisation objects created.");
 }
 
+static void InitImGui(Window window)
+{
+    QueueFamilyIndices indices;
+    InitQueueFamilyIndices(&indices);
+
+    ImGui_ImplVulkan_InitInfo init_info = {
+        .Instance = C.instance,
+        .PhysicalDevice = C.physical_device,
+        .Device = C.device,
+        .QueueFamily = indices.graphicsFamily,
+        .Queue = C.graphics_queue,
+        .PipelineCache = NULL,
+        .DescriptorPool = C.descriptor_pool,
+        .Subpass = 0,
+        .MinImageCount = Capabilities.min_image_count,
+        .ImageCount = MAX_FRAMES_IN_FLIGHT,
+        .MSAASamples = VK_SAMPLE_COUNT_1_BIT,
+        .Allocator = NULL,
+        .CheckVkResultFn = ImGuiCheckVulkanResult
+    };
+    ImGuiInit(window, init_info, C.render_pass);
+    ImGuiUploadFonts(C.device, C.graphics_queue, C.command_pool, C.command_buffers[0]);
+    ImGuiNewFrame();
+}
+
 int VkRendererInit(Window window)
 {
     InitVkContext(window);
@@ -1558,6 +1596,7 @@ int VkRendererInit(Window window)
     CreateDescriptorSets();
     CreateCommandBuffers();
     CreateSyncObjects();
+    InitImGui(window);
 
     return CU_SUCCESS;
 }
@@ -1612,10 +1651,13 @@ void VkRendererDraw(void)
     vkQueuePresentKHR(C.present_queue, &present_info);
 
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
+
+    ImGuiNewFrame();
 }
 
 void VkRendererShutdown(void)
 {
+    ImGuiShutdown();
     for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
     {
         vkDestroyBuffer(C.device, C.uniform_buffers[i], NULL);

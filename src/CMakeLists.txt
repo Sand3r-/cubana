@@ -32,6 +32,7 @@ list(APPEND SOURCES memory/linearallocator.c)
 list(APPEND SOURCES platform.c)
 list(APPEND SOURCES renderer/renderer.c)
 list(APPEND SOURCES renderer/renderervk.c)
+list(APPEND SOURCES renderer/igintegration.c)
 list(APPEND SOURCES window.c)
 target_sources(${TARGET} PRIVATE ${SOURCES})
 
