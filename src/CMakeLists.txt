@@ -39,6 +39,7 @@ target_sources(${TARGET} PRIVATE ${SOURCES})
 list(APPEND LIBRARIES Vulkan::Vulkan)
 list(APPEND LIBRARIES SDL2)
 list(APPEND LIBRARIES SDL2main)
+list(APPEND LIBRARIES cimgui)
 if (UNIX)
     list(APPEND LIBRARIES m) # Math library
 endif (UNIX)

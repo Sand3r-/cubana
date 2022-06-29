@@ -39,6 +39,7 @@ foreach(SDL_SUBSYSTEM ${DISABLED_SDL_SUBSYSTEMS})
 endforeach(SDL_SUBSYSTEM DISABLED_SDL_SUBSYSTEMS)
 
 add_subdirectory(external/SDL)
+add_subdirectory(external/cimgui)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)
