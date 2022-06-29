@@ -1,5 +1,6 @@
 #include "game.h"
 #include "error.h"
+#include "input.h"
 #include "renderer/renderer.h"
 
 static void CreateFreeFlyingCamera(Game* game)
@@ -16,8 +17,24 @@ static void CreateFreeFlyingCamera(Game* game)
     game->entities[game->entities_num++] = CreateFreeFlyingCameraEntity(position);
 }
 
+static void SetSnapCursorToCenter(Game* game, bool enabled)
+{
+    game->mouse_snap = enabled;
+    SnapCursorToCenter(enabled);
+}
+
+static void GameControlsUpdate(Game* game)
+{
+    if (GetKeyState(KEY_F1) == KEY_STATE_DOWN)
+    {
+        SetSnapCursorToCenter(game, !game->mouse_snap);
+    }
+}
+
+
 int GameInit(Game* game)
 {
+    SetSnapCursorToCenter(game, true);
     CreateFreeFlyingCamera(game);
     return CU_SUCCESS;
 }
@@ -28,11 +45,15 @@ void GameUpdate(Game* game)
     {
         if (game->entities[i].type & ENTITY_FREE_FLY_CAMERA_BIT)
         {
-            UpdateFreeFlyingCamera(&game->entities[i]);
-            RendererSetCamera(game->entities[i].position, game->entities[i].direction);
+            if (game->mouse_snap)
+            {
+                UpdateFreeFlyingCamera(&game->entities[i]);
+                RendererSetCamera(game->entities[i].position, game->entities[i].direction);
+            }
         }
     }
 
+    GameControlsUpdate(game);
 }
 
 void GameDestroy(Game* game)

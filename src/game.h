@@ -7,6 +7,7 @@ typedef struct Game
 {
     Entity entities[MAX_ENTITIES];
     u16    entities_num;
+    b16    mouse_snap;
 } Game;
 
 int GameInit(Game* game);

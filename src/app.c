@@ -13,6 +13,10 @@
 #include "platform.h"
 #include "renderer/renderer.h"
 #include "window.h"
+#define CIMGUI_USE_VULKAN
+#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+#include <cimgui.h>
+#include <cimgui_impl.h>
 
 #define ReturnOnFailure(result) do { \
     int error = result; \
@@ -32,7 +36,9 @@ struct Application
 
 static void DEBUG_TestCode(void)
 {
-    // To fill whenever one feels like testing
+    igBegin("Dear @ocornut and & @sonoro1234", NULL, 0);
+    igText("You guys rock.");
+    igEnd();
 }
 
 static File g_log_file;
@@ -95,8 +101,6 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(InitGame());
 
-    SnapCursorToCenter(true);
-
     DEBUG_StopWatchdog();
     DEBUG_TestCode();
 
@@ -109,6 +113,7 @@ static int AppLoop(void)
     while (!done)
     {
         done = ProcessPlatformEvents();
+        DEBUG_TestCode();
         GameUpdate(&g_app.game);
         RendererDraw();
         ResetInput();

@@ -1,6 +1,7 @@
 #include "platform.h"
 #include "gamepad.h"
 #include "input.h"
+#include "renderer/igintegration.h"
 #include <SDL.h>
 
 b8 ProcessPlatformEvents(void)
@@ -10,6 +11,7 @@ b8 ProcessPlatformEvents(void)
     {
         HandleGamepadEvents(e);
         HandleInputEvents(e);
+        ImGuiProcessEvents(e);
         if (e.type == SDL_QUIT)
             return 1;
     }
