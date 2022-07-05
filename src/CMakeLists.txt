@@ -41,6 +41,7 @@ list(APPEND LIBRARIES Vulkan::Vulkan)
 list(APPEND LIBRARIES SDL2)
 list(APPEND LIBRARIES SDL2main)
 list(APPEND LIBRARIES cimgui)
+list(APPEND LIBRARIES cim3d)
 if (UNIX)
     list(APPEND LIBRARIES m) # Math library
 endif (UNIX)
@@ -53,7 +54,8 @@ list(APPEND INCLUDES .)
 target_include_directories(${TARGET} PRIVATE ${INCLUDES})
 
 # Specify compile definitions
-target_compile_definitions(${TARGET} PRIVATE USE_VK_RENDERER=1)
+target_compile_definitions(${TARGET} PRIVATE
+    CUBANA_DEVELOPMENT USE_VK_RENDERER=1 CIMGUI_DEFINE_ENUMS_AND_STRUCTS )
 
 # For logging purposes define relative file name for each file
 define_file_basename_for_sources(${TARGET})

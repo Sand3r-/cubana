@@ -40,11 +40,14 @@ endforeach(SDL_SUBSYSTEM DISABLED_SDL_SUBSYSTEMS)
 
 add_subdirectory(external/SDL)
 add_subdirectory(external/cimgui)
+add_subdirectory(external/im3d)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)
 
 # Copy shaders to binary directory
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/shaders)
-configure_file(shaders/shader.vert.spv ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
-configure_file(shaders/shader.frag.spv ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
+file(GLOB FILES "shaders/*.spv")
+foreach(FILE ${FILES})
+    configure_file(${FILE} ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
+endforeach(FILE ${FILES})
