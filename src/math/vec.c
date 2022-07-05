@@ -19,9 +19,9 @@ f32 V3Dot(v3 a, v3 b)
 
 v3 V3Cross(v3 a, v3 b)
 {
-    return v3(.x = a.y * b.z - a.z * b.y,
-              .y = a.z * b.x - a.x * b.z,
-              .z = a.x * b.y - a.y * b.x);
+    return v3(a.y * b.z - a.z * b.y,
+              a.z * b.x - a.x * b.z,
+              a.x * b.y - a.y * b.x);
 }
 
 v3 V3Add(v3 a, v3 b)

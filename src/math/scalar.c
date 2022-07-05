@@ -1,5 +1,6 @@
 #include "scalar.h"
 #include "log/log.h"
+#include "constants.h"
 
 u32 minu32(u32 a, u32 b)
 {
@@ -44,3 +45,7 @@ f32 clampf32(f32 value, f32 min, f32 max)
     return value < min ? min : ((value > max) ? max : value);
 }
 
+f32 radians(f32 degrees)
+{
+    return degrees * PI / 180.0f;
+}

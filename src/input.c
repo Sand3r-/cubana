@@ -16,11 +16,8 @@ typedef struct GamePadState
 typedef struct MouseState
 {
     Button buttons[BUTTON_MOUSE_MAX];
-    union
-    {
-        v2 position;
-        v2 delta;
-    };
+    v2 position;
+    v2 delta;
     b8 snap;
 } MouseState;
 
@@ -165,8 +162,7 @@ static void HandleMouseMove(SDL_Event event)
     }
     else
     {
-        IO.mouse.position = v2(event.motion.x / (f32) size.width,
-                               event.motion.y / (f32) size.height);
+        IO.mouse.position = v2(event.motion.x, event.motion.y);
     }
 }
 
