@@ -16,3 +16,5 @@ f32 maxf32(f32 a, f32 b);
 u32 clampu32(u32 value, u32 min, u32 max);
 i32 clampi32(i32 value, i32 min, i32 max);
 f32 clampf32(f32 value, f32 min, f32 max);
+
+f32 radians(f32 degrees);
