@@ -1,8 +1,10 @@
 #include "renderervk.h"
+#include "buffer.h"
 #include "culibc.h"
 #include "error.h"
 #include "file.h"
 #include "igintegration.h"
+#include "i3integration.h"
 #include "log/log.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
@@ -10,9 +12,9 @@
 #include "math/mat.h"
 #include <memory.h>
 #include <vulkan/vulkan.h>
-#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <cimgui.h>
 #include <cimgui_impl.h>
+#include <cim3d.h>
 
 #define MAX_FRAMES_IN_FLIGHT 2
 
@@ -127,6 +129,7 @@ static struct RendererData
     Vertex               cube_vertices[8];
     u16                  cube_indices[36];
     PushConstantsObject  push_constants;
+    m4                   projection_matrix;
 } D = {
     .cube_vertices = {
         {{-0.5f, -0.5f, +0.5f}, {0.0f, 0.0f, 1.0f}}, // A 0
@@ -153,29 +156,6 @@ static struct RendererData
         0, 5, 1
     },
 };
-
-typedef struct Buffer
-{
-    void* ptr;
-    size_t length;
-} Buffer;
-
-static Buffer AllocBuffer(size_t size)
-{
-    Buffer buffer = {
-        .ptr = StackMalloc(size, "ShaderBuffer"),
-        .length = size
-    };
-    return buffer;
-}
-
-static Buffer FreeBuffer(Buffer buffer)
-{
-    StackFree(buffer.ptr);
-    buffer.ptr = NULL;
-    buffer.length = 0;
-    return buffer;
-}
 
 static void ImGuiCheckVulkanResult(VkResult error)
 {
@@ -597,7 +577,14 @@ static void CreateLogicalDevice(void)
         queueCreateInfos[i] = queueCreateInfo;
     }
 
-    VkPhysicalDeviceFeatures deviceFeatures = {0};
+    VkPhysicalDeviceFeatures deviceFeatures = {
+#ifdef CUBANA_DEVELOPMENT
+        .geometryShader = VK_TRUE, // Development purposes only
+        .largePoints = VK_TRUE
+#else
+        0
+#endif
+    };
 
     VkDeviceCreateInfo createInfo = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
@@ -831,38 +818,6 @@ static void CreateRenderPass(void)
         ERROR("Render pass creation failure.");
 
     L_INFO("Render pass was created.");
-}
-
-static Buffer File2Buffer(const char* filename)
-{
-    Buffer result = {0};
-    File file = FileOpen(filename, "rb");
-    if (!file.valid)
-    {
-        ERROR("%s", file.error_msg);
-        return result;
-    }
-
-    s64 fileSize =  FileSize(&file);
-    result = AllocBuffer(fileSize);
-    char* fileContents = (char*)result.ptr;
-
-    s64 totalObjectsRead = 0, objectsRead = 1;
-    char* buffer = fileContents;
-    while (totalObjectsRead < fileSize && objectsRead != 0)
-    {
-        objectsRead = FileRead(&file, buffer, 1, (fileSize - totalObjectsRead));
-        totalObjectsRead += objectsRead;
-        buffer += objectsRead;
-    }
-    FileClose(&file);
-    if (totalObjectsRead != fileSize)
-    {
-        result = FreeBuffer(result);
-        return result;
-    }
-
-    return result;
 }
 
 static VkShaderModule CreateShaderModule(Buffer code)
@@ -1255,7 +1210,7 @@ static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
     if (vkCreateBuffer(C.device, &buffer_info, NULL, buffer)
         != VK_SUCCESS)
     {
-        ERROR("Vertex buffer creation failure");
+        ERROR("Buffer creation failure");
     }
 
     VkMemoryRequirements memory_requirements;
@@ -1271,7 +1226,7 @@ static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
     if (vkAllocateMemory(C.device, &alloc_info, NULL, buffer_memory)
         != VK_SUCCESS)
     {
-        ERROR("Vertex buffer memory allocation failed");
+        ERROR("Buffer memory allocation failed");
     }
 
     // Associate buffer with a memory region
@@ -1377,10 +1332,9 @@ static void CreateUniformBuffer(void)
             &C.uniform_buffers[i], &C.uniform_buffers_memory[i]);
     }
 
-    UniformBufferObject ubo = {
-        Perspective(90.0f, C.swapchain_extent.width / C.swapchain_extent.height,
-                    0.1f, 50.0f)
-    };
+    D.projection_matrix = Perspective(
+        90.0f, C.swapchain_extent.width / C.swapchain_extent.height, 0.1f, 50.0f);
+    UniformBufferObject ubo = { D.projection_matrix };
 
     for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
     {
@@ -1509,6 +1463,7 @@ static void RecordCommandBuffer(u32 current_image)
         0, sizeof(PushConstantsObject), &D.push_constants);
     vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 64, 0, 0, 0);
 
+    im3dVkEndFrame(cmd_buffer);
     ImGuiRender(cmd_buffer);
     vkCmdEndRenderPass(cmd_buffer);
 
@@ -1572,6 +1527,20 @@ static void InitImGui(Window window)
     ImGuiNewFrame();
 }
 
+static void InitIm3d()
+{
+    Im3dVkInitInfo info = {
+        .device = C.device,
+        .physical_device = C.physical_device,
+        .render_pass = C.render_pass,
+        .swapchain_extent = C.swapchain_extent,
+        .command_pool = C.command_pool,
+        .graphics_queue = C.graphics_queue,
+        .projection_matrix = D.projection_matrix
+    };
+    im3dVkInit(info);
+}
+
 int VkRendererInit(Window window)
 {
     InitVkContext(window);
@@ -1597,6 +1566,7 @@ int VkRendererInit(Window window)
     CreateCommandBuffers();
     CreateSyncObjects();
     InitImGui(window);
+    InitIm3d();
 
     return CU_SUCCESS;
 }
@@ -1653,10 +1623,12 @@ void VkRendererDraw(void)
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
 
     ImGuiNewFrame();
+    im3dVkNewFrame();
 }
 
 void VkRendererShutdown(void)
 {
+    im3dVkShutdown();
     ImGuiShutdown();
     for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
     {
@@ -1675,4 +1647,5 @@ void VkRendererSetCamera(v3 position, v3 direction)
 {
     v3 up = v3(0.0f, 1.0f, 0.0f);
     D.push_constants.view = LookAt(position, V3Add(position, direction), up);
+    im3dVkSetCamera(position, direction);
 }

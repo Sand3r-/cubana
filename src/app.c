@@ -13,10 +13,9 @@
 #include "platform.h"
 #include "renderer/renderer.h"
 #include "window.h"
-#define CIMGUI_USE_VULKAN
-#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <cimgui.h>
 #include <cimgui_impl.h>
+#include <cim3d.h>
 
 #define ReturnOnFailure(result) do { \
     int error = result; \
@@ -36,12 +35,74 @@ struct Application
 
 static void DEBUG_TestCode(void)
 {
-    bool option = true;
-    igShowDemoWindow(&option);
-    igBegin("Chomiczek ostatnio", NULL, 0);
-    igText("Przesadzil z alkoholem.");
-    igText("I musial sie zatrzymywac w drodze na oboz.");
+    static bool gizmos_enabled = true;
+    igBegin("Gizmo Enablement", NULL, 0);
+    igCheckbox("Enable Gizmos", &gizmos_enabled);
     igEnd();
+    static bool inited = false;
+    static m4 matrices[5];
+    static m4 default_matrix = {
+        .rows = {
+            { 1.f, 0.f, 0.f, 0.f },
+            { 0.f, 1.f           },
+            { 0.f, 0.f, 1.f      },
+            { 0.f, 0.f, 2.f, 1.f },
+        }
+    };
+
+    if (inited == false)
+    {
+        matrices[0] = default_matrix;
+        matrices[1] = default_matrix;
+        matrices[2] = default_matrix;
+        matrices[3] = default_matrix;
+        matrices[4] = default_matrix;
+        inited = true;
+    }
+    if (gizmos_enabled)
+        im3dGizmo("m0", (float*)matrices[0].elems);
+    im3dPushMatrix(matrices[0]);
+    im3dPushDrawState();
+    im3dSetColor(im3dColor_Gold & 0xFFFFFF99);
+    im3dDrawSphereFilled(v3(0.0f), 1.0f, -1);
+    im3dPopDrawState();
+    im3dPopMatrix();
+
+    if (gizmos_enabled)
+        im3dGizmo("m1", (float*)matrices[1].elems);
+    im3dPushMatrix(matrices[1]);
+    im3dPushDrawState();
+    im3dSetColor(im3dColor_Green & 0xFFFFFF99);
+    im3dDrawQuad(v3(0.0f), v3(0.0f, 1.0f, 0.0f), v2(1.0f));
+    im3dPopDrawState();
+    im3dPopMatrix();
+
+    if (gizmos_enabled)
+        im3dGizmo("m2", (float*)matrices[2].elems);
+    im3dPushMatrix(matrices[2]);
+    im3dPushDrawState();
+    im3dSetColor(im3dColor_Red & 0xFFFFFF99);
+    im3dDrawQuadFilled(v3(0.0f), v3(0.0f, 1.0f, 0.0f), v2(1.0f));
+    im3dPopDrawState();
+    im3dPopMatrix();
+
+    if (gizmos_enabled)
+        im3dGizmo("m3", (float*)matrices[3].elems);
+    im3dPushMatrix(matrices[3]);
+    im3dPushDrawState();
+    im3dSetColor(im3dColor_Cyan & 0xFFFFFF99);
+    im3dDrawAlignedBox(v3(-0.5f), v3(0.5f));
+    im3dPopDrawState();
+    im3dPopMatrix();
+
+    if (gizmos_enabled)
+        im3dGizmo("m4", (float*)matrices[4].elems);
+    im3dPushMatrix(matrices[4]);
+    im3dPushDrawState();
+    im3dSetColor(im3dColor_Orange & 0xFFFFFF99);
+    im3dDrawCylinder(v3(0.0f), v3(0.0f, 3.0f, 0.0f), 0.5f, -1);
+    im3dPopDrawState();
+    im3dPopMatrix();
 }
 
 static File g_log_file;
