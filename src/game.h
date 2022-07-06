@@ -11,5 +11,5 @@ typedef struct Game
 } Game;
 
 int GameInit(Game* game);
-void GameUpdate(Game* game);
+void GameUpdate(Game* game, f32 delta);
 void GameDestroy(Game* game);

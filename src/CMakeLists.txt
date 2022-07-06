@@ -35,6 +35,7 @@ list(APPEND SOURCES renderer/renderer.c)
 list(APPEND SOURCES renderer/renderervk.c)
 list(APPEND SOURCES renderer/igintegration.c)
 list(APPEND SOURCES renderer/i3integration.c)
+list(APPEND SOURCES timer.c)
 list(APPEND SOURCES window.c)
 target_sources(${TARGET} PRIVATE ${SOURCES})
 

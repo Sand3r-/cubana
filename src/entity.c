@@ -36,13 +36,16 @@ static void UpdateFreeFlyingCameraRotation(Entity* camera)
     camera->direction = V3Normalize(forward);
 }
 
-static void UpdateFreeFlyingCameraPosition(Entity* camera)
+static void UpdateFreeFlyingCameraPosition(Entity* camera, f32 delta)
 {
     v3* position  = &camera->position;
     v3  direction = camera->direction;
-    v3  velocity  = camera->velocity;
+    v3  velocity  = V3MulScalar(camera->velocity, delta);
     v3  right     = CalcCameraRightDirection(camera);
     v3  up        = v3(0.0f, 1.0f, 0.0f);
+
+    if (GetKeyState(KEY_SHIFT) & KEY_STATE_DOWN)
+        velocity = V3MulScalar(velocity, 3.0f);
 
     if (GetKeyState(KEY_W) & KEY_STATE_DOWN)
         *position = V3Add(*position, V3Mul(velocity, direction));
@@ -60,9 +63,9 @@ static void UpdateFreeFlyingCameraPosition(Entity* camera)
         *position = V3Add(*position, V3Mul(velocity, up));
 }
 
-void UpdateFreeFlyingCamera(Entity* camera)
+void UpdateFreeFlyingCamera(Entity* camera, f32 delta)
 {
-    UpdateFreeFlyingCameraPosition(camera);
+    UpdateFreeFlyingCameraPosition(camera, delta);
     UpdateFreeFlyingCameraRotation(camera);
 }
 
