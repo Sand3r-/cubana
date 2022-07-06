@@ -22,4 +22,4 @@ typedef struct Entity
 } Entity;
 
 Entity CreateFreeFlyingCameraEntity(v3 pos);
-void UpdateFreeFlyingCamera(Entity* camera);
+void UpdateFreeFlyingCamera(Entity* camera, f32 delta);

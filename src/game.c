@@ -39,7 +39,7 @@ int GameInit(Game* game)
     return CU_SUCCESS;
 }
 
-void GameUpdate(Game* game)
+void GameUpdate(Game* game, f32 delta)
 {
     for (u16 i = 0; i < game->entities_num; i++)
     {
@@ -47,7 +47,7 @@ void GameUpdate(Game* game)
         {
             if (game->mouse_snap)
             {
-                UpdateFreeFlyingCamera(&game->entities[i]);
+                UpdateFreeFlyingCamera(&game->entities[i], delta);
                 RendererSetCamera(game->entities[i].position, game->entities[i].direction);
             }
         }

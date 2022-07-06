@@ -192,3 +192,4 @@ v3 V3Cross(v3 a, v3 b);
 v3 V3Add(v3 a, v3 b);
 v3 V3Subtract(v3 a, v3 b);
 v3 V3Mul(v3 a, v3 b);
+v3 V3MulScalar(v3 v, f32 s);
