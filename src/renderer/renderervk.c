@@ -110,14 +110,6 @@ typedef struct PushConstantsObject
     m4 view;
 } PushConstantsObject;
 
-typedef struct LineRecord
-{
-    v3 start;
-    f32 padding;
-    v3 end;
-    u32 colour_index;
-} LineRecord;
-
 typedef struct Vertex
 {
     v3 pos;
