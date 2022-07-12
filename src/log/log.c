@@ -68,7 +68,7 @@ static void stdout_callback(log_Event *ev) {
     ev->file, ev->line);
 #else
   fprintf(
-    ev->udata, "%s %-5s %s:%d: ",
+    ev->udata, "%s %-6s %s:%d: ",
     buf, level_strings[ev->level], ev->file, ev->line);
 #endif
   vfprintf(ev->udata, ev->fmt, ev->ap);
@@ -79,7 +79,7 @@ static void stdout_callback(log_Event *ev) {
 static void file_callback(log_Event *ev) {
   char buf[64];
   buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", ev->time)] = '\0';
-  FileWriteStrf((File*)ev->udata, "%s %-5s %s:%d: ",
+  FileWriteStrf((File*)ev->udata, "%s %-6s %s:%d: ",
     buf, level_strings[ev->level], ev->file, ev->line);
   FileWriteStrfv((File*)ev->udata, ev->fmt, ev->ap);
   FileWriteStrf(ev->udata, "\n");
@@ -93,7 +93,7 @@ static void msvc_debug_callback(log_Event* ev) {
   write_ptr += strftime(write_ptr, sizeof(buffer), "%H:%M:%S", ev->time);
 
   write_ptr += cu_snprintf(write_ptr, sizeof(buffer) - (write_ptr - buffer),
-    "%-5s %s:%d: ", level_strings[ev->level], ev->file, ev->line);
+    "%-6s %s:%d: ", level_strings[ev->level], ev->file, ev->line);
   write_ptr += cu_vsnprintf(write_ptr, sizeof(buffer) - (write_ptr - buffer),
     ev->fmt, ev->ap);
 

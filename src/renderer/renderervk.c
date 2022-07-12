@@ -21,7 +21,7 @@
 static struct Context
 {
     VkInstance instance;
-    VkDebugUtilsMessengerEXT debug_messenger;
+    VkDebugReportCallbackEXT debug_callback;
     VkPhysicalDevice physical_device;
     VkDevice device;
     VkQueue graphics_queue;
@@ -188,14 +188,14 @@ static void GetAttributeDescriptions(VkVertexInputAttributeDescription* descs, u
     *num = ArrayCount(attribute_descriptions);
 }
 
-static VkResult CreateDebugUtilsMessengerEXT(
+static VkResult CreateDebugReportCallbackEXT(
     VkInstance instance,
-    const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+    const VkDebugReportCallbackCreateInfoEXT* pCreateInfo,
     const VkAllocationCallbacks* pAllocator,
     VkDebugUtilsMessengerEXT* pDebugMessenger)
 {
-    PFN_vkCreateDebugUtilsMessengerEXT func = (PFN_vkCreateDebugUtilsMessengerEXT)
-        vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+    PFN_vkCreateDebugReportCallbackEXT func = (PFN_vkCreateDebugReportCallbackEXT)
+        vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT");
     if (func != NULL)
         return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
     else
@@ -279,38 +279,29 @@ static char** GetRequiredExtensions(uint32_t* extensionCount)
     GetVulkanExtensions(C.window, extensionCount, extensions);
 
     if (C.enable_validation_layers)
-        extensions[(*extensionCount)++] = VK_EXT_DEBUG_UTILS_EXTENSION_NAME;
+        extensions[(*extensionCount)++] = VK_EXT_DEBUG_REPORT_EXTENSION_NAME;
 
     return extensions;
 }
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
-        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT messageType,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void* pUserData)
+    VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object,
+    size_t location, int32_t messageCode, const char* pLayerPrefix, const char* pMessage,
+    void* pUserData)
 {
-    if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT)
-        return VK_FALSE;
-
-    L_DEBUG("Vulkan: %s", pCallbackData->pMessage);
+    L_DEBUG("Vulkan: %s", pMessage);
 
     return VK_FALSE;
  }
 
-static void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* createInfo)
+static void PopulateDebugMessengerCreateInfo(VkDebugReportCallbackCreateInfoEXT* createInfo)
 {
-    VkDebugUtilsMessengerCreateInfoEXT info = {
-        .sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
-        .messageSeverity =
-            VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT,
-        .messageType =
-            VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-        .pfnUserCallback = DebugCallback,
+    VkDebugReportCallbackCreateInfoEXT info = {
+        .sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT,
+        .flags = VK_DEBUG_REPORT_ERROR_BIT_EXT |
+                 VK_DEBUG_REPORT_WARNING_BIT_EXT |
+                 VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT,
+        .pfnCallback = DebugCallback,
         .pUserData = NULL
     };
     *createInfo = info;
@@ -356,14 +347,14 @@ static void CreateInstance(void)
     char** extensions = GetRequiredExtensions(&extensionsCount);
     createInfo.enabledExtensionCount = extensionsCount;
     createInfo.ppEnabledExtensionNames = extensions;
-    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
+    VkDebugReportCallbackCreateInfoEXT debugCreateInfo;
     if (C.enable_validation_layers)
     {
         createInfo.enabledLayerCount = ArrayCount(C.validation_layers);
         createInfo.ppEnabledLayerNames = C.validation_layers;
 
         PopulateDebugMessengerCreateInfo(&debugCreateInfo);
-        createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
+        createInfo.pNext = (VkDebugReportCallbackCreateInfoEXT*)&debugCreateInfo;
     }
     else
     {
@@ -380,12 +371,12 @@ static void SetupDebugMessenger(void)
 {
     if (!C.enable_validation_layers) return;
 
-    VkDebugUtilsMessengerCreateInfoEXT createInfo = {0};
+    VkDebugReportCallbackCreateInfoEXT createInfo = {0};
     PopulateDebugMessengerCreateInfo(&createInfo);
 
-    if (CreateDebugUtilsMessengerEXT(
-        C.instance, &createInfo, NULL, &C.debug_messenger) != VK_SUCCESS)
-        ERROR("The debug messenger couldn't have been created.");
+    if (CreateDebugReportCallbackEXT(
+        C.instance, &createInfo, NULL, &C.debug_callback) != VK_SUCCESS)
+        ERROR("The debug callback couldn't have been created.");
 }
 
 static void CreateSurface(void)
