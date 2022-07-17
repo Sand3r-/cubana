@@ -1,6 +1,7 @@
 #include "app.h"
 #include "argparser.h"
 #include "error.h"
+#include "event.h"
 #include "log/log.h"
 #include "external.h"
 #include "file.h"
@@ -17,6 +18,9 @@
 #include <cimgui.h>
 #include <cimgui_impl.h>
 #include <cim3d.h>
+
+#include <lua.h>
+#include <lauxlib.h>
 
 #define ReturnOnFailure(result) do { \
     int error = result; \
@@ -36,7 +40,22 @@ struct Application
 
 static void DEBUG_TestCode(void)
 {
+    static buffer[255];
+    lua_State* L = luaL_newstate();
 
+    float number = 0.0f;
+    int r = luaL_dostring(L, buffer);
+    if (r == LUA_OK)
+    {
+        lua_getglobal(L, "a");
+        if (lua_isnumber(L, -1))
+            number = lua_tonumber(L, -1);
+    }
+    lua_close(L);
+    igBegin("xD", NULL, 0);
+    igText("lua output: %f", number);
+    igInputText("lol", buffer, 255, 0, NULL, NULL);
+    igEnd();
 }
 
 static File g_log_file;
@@ -117,7 +136,7 @@ static f32 ComputeDeltaTime(void)
     return delta;
 }
 
-void DrawPerformanceStatistics(f32 delta)
+static void DrawPerformanceStatistics(f32 delta)
 {
     int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
@@ -125,6 +144,16 @@ void DrawPerformanceStatistics(f32 delta)
     igText("Frame time [ms]: %f", delta);
     igText("FPS: %f", 1000.f / (delta));
     igEnd();
+}
+
+static void PropagateEvents(void)
+{
+    Event event;
+    while (PollEvent(&event))
+    {
+        GameProcessEvent(&g_app.game, event);
+        ScriptEngineProcessEvent(event);
+    }
 }
 
 static int AppLoop(void)
@@ -135,6 +164,8 @@ static int AppLoop(void)
         done = ProcessPlatformEvents();
         f32 delta = ComputeDeltaTime();
         DrawPerformanceStatistics(delta);
+        EmitEvent(CreateEventTick(delta));
+        PropagateEvents();
         GameUpdate(&g_app.game, delta);
         RendererDraw();
         ResetInput();

@@ -3,6 +3,8 @@
 
 #define MAX_ENTITIES 8
 
+typedef union Event Event;
+
 typedef struct Game
 {
     Entity entities[MAX_ENTITIES];
@@ -12,4 +14,5 @@ typedef struct Game
 
 int GameInit(Game* game);
 void GameUpdate(Game* game, f32 delta);
+void GameProcessEvent(Game* game, Event event);
 void GameDestroy(Game* game);
