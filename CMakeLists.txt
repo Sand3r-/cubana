@@ -38,9 +38,12 @@ foreach(SDL_SUBSYSTEM ${DISABLED_SDL_SUBSYSTEMS})
     set(${SDL_SUBSYSTEM} OFF CACHE BOOL "" FORCE)
 endforeach(SDL_SUBSYSTEM DISABLED_SDL_SUBSYSTEMS)
 
+set(LUA_ENABLE_SHARED ON)
+
 add_subdirectory(external/SDL)
 add_subdirectory(external/cimgui)
 add_subdirectory(external/im3d)
+add_subdirectory(external/lua)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)
