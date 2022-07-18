@@ -1333,6 +1333,7 @@ static void CreateDescriptorPool(void)
 {
     VkDescriptorPoolSize pool_sizes[] = {
         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_FRAMES_IN_FLIGHT },
+        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MAX_FRAMES_IN_FLIGHT }
     };
 
     VkDescriptorPoolCreateInfo pool_info = {
@@ -1499,7 +1500,7 @@ static void InitImGui(Window window)
         .PipelineCache = NULL,
         .DescriptorPool = C.descriptor_pool,
         .Subpass = 0,
-        .MinImageCount = Capabilities.min_image_count,
+        .MinImageCount = 2,
         .ImageCount = MAX_FRAMES_IN_FLIGHT,
         .MSAASamples = VK_SAMPLE_COUNT_1_BIT,
         .Allocator = NULL,
