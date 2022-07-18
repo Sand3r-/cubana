@@ -21,7 +21,7 @@ endforeach(OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Find Vulkan
-find_package(Vulkan REQUIRED FATAL_ERROR)
+find_package(Vulkan REQUIRED)
 
 # Set-up SDL build
 # Define static build-only
