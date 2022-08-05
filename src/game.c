@@ -37,6 +37,7 @@ int GameInit(Game* game)
 {
     SetSnapCursorToCenter(game, true);
     CreateFreeFlyingCamera(game);
+    ExecuteScriptFile("scripts/level1.lua");
     EmitEvent(CreateEventGameBegin());
     return CU_SUCCESS;
 }

@@ -7,6 +7,7 @@ typedef enum EventType
     EVENT_GAME_BEGIN,
     EVENT_GAME_END,
     
+    EVENT_TYPE_MAX
 } EventType;
 
 typedef struct EventTick
@@ -36,6 +37,8 @@ typedef union Event
 
 void EmitEvent(Event  event);
 b32  PollEvent(Event* event);
+
+const char* EventTypeToStr(EventType type);
 
 Event CreateEventGameBegin(void);
 Event CreateEventGameEnd(void);

@@ -12,6 +12,12 @@ static struct
     .events_num = 0
 };
 
+static const char *event_type_strings[] = {
+    "EVENT_TICK",
+    "EVENT_GAME_BEGIN",
+    "EVENT_GAME_END",
+};
+
 void EmitEvent(Event  event)
 {
     assert(E.events_num < MAX_EVENTS_NUM);
@@ -26,6 +32,11 @@ b32 PollEvent(Event* event)
         return true;
     }
     return false;
+}
+
+const char* EventTypeToStr(EventType type)
+{
+    return event_type_strings[type];
 }
 
 Event CreateEventGameBegin(void)

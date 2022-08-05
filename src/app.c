@@ -40,22 +40,7 @@ struct Application
 
 static void DEBUG_TestCode(void)
 {
-    static buffer[255];
-    lua_State* L = luaL_newstate();
 
-    float number = 0.0f;
-    int r = luaL_dostring(L, buffer);
-    if (r == LUA_OK)
-    {
-        lua_getglobal(L, "a");
-        if (lua_isnumber(L, -1))
-            number = lua_tonumber(L, -1);
-    }
-    lua_close(L);
-    igBegin("xD", NULL, 0);
-    igText("lua output: %f", number);
-    igInputText("lol", buffer, 255, 0, NULL, NULL);
-    igEnd();
 }
 
 static File g_log_file;
@@ -116,6 +101,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
+    ReturnOnFailure(ScriptEngineInit());
     ReturnOnFailure(InitGame());
 
     DEBUG_StopWatchdog();
