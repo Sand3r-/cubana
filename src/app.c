@@ -1,6 +1,7 @@
 #include "app.h"
 #include "argparser.h"
 #include "error.h"
+#include "event.h"
 #include "log/log.h"
 #include "external.h"
 #include "file.h"
@@ -17,6 +18,9 @@
 #include <cimgui.h>
 #include <cimgui_impl.h>
 #include <cim3d.h>
+
+#include <lua.h>
+#include <lauxlib.h>
 
 #define ReturnOnFailure(result) do { \
     int error = result; \
@@ -97,6 +101,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
+    ReturnOnFailure(ScriptEngineInit());
     ReturnOnFailure(InitGame());
 
     DEBUG_StopWatchdog();
@@ -117,7 +122,7 @@ static f32 ComputeDeltaTime(void)
     return delta;
 }
 
-void DrawPerformanceStatistics(f32 delta)
+static void DrawPerformanceStatistics(f32 delta)
 {
     int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
@@ -125,6 +130,16 @@ void DrawPerformanceStatistics(f32 delta)
     igText("Frame time [ms]: %f", delta);
     igText("FPS: %f", 1000.f / (delta));
     igEnd();
+}
+
+static void PropagateEvents(void)
+{
+    Event event;
+    while (PollEvent(&event))
+    {
+        GameProcessEvent(&g_app.game, event);
+        ScriptEngineProcessEvent(event);
+    }
 }
 
 static int AppLoop(void)
@@ -135,6 +150,8 @@ static int AppLoop(void)
         done = ProcessPlatformEvents();
         f32 delta = ComputeDeltaTime();
         DrawPerformanceStatistics(delta);
+        EmitEvent(CreateEventTick(delta));
+        PropagateEvents();
         GameUpdate(&g_app.game, delta);
         RendererDraw();
         ResetInput();

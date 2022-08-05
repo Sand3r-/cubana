@@ -38,16 +38,27 @@ foreach(SDL_SUBSYSTEM ${DISABLED_SDL_SUBSYSTEMS})
     set(${SDL_SUBSYSTEM} OFF CACHE BOOL "" FORCE)
 endforeach(SDL_SUBSYSTEM DISABLED_SDL_SUBSYSTEMS)
 
+set(LUA_ENABLE_SHARED ON)
+
 add_subdirectory(external/SDL)
 add_subdirectory(external/cimgui)
 add_subdirectory(external/im3d)
+add_subdirectory(external/lua)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)
 
+function(configure_files DEST GLOB_EXP)
+    file(MAKE_DIRECTORY ${DEST})
+    file(GLOB FILES ${GLOB_EXP})
+    foreach(FILE ${FILES})
+        configure_file(${FILE} ${DEST} COPYONLY)
+    endforeach(FILE ${FILES})
+endfunction(configure_files)
+
 # Copy shaders to binary directory
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/shaders)
-file(GLOB FILES "shaders/*.spv")
-foreach(FILE ${FILES})
-    configure_file(${FILE} ${CMAKE_BINARY_DIR}/bin/shaders COPYONLY)
-endforeach(FILE ${FILES})
+configure_files(${CMAKE_BINARY_DIR}/bin/shaders "shaders/*.spv")
+
+# Copy scripts to binary directory
+configure_files(${CMAKE_BINARY_DIR}/bin/scripts "scripts/*.lua")
+configure_files(${CMAKE_BINARY_DIR}/bin/scripts/core "scripts/core/*.lua")

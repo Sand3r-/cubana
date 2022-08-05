@@ -15,7 +15,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define LOG_VERSION "0.1.0"
+#define LOG_VERSION "0.1.1"
 
 struct File;
 
@@ -33,6 +33,12 @@ typedef void (*log_LogFn)(log_Event *ev);
 typedef void (*log_LockFn)(bool lock, void *udata);
 
 enum { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL };
+
+// Define FILE_BASENAME macro to prevent intellisense errors.
+// This macro is defined by CMake during compilation.
+#ifndef FILE_BASENAME
+#define FILE_BASENAME "UnknownFile"
+#endif // FILE_BASENAME
 
 #define L_TRACE(...) log_log(LOG_TRACE, FILE_BASENAME, __LINE__, __VA_ARGS__)
 #define L_DEBUG(...) log_log(LOG_DEBUG, FILE_BASENAME, __LINE__, __VA_ARGS__)

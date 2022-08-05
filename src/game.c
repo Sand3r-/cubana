@@ -1,6 +1,8 @@
 #include "game.h"
 #include "error.h"
+#include "event.h"
 #include "input.h"
+#include "log/log.h"
 #include "renderer/renderer.h"
 
 static void CreateFreeFlyingCamera(Game* game)
@@ -31,11 +33,12 @@ static void GameControlsUpdate(Game* game)
     }
 }
 
-
 int GameInit(Game* game)
 {
     SetSnapCursorToCenter(game, true);
     CreateFreeFlyingCamera(game);
+    ExecuteScriptFile("scripts/level1.lua");
+    EmitEvent(CreateEventGameBegin());
     return CU_SUCCESS;
 }
 
@@ -56,7 +59,18 @@ void GameUpdate(Game* game, f32 delta)
     GameControlsUpdate(game);
 }
 
+void GameProcessEvent(Game* game, Event event)
+{
+    switch (event.type)
+    {
+        case EVENT_GAME_BEGIN:
+            L_INFO("Oh yes, and so the game begun");
+            break;
+    }
+    // mmm yes consume the events
+}
+
 void GameDestroy(Game* game)
 {
-
+    EmitEvent(CreateEventGameEnd());
 }
