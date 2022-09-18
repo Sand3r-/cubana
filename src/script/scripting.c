@@ -1,9 +1,15 @@
 #include "scripting.h"
+#include "culibc.h"
 #include "error.h"
 #include "event.h"
 #include "log/log.h"
 #include <lua.h>
 #include <lauxlib.h>
+#include "scriptreg.h"
+
+#include "math/vec.h"
+#include "math/mat.h"
+#include <cim3d.h>
 
 static lua_State* L;
 
@@ -84,10 +90,37 @@ static b32 InitEventHandler(void)
     return CU_SUCCESS;
 }
 
+static void RegisterFunctions(lua_State* L)
+{
+    RegisterLuaFunctions(L);
+}
+
+static void RegisterModulePaths(lua_State* L)
+{
+    lua_getglobal( L, "package" );
+    lua_getfield( L, -1, "path" );
+    const char* package_path = lua_tostring( L, -1 );
+    char* cwd = cu_getcwd();
+    char buffer[2048];
+    // Here for development purposes I also append the path to source_dir/scripts
+    cu_snprintf(
+        buffer, 2048,
+        "%s;%s../../scripts/core/cpml/?.lua;%sscripts/core/cpml/?.lua;"
+        "%s../../scripts/core/?.lua;%sscripts/core/?.lua",
+        package_path, cwd, cwd, cwd, cwd);
+    cu_freecwdptr(cwd);
+    lua_pop( L, 1 );
+    lua_pushstring( L, buffer );
+    lua_setfield( L, -2, "path" );
+    lua_pop( L, 1 );
+}
+
 b32 ScriptEngineInit(void)
 {
     L = luaL_newstate();
     luaL_openlibs(L);
+    RegisterModulePaths(L);
+    RegisterFunctions(L);
     InitEventHandler();
     return CU_SUCCESS;
 }
@@ -105,7 +138,23 @@ void ExecuteScriptFile(const char* path)
 void ScriptEngineProcessEvent(Event event)
 {
     lua_getglobal(L, "_handle_event");
+
+    lua_createtable(L, 0, 2);
+    const int t = lua_gettop(L);
     lua_pushinteger(L, event.type);
+    lua_setfield(L, t, "type");
+
+    switch (event.type)
+    {
+        case EVENT_GAME_BEGIN:
+        case EVENT_GAME_END:
+            break;
+        case EVENT_TICK:
+            lua_pushnumber(L, event.event_tick.delta);
+            lua_setfield(L, t, "dt");
+            break;
+    }
+
     lua_call(L, 1, 0);
 }
 
