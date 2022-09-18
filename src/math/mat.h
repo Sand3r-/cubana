@@ -7,6 +7,7 @@ union m4
     v4 rows[4];
     f32 elems[4][4];
     f32 m[4][4];
+    f32 raw[16];
 };
 
 typedef union m3 m3;

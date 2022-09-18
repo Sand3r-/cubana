@@ -1,5 +1,6 @@
 #include "culibc.h"
 #include "SDL_stdinc.h"
+#include "SDL_filesystem.h"
 
 i32 cu_snprintf(char *text, size_t maxlen, const char *fmt, ...)
 {
@@ -39,7 +40,27 @@ size_t cu_strcmp(const char* str1, const char* str2)
     return SDL_strcmp(str1, str2);
 }
 
+size_t cu_strlcpy(char* dst, const char* src, size_t max_len)
+{
+    return SDL_strlcpy(dst, src, max_len);
+}
+
+size_t cu_strlcat(char* dst, const char* src, size_t max_len)
+{
+    return SDL_strlcat(dst, src, max_len);
+}
+
 void cu_memset(void* dst, int c, size_t len)
 {
     SDL_memset(dst, c, len);
 }
+
+char* cu_getcwd()
+{
+    return SDL_GetBasePath();
+}
+void cu_freecwdptr(char* path)
+{
+    SDL_free(path);
+}
+

@@ -3,7 +3,7 @@
 #include "error.h"
 #include <assert.h>
 
-#define FORMATTED_BUFFER_LENGTH 1024
+#define FORMATTED_BUFFER_LENGTH 1024 * 2
 
 static u64 _FileWriteStrFormatted(File* file, char* buffer, u32 buffer_length, const char* fmt, va_list args)
 {
