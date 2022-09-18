@@ -7,10 +7,10 @@ function _register_event(event_id, event_name)
     print("Registered event " .. event_name .. " of id " .. event_id)
 end
 
-function _handle_event(event_id)
-    if callbacks[event_id] ~= nil then
-        for index, value in ipairs(callbacks[event_id]) do
-            value()
+function _handle_event(event)
+    if callbacks[event.type] ~= nil then
+        for index, value in ipairs(callbacks[event.type]) do
+            value(event)
         end
     end
 end
