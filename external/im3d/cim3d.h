@@ -159,4 +159,4 @@ CIM3D_API void im3dDrawCylinder(v3 start, v3 end, float radius, int detail); // 
 CIM3D_API void im3dDrawCapsule(v3 start, v3 end, float radius, int detail); // detail = -1
 CIM3D_API void im3dDrawPrism(v3 start, v3 end, float radius, int sides);
 CIM3D_API void im3dDrawArrow(v3 start, v3 end, float headLength, float headThickness); // headLength = -1.0f, headThickness = -1.0f
-CIM3D_API bool im3dGizmo(const char* id, float transform[4*4]);
+CIM3D_API bool im3dGizmo(const char* id, m4* transform);
