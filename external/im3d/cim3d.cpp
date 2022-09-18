@@ -145,7 +145,7 @@ CIM3D_API void im3dDrawArrow(v3 start, v3 end, float headLength, float headThick
     Im3d::DrawArrow(TO_VEC3(start), TO_VEC3(end), headLength, headThickness);
 }
 
-CIM3D_API bool im3dGizmo(const char* id, float transform[4*4])
+CIM3D_API bool im3dGizmo(const char* id, m4* transform)
 {
-    return Im3d::Gizmo(id, transform);
+    return Im3d::Gizmo(id, transform->raw);
 }
