@@ -2,10 +2,10 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <cim3d.h>
-#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <cimgui.h>
 #include <assert.h>
 #include "culibc.h"
+#include "imgui_registrar.h"
 #include "log/log.h"
 
 #define JOIN_STR2(X, Y) X ## Y
@@ -478,16 +478,19 @@ void RegisterLuaFunctions(lua_State* L)
     REGISTER(L, im3dDrawArrow);
     REGISTER(L, im3dGizmo);
 
-    REGISTER(L, igBegin);
-    REGISTER(L, igEnd);
-    REGISTER(L, igCheckbox);
-    REGISTER(L, igText);
-    REGISTER(L, igSmallButton);
-    REGISTER(L, igInputText);
-    REGISTER(L, igInputInt);
-    REGISTER(L, igInputFloat);
+    // REGISTER(L, igBegin);
+    // REGISTER(L, igEnd);
+    // REGISTER(L, igCheckbox);
+    // REGISTER(L, igText);
+    // REGISTER(L, igSmallButton);
+    // REGISTER(L, igInputText);
+    // REGISTER(L, igInputInt);
+    // REGISTER(L, igInputFloat);
 
     REGISTER(L, log_log);
+
+    g_ImguiBindingsState = L;
+    LoadImguiBindings();
 }
 
 #undef REGISTER
