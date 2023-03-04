@@ -10,6 +10,8 @@ extern "C" {
   #include "lauxlib.h"
 }
 
+#define MAX_CHAR_BUFFER_SIZE 4096
+
 // THIS IS FOR LUA 5.3 although you can make a few changes for other versions
 
 // define ENABLE_IM_LUA_END_STACK
@@ -18,6 +20,9 @@ extern "C" {
 
 // define this global before you call RunString or LoadImGuiBindings
 lua_State* g_ImguiBindingsState;
+
+// Buffers to be re-used for function wrappers to avoid allocations
+char g_CharBuffer[MAX_CHAR_BUFFER_SIZE];
 
 #ifdef ENABLE_IM_LUA_END_STACK
 // Stack for imgui begin and end
@@ -89,6 +94,9 @@ static int impl_##name(lua_State *L) { \
   int arg = 1; \
   int stackval = 0;
 
+#define DEFAULT_ARG(type, name, value) \
+	type name = value; \
+
 // I use OpenGL so this is a GLuint
 // Using unsigned int cause im lazy don't copy me
 #define IM_TEXTURE_ID_ARG(name) \
@@ -105,6 +113,19 @@ static int impl_##name(lua_State *L) { \
 #define LABEL_ARG(name) \
   size_t i_##name##_size; \
   const char * name = luaL_checklstring(L, arg++, &(i_##name##_size));
+
+#define LABEL_POINTER_ARG(name) \
+	size_t i_##name##_size; \
+	const char * content = luaL_checklstring(L, arg++, &(i_##name##_size)); \
+	size_t buf_size = luaL_checknumber(L, arg++); \
+  char * name = g_CharBuffer; \
+	std::strcpy(name, content);
+
+#define END_LABEL_POINTER(name) \
+	if (name != NULL) { \
+		lua_pushstring(L, name); \
+		stackval++; \
+				}
 
 #define IM_VEC_2_ARG(name)\
   const lua_Number i_##name##_x = luaL_checknumber(L, arg++); \
@@ -295,6 +316,8 @@ static void ImEndStack(int type) { \
 static const struct luaL_Reg imguilib [] = {
 #undef IMGUI_FUNCTION
 #define IMGUI_FUNCTION(name) {#name, impl_##name},
+#undef DEFAULT_ARG
+#define DEFAULT_ARG(type, name, value)
 #undef IMGUI_FUNCTION_DRAW_LIST
 #define IMGUI_FUNCTION_DRAW_LIST(name) {"DrawList_" #name, impl_draw_list_##name},
 // These defines are just redefining everything to nothing so
@@ -305,6 +328,10 @@ static const struct luaL_Reg imguilib [] = {
 #define OPTIONAL_LABEL_ARG(name)
 #undef LABEL_ARG
 #define LABEL_ARG(name)
+#undef LABEL_POINTER_ARG
+#define LABEL_POINTER_ARG(name)
+#undef END_LABEL_POINTER
+#define END_LABEL_POINTER(name)
 #undef IM_VEC_2_ARG
 #define IM_VEC_2_ARG(name)
 #undef OPTIONAL_IM_VEC_2_ARG
@@ -492,6 +519,9 @@ static void PushImguiEnums(lua_State* g_ImguiBindingsState, const char* tableNam
 
 #include "imgui_functions.inl"
 
+  lua_pushstring(g_ImguiBindingsState, "MAX_TEXT_BUFFER_SIZE");
+  lua_pushnumber(g_ImguiBindingsState, MAX_CHAR_BUFFER_SIZE);
+  lua_rawset(g_ImguiBindingsState, -3);
   lua_rawset(g_ImguiBindingsState, -3);
 };
 

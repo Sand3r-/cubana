@@ -478,15 +478,6 @@ void RegisterLuaFunctions(lua_State* L)
     REGISTER(L, im3dDrawArrow);
     REGISTER(L, im3dGizmo);
 
-    // REGISTER(L, igBegin);
-    // REGISTER(L, igEnd);
-    // REGISTER(L, igCheckbox);
-    // REGISTER(L, igText);
-    // REGISTER(L, igSmallButton);
-    // REGISTER(L, igInputText);
-    // REGISTER(L, igInputInt);
-    // REGISTER(L, igInputFloat);
-
     REGISTER(L, log_log);
 
     g_ImguiBindingsState = L;

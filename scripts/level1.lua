@@ -30,28 +30,28 @@ g_imgui_input_float = 0.0
 
 function imgui_demo(dt)
     if g_imgui_menu_opened then
-        revealed, g_imgui_menu_opened = ig.Begin("Demo menu", g_imgui_menu_opened, 0)
-        clicked, g_imgui_checkbox = ig.Checkbox("Checkbox", g_imgui_checkbox)
-        ig.Text("Delta time: %f", dt)
-        ig.Text("Checked?: %s", bool2str(g_imgui_checkbox))
-        if igSmallButton("Flip the switch") then
+        revealed, g_imgui_menu_opened = imgui.Begin("Demo menu", g_imgui_menu_opened, 0)
+        clicked, g_imgui_checkbox = imgui.Checkbox("Checkbox", g_imgui_checkbox)
+        imgui.Text("Delta time: %f", dt)
+        imgui.Text("Checked?: %s", bool2str(g_imgui_checkbox))
+        if imgui.SmallButton("Flip the switch") then
             g_imgui_switch = not g_imgui_switch
         end
-        button_pressed, new_buffer = ig.InputText("Test", g_imgui_text_buffer)
+        button_pressed, new_buffer = imgui.InputTextAuto("Test", g_imgui_text_buffer)
         if button_pressed then
             g_imgui_text_buffer = new_buffer
         end
 
-        _, g_imgui_input_integer = ig.InputInt("Value", g_imgui_input_integer)
-        ig.Text("integer = %d ", g_imgui_input_integer)
+        _, g_imgui_input_integer = imgui.InputInt("Value", g_imgui_input_integer)
+        imgui.Text("integer = %d ", g_imgui_input_integer)
 
-        _, g_imgui_input_float = ig.InputFloat("ValueFloat", g_imgui_input_float)
-        ig.Text("float = %f ", g_imgui_input_float)
+        _, g_imgui_input_float = imgui.InputFloat("ValueFloat", g_imgui_input_float)
+        imgui.Text("float = %f ", g_imgui_input_float)
 
-        ig.Text(g_imgui_text_buffer)
-        ig.Text("Is input text active? %s", bool2str(button_pressed))
-        ig.Text("Switch?: %s", bool2str(g_imgui_switch))
-        ig.End()
+        imgui.Text(g_imgui_text_buffer)
+        imgui.Text("Is input text active? %s", bool2str(button_pressed))
+        imgui.Text("Switch?: %s", bool2str(g_imgui_switch))
+        imgui.End()
     end
 end
 
