@@ -18,7 +18,7 @@ static struct
 
 int LinearAllocatorInit(b8 debug)
 {
-    A.capacity = Megabytes(1);
+    A.capacity = Megabytes(2);
     A.buffer = SDL_malloc(A.capacity);
     A.debug = debug;
     LinearAllocatorClear();

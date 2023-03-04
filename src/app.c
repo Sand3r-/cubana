@@ -103,6 +103,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(ScriptEngineInit());
     ReturnOnFailure(InitGame());
+    ReturnOnFailure(ConsoleInit());
 
     DEBUG_StopWatchdog();
     DEBUG_TestCode();
@@ -152,6 +153,7 @@ static int AppLoop(void)
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
+        ConsoleUpdate();
         GameUpdate(&g_app.game, delta);
         RendererDraw();
         ResetInput();
