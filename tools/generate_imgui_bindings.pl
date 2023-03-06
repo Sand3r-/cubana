@@ -10,7 +10,7 @@ use diagnostics;
 #
 # This works for IMGUI v1.89 and does not get all functions
 #
-# to use ./generate_imgui_bindings.pl <../imgui/imgui.h >imgui_iterator.inl
+# to use ./generate_imgui_bindings.pl <../external/imgui/imgui.h >../src/script/imgui_iterator.inl
 # and define macros properly as in example imgui_lua_bindings.cpp
 #
 # check imgui_iterator for explanations of why some functions are not supported yet
@@ -266,7 +266,7 @@ sub generateImguiGeneric {
           #const ImVec2& with default or not
         } elsif ($args[$i] =~ m/^\s*const\s*ImVec2&\s*([^ ]*)\s*(=\s*ImVec2 [^ ]*\s*[^ ]*|) *$/) {
           my $name = $1;
-          if ($2 =~ m/^=\s*ImVec2 ([^ ]*) ([^ ]*)$/) {
+          if ($2 =~ m/^=\s*ImVec2 ([^ ]*)\s*([^ ]*)$/) {
             push(@before, "OPTIONAL_IM_VEC_2_ARG($name, $1, $2)");
           } else {
             push(@before, "IM_VEC_2_ARG($name)");
@@ -278,9 +278,9 @@ sub generateImguiGeneric {
           push(@before, "IM_VEC_2_ARG($name)");
           push(@funcArgs, $name);
         #const ImVec4& with default or not
-        } elsif ($args[$i] =~ m/^ *const ImVec4& ([^ ]*) *(= * ImVec4 [^ ]* [^ ]* [^ ]* [^ ]*|) *$/) {
+        } elsif ($args[$i] =~ m/^\s*const\s*ImVec4&\s*([^ ]*)\s*(= * ImVec4\s*[^ ]*\s*[^ ]*\s*[^ ]*\s*[^ ]*|) *$/) {
           my $name = $1;
-          if ($2 =~ m/^= * ImVec4 ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)$/) {
+          if ($2 =~ m/^= * ImVec4\s*([^ ]*)\s*([^ ]*)\s*([^ ]*)\s*([^ ]*)$/) {
             push(@before, "OPTIONAL_IM_VEC_4_ARG($name, $1, $2, $3, $4)");
           } else {
             push(@before, "IM_VEC_4_ARG($name)");
@@ -492,7 +492,7 @@ for (my $i=0; $i < scalar @blocks; $i++) {
 	$alreadyParsedMainImguiNamespace = 1;
     generateNamespaceImgui($blocks[$i]);
   }
-  if ($blocknames[$i] =~ m/enum ImGui(.*)_\n/) {
+  if ($blocknames[$i] =~ m/^.*enum ImGui(.*)_.*$/) {
     generateEnums($1, $blocks[$i]);
   }
   if ($blocknames[$i] eq "struct ImDrawList\n") {
