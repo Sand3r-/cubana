@@ -12,7 +12,7 @@ list(APPEND SOURCES ../imgui/imgui_demo.cpp)
 list(APPEND SOURCES ../imgui/imgui_widgets.cpp)
 list(APPEND SOURCES ../imgui/imgui_tables.cpp)
 list(APPEND SOURCES ../imgui/backends/imgui_impl_vulkan.cpp)
-list(APPEND SOURCES ../imgui/backends/imgui_impl_sdl.cpp)
+list(APPEND SOURCES ../imgui/backends/imgui_impl_sdl2.cpp)
 
 target_include_directories(${TARGET} PUBLIC ../imgui)
 if (WIN32)

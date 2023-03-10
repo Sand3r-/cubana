@@ -16,7 +16,6 @@
 #include "timer.h"
 #include "window.h"
 #include <cimgui.h>
-#include <cimgui_impl.h>
 #include <cim3d.h>
 
 #include <lua.h>
