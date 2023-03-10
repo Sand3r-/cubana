@@ -10,7 +10,7 @@ use diagnostics;
 #
 # This works for IMGUI v1.89 and does not get all functions
 #
-# to use ./generate_imgui_bindings.pl <../external/imgui/imgui.h >../src/script/imgui_iterator.inl
+# to use ./generate_imgui_bindings.pl <../external/imgui/imgui.h >../src/script/imgui_functions.inl
 # and define macros properly as in example imgui_lua_bindings.cpp
 #
 # check imgui_iterator for explanations of why some functions are not supported yet
@@ -289,12 +289,15 @@ sub generateImguiGeneric {
           # one of the various enums
           # we are handling these as ints
         } elsif ($args[$i] =~ m/^ *(ImGuiWindowFlags|ImGuiCol|ImGuiStyleVar|ImGuiKey|ImGuiAlign|ImGuiColorEditMode|ImGuiMouseCursor|ImGuiSetCond|ImGuiInputTextFlags|ImGuiSelectableFlags|ImGuiTreeNodeFlags|ImGuiComboFlags|ImGuiFocusedFlags|ImGuiHoveredFlags|ImGuiDragDropFlags|ImGuiColorEditFlags|ImGuiCond|ImGuiStyle) ([a-zA-Z]*)(\s*=\s*0|) *$/) {
-         #These are ints
-         my $name = $2;
+          #These are ints
+          my $name = $2;
           if ($3 =~ m/^\s*=\s*0$/) {
             push(@before, "OPTIONAL_INT_ARG($name, 0)");
           } else {
             push(@before, "INT_ARG($name)");
+          }
+          if ($1 eq "ImGuiKey") { # I don't know why, but it needs a cast as of 1.89.3
+              $name = "(ImGuiKey)" . $2
           }
           push(@funcArgs, $name);
           #int with default value or not
