@@ -19,7 +19,7 @@ extern "C" {
 // if lua errors
 
 // define this global before you call RunString or LoadImGuiBindings
-lua_State* g_ImguiBindingsState;
+static lua_State* g_ImguiBindingsState;
 
 // Buffers to be re-used for function wrappers to avoid allocations
 char g_CharBuffer[MAX_CHAR_BUFFER_SIZE];
@@ -525,10 +525,8 @@ static void PushImguiEnums(lua_State* g_ImguiBindingsState, const char* tableNam
   lua_rawset(g_ImguiBindingsState, -3);
 };
 
-void LoadImguiBindings() {
-  if (!g_ImguiBindingsState) {
-    fprintf(stderr, "You didn't assign the global g_ImguiBindingsState, either assign that or refactor LoadImguiBindings and RunString\n");
-  }
+void LoadImguiBindings(lua_State* L) {
+  g_ImguiBindingsState = L;
   lua_newtable(g_ImguiBindingsState);
   luaL_setfuncs(g_ImguiBindingsState, imguilib, 0);
   PushImguiEnums(g_ImguiBindingsState, "constant");

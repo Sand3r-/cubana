@@ -480,8 +480,7 @@ void RegisterLuaFunctions(lua_State* L)
 
     REGISTER(L, log_log);
 
-    g_ImguiBindingsState = L;
-    LoadImguiBindings();
+    LoadImguiBindings(L);
 }
 
 #undef REGISTER

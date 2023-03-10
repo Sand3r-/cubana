@@ -16,5 +16,4 @@ extern "C" {
 }
 #endif
 
-EXTERN lua_State* g_ImguiBindingsState;
-EXTERN void LoadImguiBindings();
+EXTERN void LoadImguiBindings(lua_State* L);
