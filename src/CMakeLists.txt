@@ -12,44 +12,48 @@ set_target_properties(${TARGET} PROPERTIES C_STANDARD 17)
 set_target_properties(${TARGET} PROPERTIES CMAKE_C_STANDARD_REQUIRED True)
 
 # Specify sources for the target
-list(APPEND SOURCES app.c)
-list(APPEND SOURCES argparser.c)
-list(APPEND SOURCES buffer.c)
-list(APPEND SOURCES culibc.c)
-list(APPEND SOURCES entity.c)
-list(APPEND SOURCES error.c)
-list(APPEND SOURCES event.c)
-list(APPEND SOURCES external.c)
-list(APPEND SOURCES file.c)
-list(APPEND SOURCES gamepad.c)
-list(APPEND SOURCES game.c)
-list(APPEND SOURCES input.c)
-list(APPEND SOURCES log/log.c)
-list(APPEND SOURCES main.c)
-list(APPEND SOURCES math/mat.c)
-list(APPEND SOURCES math/vec.c)
-list(APPEND SOURCES math/scalar.c)
-list(APPEND SOURCES memory/stackallocator.c)
-list(APPEND SOURCES memory/linearallocator.c)
-list(APPEND SOURCES platform.c)
-list(APPEND SOURCES renderer/renderer.c)
-list(APPEND SOURCES renderer/renderervk.c)
-list(APPEND SOURCES renderer/igintegration.c)
-list(APPEND SOURCES renderer/i3integration.c)
-list(APPEND SOURCES script/scripting.c)
-list(APPEND SOURCES script/scriptreg.c)
-list(APPEND SOURCES script/imgui_registrar.cpp)
-list(APPEND SOURCES timer.c)
-list(APPEND SOURCES window.c)
+set(SOURCES
+    app.c
+    argparser.c
+    buffer.c
+    culibc.c
+    entity.c
+    error.c
+    event.c
+    external.c
+    file.c
+    gamepad.c
+    game.c
+    input.c
+    log/log.c
+    main.c
+    math/mat.c
+    math/vec.c
+    math/scalar.c
+    memory/stackallocator.c
+    memory/linearallocator.c
+    platform.c
+    renderer/renderer.c
+    renderer/renderervk.c
+    renderer/igintegration.c
+    renderer/i3integration.c
+    script/scripting.c
+    script/scriptreg.c
+    script/imgui_registrar.cpp
+    timer.c
+    window.c
+)
 target_sources(${TARGET} PRIVATE ${SOURCES})
 
 # Specify libraries for the target
-list(APPEND LIBRARIES Vulkan::Vulkan)
-list(APPEND LIBRARIES SDL2)
-list(APPEND LIBRARIES SDL2main)
-list(APPEND LIBRARIES cimgui)
-list(APPEND LIBRARIES cim3d)
-list(APPEND LIBRARIES lua_shared)
+set(LIBRARIES
+    Vulkan::Vulkan
+    SDL2
+    SDL2main
+    cimgui
+    cim3d
+    lua_shared
+)
 
 if (UNIX)
     list(APPEND LIBRARIES m) # Math library
