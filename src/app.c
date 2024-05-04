@@ -91,6 +91,16 @@ static int InitGame(void)
     return GameInit(&g_app.game);
 }
 
+static f32 GetTimeDelta(void)
+{
+    static u64 old_ticks = 0;
+    u64 new_ticks = GetPerformanceCounter();
+    f32 delta = (new_ticks - old_ticks) * 1000 / (f32)GetPerformanceFrequency();
+    old_ticks = new_ticks;
+
+    return delta;
+}
+
 static int Init(int argc, char* argv[])
 {
     ReturnOnFailure(InitLogger());
@@ -109,16 +119,6 @@ static int Init(int argc, char* argv[])
     GetTimeDelta(); // Run once to initialise
 
     return CU_SUCCESS;
-}
-
-static f32 GetTimeDelta(void)
-{
-    static u64 old_ticks = 0;
-    u64 new_ticks = GetPerformanceCounter();
-    f32 delta = (new_ticks - old_ticks) * 1000 / (f32)GetPerformanceFrequency();
-    old_ticks = new_ticks;
-
-    return delta;
 }
 
 static void DrawPerformanceStatistics(f32 delta)
