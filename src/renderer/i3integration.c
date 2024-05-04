@@ -419,7 +419,7 @@ static void CreateVertexBuffer(void)
         &C.vertex_buffer, &C.vertex_buffer_memory);
 }
 
-static void UploadToVertexBuffer(void* input, VkDeviceSize offset, VkDeviceSize size)
+static void UploadToVertexBuffer(const void* input, VkDeviceSize offset, VkDeviceSize size)
 {
     assert(size < VERTEX_BUFFER_SIZE);
     void* data;
