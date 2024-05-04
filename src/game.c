@@ -4,6 +4,7 @@
 #include "input.h"
 #include "log/log.h"
 #include "renderer/renderer.h"
+#include "ui/ui.h"
 
 static void CreateFreeFlyingCamera(Game* game)
 {
@@ -35,6 +36,7 @@ static void GameControlsUpdate(Game* game)
 
 int GameInit(Game* game)
 {
+    InitUI();
     SetSnapCursorToCenter(game, true);
     CreateFreeFlyingCamera(game);
     ExecuteScriptFile("scripts/level1.lua");
@@ -57,6 +59,7 @@ void GameUpdate(Game* game, f32 delta)
     }
 
     GameControlsUpdate(game);
+    UpdateUI();
 }
 
 void GameProcessEvent(Game* game, Event event)

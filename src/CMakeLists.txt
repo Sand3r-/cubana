@@ -41,6 +41,9 @@ set(SOURCES
     script/scriptreg.c
     script/imgui_registrar.cpp
     timer.c
+    ui/scripteditor.cpp
+    ui/texteditor.cpp
+    ui/ui.c
     window.c
 )
 target_sources(${TARGET} PRIVATE ${SOURCES})
