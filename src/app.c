@@ -106,12 +106,12 @@ static int Init(int argc, char* argv[])
     DEBUG_StopWatchdog();
     DEBUG_TestCode();
 
-    ComputeDeltaTime(); // Run once to initialise
+    CalculateTimeDelta(); // Run once to initialise
 
     return CU_SUCCESS;
 }
 
-static f32 ComputeDeltaTime(void)
+static f32 CalculateTimeDelta(void)
 {
     static u64 old_ticks = 0;
     u64 new_ticks = GetPerformanceCounter();
@@ -147,7 +147,7 @@ static int AppLoop(void)
     while (!done)
     {
         done = ProcessPlatformEvents();
-        f32 delta = ComputeDeltaTime();
+        f32 delta = CalculateTimeDelta();
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
