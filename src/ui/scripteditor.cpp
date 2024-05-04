@@ -1,93 +1,87 @@
 #include "scripteditor.h"
-#include "texteditor.h"
+#include "TextEditor.h"
+extern "C" {
+    #include "memory/linearallocator.h"
+}
 #include <fstream>
 #include <streambuf>
 
-static TextEditor E;
-static const char* file_name = "scripts/level1.lua";
+static struct ScriptEditorContext
+{
+    // Defining it as pointer since its default constructor calls
+    // functions that require ImGUI to be already initialized
+    TextEditor* editor;
+    std::string* text;
+    const char* file_name = "scripts/level1.lua";
+} C;
 
 void InitializeScriptEditor(void)
 {
-	auto lang = TextEditor::LanguageDefinition::Lua();
-	E.SetLanguageDefinition(lang);
-
-	{
-		std::ifstream t(file_name);
-		if (t.good())
-		{
-			std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
-			E.SetText(str);
-		}
-	}
+    void* text_editor_address = LinearMalloc(sizeof(TextEditor));
+    C.editor = new (text_editor_address) TextEditor();
+    C.editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
+    C.editor->SetTabSize(4);
+    {
+        std::ifstream t(C.file_name);
+        if (t.good())
+        {
+            void* file_buffer = LinearMalloc(Kilobytes(512)); // TODO: replace with something that can grow
+            C.text = new(file_buffer) std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+            C.editor->SetText(*C.text);
+        }
+    }
 }
 
 void UpdateScriptEditor(void)
 {
-	auto cpos = E.GetCursorPosition();
-	ImGui::Begin("Text Editor Demo", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
-	ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("Save"))
-			{
-				auto textToSave = E.GetText();
-				/// save text....
-			}
-			// if (ImGui::MenuItem("Quit", "Alt-F4"))
-			// 	break;
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			bool ro = E.IsReadOnly();
-			if (ImGui::MenuItem("Read-only mode", nullptr, &ro))
-				E.SetReadOnly(ro);
-			ImGui::Separator();
+    ImGui::Begin("Text Editor Demo", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
+    ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+     if (ImGui::BeginMenuBar())
+     {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Save"))
+            {
+                auto text = C.editor->GetText();
+                // TODO: Save file contents
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Edit"))
+        {
+            if (ImGui::MenuItem("Undo", "Ctrl+Z", nullptr, C.editor->CanUndo()))
+                C.editor->Undo();
+            if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, C.editor->CanRedo()))
+                C.editor->Redo();
 
-			if (ImGui::MenuItem("Undo", "ALT-Backspace", nullptr, !ro && E.CanUndo()))
-				E.Undo();
-			if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !ro && E.CanRedo()))
-				E.Redo();
+            ImGui::Separator();
 
-			ImGui::Separator();
+            if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, C.editor->AnyCursorHasSelection()))
+                C.editor->Copy();
+            if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, C.editor->AnyCursorHasSelection()))
+                C.editor->Cut();
+            if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, ImGui::GetClipboardText() != nullptr))
+                C.editor->Paste();
 
-			if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, E.HasSelection()))
-				E.Copy();
-			if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, !ro && E.HasSelection()))
-				E.Cut();
-			if (ImGui::MenuItem("Delete", "Del", nullptr, !ro && E.HasSelection()))
-				E.Delete();
-			if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, !ro && ImGui::GetClipboardText() != nullptr))
-				E.Paste();
+            ImGui::Separator();
 
-			ImGui::Separator();
+            if (ImGui::MenuItem("Select all", "Ctrl+A", nullptr))
+                C.editor->SelectAll();
 
-			if (ImGui::MenuItem("Select all", nullptr, nullptr))
-				E.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(E.GetTotalLines(), 0));
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+     }
 
-			ImGui::EndMenu();
-		}
+    // TODO: Move this to the bottom as it's distracting to have it on top.
+    // Currently replacing the calls to Text and pEditor->Render
+    // results in screen flickering due to some bug in TextEditor.
+    int line, column;
+    C.editor->GetCursorPosition(line, column);
+    ImGui::Text("Ln %3d, Col %-2d | %s | %s%s", line + 1, column + 1,
+        C.editor->GetLanguageDefinitionName(), C.file_name,
+        C.editor->CanUndo() ? "*" : " ");
 
-		if (ImGui::BeginMenu("View"))
-		{
-			if (ImGui::MenuItem("Dark palette"))
-				E.SetPalette(TextEditor::GetDarkPalette());
-			if (ImGui::MenuItem("Light palette"))
-				E.SetPalette(TextEditor::GetLightPalette());
-			if (ImGui::MenuItem("Retro blue palette"))
-				E.SetPalette(TextEditor::GetRetroBluePalette());
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}
-
-	ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, E.GetTotalLines(),
-		E.IsOverwrite() ? "Ovr" : "Ins",
-		E.CanUndo() ? "*" : " ",
-		E.GetLanguageDefinition().mName.c_str(), file_name);
-
-	E.Render("TextEditor");
-	ImGui::End();
+    C.editor->Render("TextEditor");
+    ImGui::End();
 }
