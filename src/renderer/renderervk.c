@@ -192,7 +192,7 @@ static VkResult CreateDebugReportCallbackEXT(
     VkInstance instance,
     const VkDebugReportCallbackCreateInfoEXT* pCreateInfo,
     const VkAllocationCallbacks* pAllocator,
-    VkDebugUtilsMessengerEXT* pDebugMessenger)
+    VkDebugReportCallbackEXT* pDebugMessenger)
 {
     PFN_vkCreateDebugReportCallbackEXT func = (PFN_vkCreateDebugReportCallbackEXT)
         vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT");
@@ -1090,6 +1090,24 @@ VkFormat FindSupportedFormat(VkFormat* candidates, u16 candidates_num,
     return VK_FORMAT_UNDEFINED;
 }
 
+static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
+{
+    VkPhysicalDeviceMemoryProperties mem_properties;
+    vkGetPhysicalDeviceMemoryProperties(C.physical_device, &mem_properties);
+
+    for (u32 i = 0; i < mem_properties.memoryTypeCount; i++)
+    {
+        if (type_filter & (1 << i) &&
+           (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
+        {
+            return i;
+        }
+    }
+
+    ERROR("Failed to find a suitable memory type");
+    return 0;
+}
+
 static VkFormat FindDepthFormat(void)
 {
     VkFormat desired_depth_formats[] = {
@@ -1160,24 +1178,6 @@ static void CreateDepthResources(void)
 
     if (vkCreateImageView(C.device, &view_info, NULL, &C.depth_image_view) != VK_SUCCESS)
         ERROR("Failed creating depth image view");
-}
-
-static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
-{
-    VkPhysicalDeviceMemoryProperties mem_properties;
-    vkGetPhysicalDeviceMemoryProperties(C.physical_device, &mem_properties);
-
-    for (u32 i = 0; i < mem_properties.memoryTypeCount; i++)
-    {
-        if (type_filter & (1 << i) &&
-           (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
-        {
-            return i;
-        }
-    }
-
-    ERROR("Failed to find a suitable memory type");
-    return 0;
 }
 
 static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
