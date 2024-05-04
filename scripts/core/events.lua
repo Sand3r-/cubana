@@ -1,10 +1,12 @@
+require "log"
+
 events = {}
 callbacks = {}
 
 -- Called from C
 function _register_event(event_id, event_name)
     events[event_name] = event_id
-    print("Registered event " .. event_name .. " of id " .. event_id)
+    log.info("Registered event " .. event_name .. " of id " .. event_id)
 end
 
 function _handle_event(event)
