@@ -21,6 +21,7 @@ void InitializeScriptEditor(void)
     C.editor = new (text_editor_address) TextEditor();
     C.editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
     C.editor->SetTabSize(4);
+    C.editor->SetCompletePairedGlyphs(true);
     {
         std::ifstream t(C.file_name);
         if (t.good())
