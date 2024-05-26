@@ -11,6 +11,7 @@
 #include "math/mat.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
+#include "os/crash_handler.h"
 #include "platform.h"
 #include "renderer/renderer.h"
 #include "timer.h"
@@ -112,6 +113,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(ScriptEngineInit());
     ReturnOnFailure(InitGame());
+    InitializeCrashHandlers();
 
     DEBUG_StopWatchdog();
     DEBUG_TestCode();
@@ -152,7 +154,7 @@ static int AppLoop(void)
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
         GameUpdate(&g_app.game, delta);
-        RendererDraw();
+        RendererDraw(delta);
         ResetInput();
         DEBUG_TestCode();
     }

@@ -8,10 +8,10 @@ int RendererInit(Window window)
 #endif
 }
 
-void RendererDraw(void)
+void RendererDraw(f32 delta)
 {
 #ifdef USE_VK_RENDERER
-    VkRendererDraw();
+    VkRendererDraw(delta);
 #endif
 }
 

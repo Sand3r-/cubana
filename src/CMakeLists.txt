@@ -11,6 +11,10 @@ set_property(TARGET ${TARGET} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BI
 set_target_properties(${TARGET} PROPERTIES C_STANDARD 17)
 set_target_properties(${TARGET} PROPERTIES CMAKE_C_STANDARD_REQUIRED True)
 
+# Specify extenral sources for the target
+# Import IMGUI_COLOR_TEXT_EDIT_SOURCES and IMGUI_COLOR_TEXT_EDIT_INCLUDE_DIRECTORIES
+include(ImGuiColorTextEdit)
+
 # Specify sources for the target
 set(SOURCES
     app.c
@@ -41,9 +45,19 @@ set(SOURCES
     script/scriptreg.c
     script/imgui_registrar.cpp
     timer.c
+    ui/scripteditor.cpp
+    ui/ui.c
     window.c
 )
-target_sources(${TARGET} PRIVATE ${SOURCES})
+
+if (WIN32)
+    list(APPEND SOURCES os/crash_handler_win32.cpp)
+else(WIN32)
+    list(APPEND SOURCES os/crash_handler_generic.cpp)
+endif(WIN32)
+
+target_sources(${TARGET} PRIVATE ${SOURCES} ${IMGUI_COLOR_TEXT_EDIT_SOURCES})
+target_include_directories(${TARGET} PRIVATE ${IMGUI_COLOR_TEXT_EDIT_INCLUDE_DIRECTORIES})
 
 # Specify libraries for the target
 set(LIBRARIES
@@ -53,6 +67,7 @@ set(LIBRARIES
     cimgui
     cim3d
     lua_shared
+    nfd
 )
 
 if (UNIX)

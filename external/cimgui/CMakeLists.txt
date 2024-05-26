@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.21)
 # Create target
 set(TARGET cimgui)
 
-add_library(${TARGET} SHARED)
+add_library(${TARGET} STATIC)
 
 list(APPEND SOURCES cimgui.cpp)
 list(APPEND SOURCES ../imgui/imgui.cpp)

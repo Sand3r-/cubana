@@ -1508,7 +1508,7 @@ static void InitImGui(Window window)
     };
     ImGuiInit(window, init_info, C.render_pass);
     ImGuiUploadFonts(C.device, C.graphics_queue, C.command_pool, C.command_buffers[0]);
-    ImGuiNewFrame();
+    ImGuiNewFrame(0.0f);
 }
 
 static void InitIm3d()
@@ -1555,7 +1555,7 @@ int VkRendererInit(Window window)
     return CU_SUCCESS;
 }
 
-void VkRendererDraw(void)
+void VkRendererDraw(f32 delta)
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
@@ -1606,7 +1606,7 @@ void VkRendererDraw(void)
 
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
 
-    ImGuiNewFrame();
+    ImGuiNewFrame(delta);
     im3dVkNewFrame();
 }
 
