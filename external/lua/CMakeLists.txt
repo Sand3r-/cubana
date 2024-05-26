@@ -17,7 +17,7 @@ if(TOP_LEVEL)
     option(LUA_BUILD_COMPILER "Build luac compiler" ON)
 else()
     option(LUA_BUILD_BINARY "Build lua binary" OFF)
-    option(LUA_BUILD_COMPILER "Build luac compiler" ON)
+    option(LUA_BUILD_COMPILER "Build luac compiler" OFF)
 endif()
 
 
