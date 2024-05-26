@@ -46,6 +46,7 @@ add_subdirectory(external/SDL)
 add_subdirectory(external/cimgui)
 add_subdirectory(external/im3d)
 add_subdirectory(external/lua)
+add_subdirectory(external/nfd)
 
 # Add all of the source code for the exe itself
 add_subdirectory(src)

@@ -67,6 +67,7 @@ set(LIBRARIES
     cimgui
     cim3d
     lua_shared
+    nfd
 )
 
 if (UNIX)

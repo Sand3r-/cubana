@@ -1,11 +1,14 @@
 #include "scripteditor.h"
 #include "TextEditor.h"
+#include "nfd.h"
 extern "C" {
-    #include "log/log.h"
-    #include "script/scripting.h"
-    #include "memory/linearallocator.h"
+    #include "culibc.h"
     #include "file.h"
+    #include "log/log.h"
+    #include "memory/linearallocator.h"
     #include "os/crash_handler.h"
+    #include "platform.h"
+    #include "script/scripting.h"
 }
 #include <fstream>
 #include <streambuf>
@@ -16,8 +19,9 @@ static struct ScriptEditorContext
     // functions that require ImGUI to be already initialized
     TextEditor* editor;
     std::string* text;
-    const char* file_name = "scripts/level1.lua";
-    const char* recovery_file_name = "recovered_file.txt";
+    char          file_name[MAX_PATH] = "scripts/level1.lua";
+    char recovery_file_name[MAX_PATH] = "recovered_file.txt";
+    const char*          DEFAULT_NAME = "Untitled";
 } C;
 
 static void SaveFile(const char* filename);
@@ -45,31 +49,73 @@ void InitializeScriptEditor(void)
             C.editor->SetText(*C.text);
         }
     }
-
+    NFD_Init();
     RegisterCrashCallback(SaveFileOnCrash);
+}
+
+static b8 GetPathFromFileDialog(char* out, u64 size, b8 save = false)
+{
+    nfdchar_t* path;
+    nfdfilteritem_t filterItem[1] = { { "Source files", "lua,glsl,json" } };
+    nfdresult_t result;
+    if (save)
+        result = NFD_SaveDialog(&path, filterItem, ArrayCount(filterItem), cu_getcwd(), C.DEFAULT_NAME);
+    else
+        result = NFD_OpenDialog(&path, filterItem, ArrayCount(filterItem), cu_getcwd());
+    if (result == NFD_CANCEL)
+    {
+        L_INFO("User pressed cancel.");
+        return false;
+    }
+    else if (result == NFD_ERROR)
+    {
+        L_ERROR("Error: %s\n", NFD_GetError());
+        return false;
+    }
+
+    cu_strlcpy(out, path, size);
+    NFD_FreePath(path);
+    return true;
 }
 
 static void NewFile()
 {
-    C.file_name = "Untitled";
+    cu_strlcpy(C.file_name, C.DEFAULT_NAME, MAX_PATH);
     C.text->clear();
     C.editor->SetText(*C.text);
 }
 
-static void SaveFile(const char* filename = "Untitled")
+static void SaveFile(const char* filename = nullptr)
 {
-    File file = FileOpen(filename, "w");
+
+    // If neither argument is not-null nor was the path chosen, abort
+    if (!filename && !GetPathFromFileDialog(C.file_name, MAX_PATH, true))
+        return;
+    // If the file was created using "New" and is called Untitled,
+    // but the user has canceled choosing file name, abort saving.
+    else if (filename && !cu_strcmp(filename, C.DEFAULT_NAME) && !GetPathFromFileDialog(C.file_name, MAX_PATH, true))
+        return;
+    // If the name was provided, set it as a current file.
+    else if (filename)
+        cu_strlcpy(C.file_name, filename, MAX_PATH);
+
+    File file = FileOpen(C.file_name, "w");
     FileWrite(&file, (void*)C.editor->GetText().c_str(), sizeof(char), C.editor->GetText().size());
     FileClose(&file);
 }
 
-static void OpenFile(const char* file_name)
+static void OpenFile(const char* filename = nullptr)
 {
-    C.file_name = file_name;
-    File file = FileOpen(file_name, "r");
-    size_t size = FileRead(&file, (void*)C.text->data(), sizeof(char), C.text->size());
-    FileClose(&file);
+    if (filename)
+        cu_strlcpy(C.file_name, filename, MAX_PATH);
+    else if (!GetPathFromFileDialog(C.file_name, MAX_PATH))
+        return;
+
+    File file = FileOpen(C.file_name, "r");
+    s64 size = FileSize(&file);
     C.text->resize(size);
+    FileRead(&file, (void*)C.text->data(), sizeof(char), C.text->size());
+    FileClose(&file);
     C.editor->SetText(*C.text);
 }
 
@@ -96,7 +142,7 @@ static void HandleKeyboardInputs()
     if (isCtrlOnly && ImGui::IsKeyPressed(ImGuiKey_S))
         SaveFile(C.file_name);
     else if (isCtrlOnly && ImGui::IsKeyPressed(ImGuiKey_O))
-        OpenFile("Untitled");
+        OpenFile();
     else if (isCtrlOnly && ImGui::IsKeyPressed(ImGuiKey_N))
         NewFile();
     else if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_R))
@@ -128,11 +174,12 @@ void UpdateScriptEditor(void)
             {
                 if (ImGui::MenuItem("New", "Ctrl+N"))
                     NewFile();
-                if (ImGui::MenuItem("Save", "Ctrl+S"))
-                    SaveFile();
-                ImGui::MenuItem("Save As", "Ctrl+Shift+S", nullptr, false);
                 if (ImGui::MenuItem("Open", "Ctrl+O"))
-                    OpenFile("Untitled");
+                    OpenFile();
+                if (ImGui::MenuItem("Save", "Ctrl+S"))
+                    SaveFile(C.file_name);
+                if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+                    SaveFile();
                 if (ImGui::MenuItem("Open recovered file", "Ctrl+Shift+R"))
                     OpenFile(C.recovery_file_name);
                 ImGui::EndMenu();
