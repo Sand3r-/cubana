@@ -49,6 +49,13 @@ set(SOURCES
     ui/ui.c
     window.c
 )
+
+if (WIN32)
+    list(APPEND SOURCES os/crash_handler_win32.cpp)
+else(WIN32)
+    list(APPEND SOURCES os/crash_handler_generic.cpp)
+endif(WIN32)
+
 target_sources(${TARGET} PRIVATE ${SOURCES} ${IMGUI_COLOR_TEXT_EDIT_SOURCES})
 target_include_directories(${TARGET} PRIVATE ${IMGUI_COLOR_TEXT_EDIT_INCLUDE_DIRECTORIES})
 

@@ -5,6 +5,7 @@ extern "C" {
     #include "script/scripting.h"
     #include "memory/linearallocator.h"
     #include "file.h"
+    #include "os/crash_handler.h"
 }
 #include <fstream>
 #include <streambuf>
@@ -16,7 +17,17 @@ static struct ScriptEditorContext
     TextEditor* editor;
     std::string* text;
     const char* file_name = "scripts/level1.lua";
+    const char* recovery_file_name = "recovered_file.txt";
 } C;
+
+static void SaveFile(const char* filename);
+
+// Custom terminate handler
+void SaveFileOnCrash()
+{
+    L_FATAL("Saving currently opened script to %s", C.recovery_file_name);
+    SaveFile(C.recovery_file_name);
+}
 
 void InitializeScriptEditor(void)
 {
@@ -34,6 +45,8 @@ void InitializeScriptEditor(void)
             C.editor->SetText(*C.text);
         }
     }
+
+    RegisterCrashCallback(SaveFileOnCrash);
 }
 
 static void NewFile()
@@ -86,6 +99,8 @@ static void HandleKeyboardInputs()
         OpenFile("Untitled");
     else if (isCtrlOnly && ImGui::IsKeyPressed(ImGuiKey_N))
         NewFile();
+    else if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_R))
+        OpenFile(C.recovery_file_name);
     else if (ImGui::IsKeyPressed(ImGuiKey_F5))
         Execute();
 }
@@ -118,6 +133,8 @@ void UpdateScriptEditor(void)
                 ImGui::MenuItem("Save As", "Ctrl+Shift+S", nullptr, false);
                 if (ImGui::MenuItem("Open", "Ctrl+O"))
                     OpenFile("Untitled");
+                if (ImGui::MenuItem("Open recovered file", "Ctrl+Shift+R"))
+                    OpenFile(C.recovery_file_name);
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit"))
