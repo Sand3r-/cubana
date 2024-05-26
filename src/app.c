@@ -154,7 +154,7 @@ static int AppLoop(void)
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
         GameUpdate(&g_app.game, delta);
-        RendererDraw();
+        RendererDraw(delta);
         ResetInput();
         DEBUG_TestCode();
     }

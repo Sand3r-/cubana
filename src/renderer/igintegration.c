@@ -55,11 +55,13 @@ void ImGuiProcessEvents(SDL_Event e)
     ImGui_ImplSDL2_ProcessEvent(&e);
 }
 
-void ImGuiNewFrame(void)
+void ImGuiNewFrame(f32 delta)
 {
     ImGui_ImplVulkan_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     igNewFrame();
+    ImGuiIO* ioptr = igGetIO();
+    ioptr->DeltaTime = delta / 1000.0f;
 }
 
 void ImGuiRender(VkCommandBuffer command_buffer)
