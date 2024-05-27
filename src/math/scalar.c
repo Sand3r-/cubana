@@ -2,6 +2,11 @@
 #include "log/log.h"
 #include "constants.h"
 
+u64 minu64(u64 a, u64 b)
+{
+    return a < b ? a : b;
+}
+
 u32 minu32(u32 a, u32 b)
 {
     return a < b ? a : b;
@@ -13,6 +18,11 @@ i32 mini32(i32 a, i32 b)
 f32 minf32(f32 a, f32 b)
 {
     return a < b ? a : b;
+}
+
+u64 maxu64(u64 a, u64 b)
+{
+    return a > b ? a : b;
 }
 
 u32 maxu32(u32 a, u32 b)
@@ -28,6 +38,11 @@ i32 maxi32(i32 a, i32 b)
 f32 maxf32(f32 a, f32 b)
 {
     return a > b ? a : b;
+}
+
+u64 clampu64(u64 value, u64 min, u64 max)
+{
+    return value < min ? min : ((value > max) ? max : value);
 }
 
 u32 clampu32(u32 value, u32 min, u32 max)
