@@ -34,6 +34,7 @@ set(SOURCES
     math/mat.c
     math/vec.c
     math/scalar.c
+    memory/arena.c
     memory/stackallocator.c
     memory/linearallocator.c
     platform.c
@@ -85,7 +86,11 @@ target_include_directories(${TARGET} PRIVATE ${INCLUDES})
 
 # Specify compile definitions
 target_compile_definitions(${TARGET} PRIVATE
-    CUBANA_DEVELOPMENT USE_VK_RENDERER=1 CIMGUI_DEFINE_ENUMS_AND_STRUCTS )
+    CUBANA_DEVELOPMENT
+    USE_VK_RENDERER=1
+    CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+    DEBUG_ARENA_ALLOCATIONS
+)
 
 # For logging purposes define relative file name for each file
 define_file_basename_for_sources(${TARGET})
