@@ -351,3 +351,12 @@ MigrationBackup/
 
 # Project specific
 build/
+log.txt
+imgui.ini
+
+# RenderDoc
+*.cap
+
+# RemedyBG
+*.rdbg
+
