@@ -5,8 +5,10 @@
 #define ArrayCount(a) (sizeof(a) / sizeof((a)[0]))
 
 #define Bytes(n)      (n)
-#define Kilobytes(n)  (Bytes(n)*1024)
-#define Megabytes(n)  (Kilobytes(n)*1024)
+#define Kilobytes(n)  (Bytes(n)*1024ull)
+#define Megabytes(n)  (Kilobytes(n)*1024ull)
+#define Gigabytes(n)  (Megabytes(n)*1024ull)
+#define Terabytes(n)  (Gigabytes(n)*1024ull)
 
 typedef int8_t   i8;
 typedef int16_t  i16;

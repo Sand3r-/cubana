@@ -5,7 +5,7 @@ extern "C" {
     #include "culibc.h"
     #include "file.h"
     #include "log/log.h"
-    #include "memory/linearallocator.h"
+    #include "memory/arena.h"
     #include "os/crash_handler.h"
     #include "platform.h"
     #include "script/scripting.h"
@@ -33,9 +33,9 @@ void SaveFileOnCrash()
     SaveFile(C.recovery_file_name);
 }
 
-void InitializeScriptEditor(void)
+void InitializeScriptEditor(Arena* arena)
 {
-    void* text_editor_address = LinearMalloc(sizeof(TextEditor));
+    void* text_editor_address = (void*) PushStruct(arena, TextEditor);
     C.editor = new (text_editor_address) TextEditor();
     C.editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
     C.editor->SetTabSize(4);
@@ -44,7 +44,7 @@ void InitializeScriptEditor(void)
         std::ifstream t(C.file_name);
         if (t.good())
         {
-            void* file_buffer = LinearMalloc(Kilobytes(512)); // TODO: replace with something that can grow
+            void* file_buffer = PushArray(arena, char, Kilobytes(512));
             C.text = new(file_buffer) std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
             C.editor->SetText(*C.text);
         }

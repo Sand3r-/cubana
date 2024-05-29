@@ -1,4 +1,5 @@
 #pragma once
+#include "memory/arena.h"
 
-void InitUI();
+void InitUI(Arena* arena);
 void UpdateUI();

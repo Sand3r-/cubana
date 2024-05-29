@@ -9,6 +9,7 @@
 #include "gamepad.h"
 #include "input.h"
 #include "math/mat.h"
+#include "memory/arena.h"
 #include "memory/stackallocator.h"
 #include "memory/linearallocator.h"
 #include "os/crash_handler.h"
@@ -36,6 +37,7 @@ struct Application
     Game game;
     Window window;
     CmdArgs cmd_args;
+    Arena perm_storage_arena;
 } g_app;
 
 static void DEBUG_TestCode(void)
@@ -67,6 +69,13 @@ static int InitConfig(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
+static int InitPermamentStorage(void)
+{
+    void* base_address = (void*)(Gigabytes(64));
+    g_app.perm_storage_arena = ArenaInitialise(base_address, Megabytes(1), Megabytes(1024));
+    return CU_SUCCESS;
+}
+
 static int InitWindow(void)
 {
     WindowResult window_result = CreateWindow(1024, 768, "Cubana");
@@ -89,7 +98,7 @@ static int InitRenderer(void)
 
 static int InitGame(void)
 {
-    return GameInit(&g_app.game);
+    return GameInit(&g_app.perm_storage_arena, &g_app.game);
 }
 
 static f32 GetTimeDelta(void)
@@ -107,6 +116,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitLogger());
     ReturnOnFailure(InitExternalLibs());
     ReturnOnFailure(InitConfig(argc, argv));
+    ReturnOnFailure(InitPermamentStorage());
     ReturnOnFailure(StackAllocatorInit(true)); // Enable debug
     ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
     ReturnOnFailure(InitWindow());
@@ -171,6 +181,7 @@ static int Shutdown(void)
         L_ERROR(g_log_file.error_msg);
         return error_code;
     }
+    ArenaShutdown(&g_app.perm_storage_arena);
     error_code = StackAllocatorShutdown();
     DestroyWindow(g_app.window);
 
