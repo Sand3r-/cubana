@@ -1,12 +1,14 @@
 #include "os_memory.h"
+#include "log/log.h"
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <memoryapi.h>
 #include <sysinfoapi.h>
+#include <errhandlingapi.h>
 
-void* cu_os_reserve(u64 size)
+void* cu_os_reserve(void* base_ptr, u64 size)
 {
-    return VirtualAlloc(0, size, MEM_RESERVE, PAGE_READWRITE);
+    return (void*)VirtualAlloc(base_ptr, size, MEM_RESERVE, PAGE_READWRITE);
 }
 
 b32 cu_os_commit(void *ptr, u64 size)

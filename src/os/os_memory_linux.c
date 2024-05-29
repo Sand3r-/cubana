@@ -2,9 +2,9 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-void* cu_os_reserve(u64 size)
+void* cu_os_reserve(void* base_ptr, u64 size)
 {
-    return mmap(0, size, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+    return mmap(base_ptr, size, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
 }
 
 b32 cu_os_commit(void *ptr, u64 size)

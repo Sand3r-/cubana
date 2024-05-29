@@ -1,12 +1,14 @@
 #include "arena.h"
 #include "error.h"
 #include "math/scalar.h"
+#include "os/os_memory.h"
+#include "os/os_error.h"
 
 #define AlignPow2(x,b) (((x) + (b) - 1)&(~((b) - 1)))
 
 static u64 g_commit_size = 0;
 
-Arena ArenaInitialise(u64 size, u64 capacity)
+Arena ArenaInitialise(void* base_ptr, u64 size, u64 capacity)
 {
     u64 page_size = cu_os_get_page_size();
     g_commit_size = page_size;
@@ -14,20 +16,32 @@ Arena ArenaInitialise(u64 size, u64 capacity)
         .pos = 0,
         .capacity = AlignPow2(capacity, page_size),
         .size = AlignPow2(size, page_size)
-    }; 
+    };
     // Reserve some capacity in the Virtual Address space, but don't commit it
-    arena.base = cu_os_reserve(arena.capacity);
+    arena.base = cu_os_reserve(base_ptr, arena.capacity);
 
     // Commit only some part of the reserved memory
-    if(!cu_os_commit(arena.base, size))
+    if(!cu_os_commit(arena.base, arena.size))
     {
+        cu_os_print_last_error();
         cu_os_release(arena.base, arena.capacity);
         arena.base = NULL;
         ERROR("Failed to commit memory during arena initialization");
     }
-    
+
     L_INFO("Initialised arena allocator of %llu KB commited and %llu KB reserved",
            arena.capacity / 1024, arena.size / 1024);
+
+#ifdef DEBUG_ARENA_ALLOCATIONS
+    arena.debug_info = ArenaPush(&arena, sizeof(ArenaDebugInfo));
+    arena.debug_info->print_new_allocations = true;
+    arena.debug_info->allocations_num = 1;
+    arena.debug_info->allocation_ptrs[0] = arena.debug_info;
+    cu_snprintf(
+        arena.debug_info->allocation_names[0], MAX_ALLOC_NAME, "Arena debug info");
+    L_DEBUG("New alloc: %s:%d - %llu", "Arena debug info", 1337, sizeof(ArenaDebugInfo));
+#endif
+
     return arena;
 }
 
@@ -36,11 +50,7 @@ void ArenaShutdown(Arena* arena)
     cu_os_release(arena->base, arena->capacity);
 }
 
-#ifndef DEBUG_ARENA_ALLOCATIONS
 void* ArenaPushNoZero(Arena* arena, u64 size)
-#else
-void* ArenaPushNoZero(Arena* arena, u64 size, const char* file, int line)
-#endif
 {
     u64 new_pos = arena->pos + size;
     assert(new_pos < arena->capacity);
@@ -65,18 +75,10 @@ void* ArenaPushNoZero(Arena* arena, u64 size, const char* file, int line)
     void* ptr = (u8*)arena->base + arena->pos;
     arena->pos = new_pos; // Move position pointer
 
-#ifdef DEBUG_ARENA_ALLOCATIONS
-    assert(arena->allocations_num < TRACABLE_ALLOCS_NUM);
-    arena->allocation_ptrs[arena->allocations_num] = ptr;
-    cu_snprintf(arena->allocation_names[arena->allocations_num],
-        MAX_ALLOC_LOC_NAME, "%s:%d", file, line);
-    arena->allocations_num++;
-#endif
-
     return ptr;
 }
 
-#ifndef DEBUG_ARENA_ALLOCATIONS
+
 void* ArenaPush(Arena* arena, u64 size)
 {
     u8* beg = (u8*)arena->base + arena->pos;
@@ -84,15 +86,6 @@ void* ArenaPush(Arena* arena, u64 size)
     memset(beg, 0, size);
     return ptr;
 }
-#else
-void* ArenaPush(Arena* arena, u64 size, const char* file, int line)
-{
-    u8* beg = (u8*)arena->base + arena->pos;
-    void* ptr = ArenaPushNoZero(arena, size, file, line);
-    memset(beg, 0, size);
-    return ptr;
-}
-#endif
 
 
 void ArenaPopTo(Arena* arena, u64 pos)
@@ -114,16 +107,54 @@ void ArenaReset(Arena* arena)
 }
 
 #ifdef DEBUG_ARENA_ALLOCATIONS
+
+void* ArenaPushDebug(Arena* arena, u64 size, const char* file, int line)
+{
+    u8* beg = (u8*)arena->base + arena->pos;
+    void* ptr = ArenaPushNoZeroDebug(arena, size, file, line);
+    memset(beg, 0, size);
+    return ptr;
+}
+
+void* ArenaPushNoZeroDebug(Arena* arena, u64 size, const char* file, int line)
+{
+    void* ptr = ArenaPushNoZero(arena, size);
+
+    ArenaDebugInfo* debug = arena->debug_info;
+    assert(debug->allocations_num < TRACABLE_ALLOCS_NUM);
+
+    cu_snprintf(debug->allocation_names[debug->allocations_num],
+        MAX_ALLOC_NAME, "%s:%d", file, line);
+    debug->allocation_ptrs[debug->allocations_num] = ptr;
+    debug->allocations_num++;
+
+    if (arena->debug_info->print_new_allocations)
+         L_DEBUG("New alloc: %s:%d - %llu", file, line, size);
+
+    return ptr;
+}
+
 void DEBUG_ArenaPrintAllocations(Arena* arena)
 {
-    L_INFO("Total allocations: %u", arena->allocations_num);
-    L_INFO("Total size occupied: %u", arena->pos);
-    L_INFO("Total size commited: %u", arena->size);
-    L_INFO("Total size reserved: %u", arena->capacity);
-    L_INFO("Allocations:");
-    for (u32 i = 0; i < arena->allocations_num; i++)
+    L_DEBUG("Total allocations: %lu", arena->debug_info->allocations_num);
+    L_DEBUG("Total size occupied: %llu", arena->pos);
+    L_DEBUG("Total size commited: %llu", arena->size);
+    L_DEBUG("Total size reserved: %llu", arena->capacity);
+    L_DEBUG("Address\t\tSize (bytes)\tName");
+    for (u32 i = 0; i < arena->debug_info->allocations_num - 1; i++)
     {
-        L_INFO("%s %p", arena->allocation_names[i], arena->allocation_ptrs[i]);
+        const char* name = arena->debug_info->allocation_names[i];
+        void* ptr = arena->debug_info->allocation_ptrs[i];
+        void* size = (void*)((u8*)arena->debug_info->allocation_ptrs[i + 1] -
+                   (u8*)arena->debug_info->allocation_ptrs[i]);
+        L_DEBUG("0x%" PRIxPTR "\t%llu\t\t%s", ptr, size, name);
     }
+    // Handle tail differently due to different size computation
+    u32 last_index = arena->debug_info->allocations_num - 1;
+    const char* name = arena->debug_info->allocation_names[last_index];
+    void* ptr = arena->debug_info->allocation_ptrs[last_index];
+    void* size = (void*)((((u8*)arena->base + arena->pos))
+               - (u8*)arena->debug_info->allocation_ptrs[last_index]);
+    L_DEBUG("0x%" PRIxPTR "\t%llu\t\t%s", ptr, size, name);
 }
 #endif
