@@ -54,9 +54,11 @@ set(SOURCES
 if (WIN32)
     list(APPEND SOURCES os/crash_handler_win32.cpp)
     list(APPEND SOURCES os/os_memory_win32.c)
+    list(APPEND SOURCES os/os_error_win32.c)
 else(WIN32)
     list(APPEND SOURCES os/crash_handler_generic.cpp)
     list(APPEND SOURCES os/os_memory_linux.c)
+    list(APPEND SOURCES os/os_error_linux.c)
 endif(WIN32)
 
 target_sources(${TARGET} PRIVATE ${SOURCES} ${IMGUI_COLOR_TEXT_EDIT_SOURCES})
