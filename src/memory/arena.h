@@ -52,6 +52,20 @@ void ArenaReset(Arena* arena);
 void* ArenaPushNoZero(Arena* arena, u64 size);
 void* ArenaPush(Arena* arena, u64 size);
 
+typedef struct ArenaMarker
+{
+    Arena* arena;
+    u64    pos;
+} ArenaMarker;
+
+ArenaMarker ArenaMarkerCreate(Arena* arena);
+void ArenaMarkerRollback(ArenaMarker marker);
+
+#define with_arena(arena) for (                    \
+    ArenaMarker marker = ArenaMarkerCreate(arena); \
+    marker.pos;                                 \
+    ArenaMarkerRollback(marker), marker.pos = 0)
+
 // Debug API
 #ifdef DEBUG_ARENA_ALLOCATIONS
 void* ArenaPushDebug(Arena* arena, u64 size, const char* file, int line);
@@ -73,6 +87,7 @@ typedef struct ArenaDebugInfo
 } ArenaDebugInfo;
 
 void DEBUG_ArenaPrintAllocations(Arena* arena);
+void DEBUG_SetPrintNewAllocations(Arena* arena, b8 value);
 #else
 #define DEBUG_ArenaPrintAllocations(arena) // Stub
 #endif

@@ -3,10 +3,12 @@
 #include "math/scalar.h"
 #include "os/os_memory.h"
 #include "os/os_error.h"
+#include "types_str.h"
 
 #define AlignPow2(x,b) (((x) + (b) - 1)&(~((b) - 1)))
 
 static u64 g_commit_size = 0;
+static void InitArenaDebugInfo(Arena* arena);
 
 Arena ArenaInitialise(void* base_ptr, u64 size, u64 capacity)
 {
@@ -29,17 +31,13 @@ Arena ArenaInitialise(void* base_ptr, u64 size, u64 capacity)
         ERROR("Failed to commit memory during arena initialization");
     }
 
-    L_INFO("Initialised arena allocator of %llu KB commited and %llu KB reserved",
-           arena.capacity / 1024, arena.size / 1024);
+    char size_str[16], capacity_str[16];
+    CStrFromMemSize(size_str, 16, arena.size);
+    CStrFromMemSize(capacity_str, 16, arena.capacity);
+    L_INFO("Initialised arena of %s commited and %s reserved", size_str, capacity_str);
 
 #ifdef DEBUG_ARENA_ALLOCATIONS
-    arena.debug_info = ArenaPush(&arena, sizeof(ArenaDebugInfo));
-    arena.debug_info->print_new_allocations = true;
-    arena.debug_info->allocations_num = 1;
-    arena.debug_info->allocation_ptrs[0] = arena.debug_info;
-    cu_snprintf(
-        arena.debug_info->allocation_names[0], MAX_ALLOC_NAME, "Arena debug info");
-    L_DEBUG("New alloc: %s:%d - %llu", "Arena debug info", 1337, sizeof(ArenaDebugInfo));
+    InitArenaDebugInfo(&arena);
 #endif
 
     return arena;
@@ -87,11 +85,16 @@ void* ArenaPush(Arena* arena, u64 size)
     return ptr;
 }
 
+static void UpdateDebugAllocations(Arena* arena);
 
 void ArenaPopTo(Arena* arena, u64 pos)
 {
     assert(pos <= arena->pos);
     arena->pos = pos;
+
+    #ifdef DEBUG_ARENA_ALLOCATIONS
+    UpdateDebugAllocations(arena);
+    #endif
 }
 
 void ArenaPop(Arena* arena, u64 size)
@@ -106,7 +109,44 @@ void ArenaReset(Arena* arena)
     ArenaPopTo(arena, 0);
 }
 
+ArenaMarker ArenaMarkerCreate(Arena* arena)
+{
+    ArenaMarker marker = {arena, arena->pos};
+    return marker;
+}
+
+void ArenaMarkerRollback(ArenaMarker marker)
+{
+    ArenaPopTo(marker.arena, marker.pos);
+}
+
+
 #ifdef DEBUG_ARENA_ALLOCATIONS
+
+static void InitArenaDebugInfo(Arena* arena)
+{
+    arena->debug_info = ArenaPush(arena, sizeof(ArenaDebugInfo));
+    arena->debug_info->print_new_allocations = true;
+    arena->debug_info->allocations_num = 1;
+    arena->debug_info->allocation_ptrs[0] = arena->debug_info;
+    cu_snprintf(
+        arena->debug_info->allocation_names[0], MAX_ALLOC_NAME, "Arena debug info");
+    L_DEBUG("New alloc: %s:%d - %llu", "Arena debug info", 1337, sizeof(ArenaDebugInfo));
+}
+
+static void UpdateDebugAllocations(Arena* arena)
+{
+    ArenaDebugInfo* debug = arena->debug_info;
+    do
+    {
+        u8* current_ptr = (u8*)arena->base + arena->pos;
+        u8* alloc_ptr = debug->allocation_ptrs[debug->allocations_num - 1];
+        if (current_ptr <= alloc_ptr)
+            debug->allocations_num--;
+        else
+            break;
+    } while (debug->allocations_num);
+}
 
 void* ArenaPushDebug(Arena* arena, u64 size, const char* file, int line)
 {
@@ -132,6 +172,11 @@ void* ArenaPushNoZeroDebug(Arena* arena, u64 size, const char* file, int line)
          L_DEBUG("New alloc: %s:%d - %llu", file, line, size);
 
     return ptr;
+}
+
+void DEBUG_SetPrintNewAllocations(Arena* arena, b8 value)
+{
+    arena->debug_info->print_new_allocations = value;
 }
 
 void DEBUG_ArenaPrintAllocations(Arena* arena)
