@@ -47,6 +47,7 @@ set(SOURCES
     script/scriptreg.c
     script/imgui_registrar.cpp
     timer.c
+    types_str.c
     ui/scripteditor.cpp
     ui/ui.c
     window.c
