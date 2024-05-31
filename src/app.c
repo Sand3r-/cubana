@@ -10,8 +10,7 @@
 #include "input.h"
 #include "math/mat.h"
 #include "memory/arena.h"
-#include "memory/stackallocator.h"
-#include "memory/linearallocator.h"
+#include "memory/thread_scratch.h"
 #include "os/crash_handler.h"
 #include "platform.h"
 #include "renderer/renderer.h"
@@ -32,12 +31,16 @@
     } \
     } while(0);
 
+#define FRAME_ARENAS_NUM 2
+
 struct Application
 {
     Game game;
     Window window;
     CmdArgs cmd_args;
     Arena perm_storage_arena;
+    Arena frame_arenas[FRAME_ARENAS_NUM];
+    u8 frame_arena_index;
 } g_app;
 
 static void DEBUG_TestCode(void)
@@ -76,6 +79,19 @@ static int InitPermamentStorage(void)
     return CU_SUCCESS;
 }
 
+static int InitFrameArenas(void)
+{
+    void* base_address = (void*)(Gigabytes(3 * 64));
+    g_app.frame_arenas[0] = ArenaInitialise(base_address, Megabytes(16), Megabytes(1024));
+    DEBUG_SetPrintNewAllocations(&g_app.frame_arenas[0], false);
+
+    base_address = (void*)(Gigabytes(4 * 64));
+    g_app.frame_arenas[1] = ArenaInitialise(base_address, Megabytes(16), Megabytes(1024));
+    DEBUG_SetPrintNewAllocations(&g_app.frame_arenas[1], false);
+
+    return CU_SUCCESS;
+}
+
 static int InitWindow(void)
 {
     WindowResult window_result = CreateWindow(1024, 768, "Cubana");
@@ -93,7 +109,7 @@ static int InitWindow(void)
 
 static int InitRenderer(void)
 {
-    return RendererInit(g_app.window);
+    return RendererInit(&g_app.perm_storage_arena, g_app.window);
 }
 
 static int InitGame(void)
@@ -117,16 +133,13 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitExternalLibs());
     ReturnOnFailure(InitConfig(argc, argv));
     ReturnOnFailure(InitPermamentStorage());
-    ReturnOnFailure(StackAllocatorInit(true)); // Enable debug
-    ReturnOnFailure(LinearAllocatorInit(true)); // Enable debug
+    ReturnOnFailure(ThreadScratchArenaInitialise());
+    ReturnOnFailure(InitFrameArenas());
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(ScriptEngineInit());
     ReturnOnFailure(InitGame());
     InitializeCrashHandlers();
-
-    DEBUG_StopWatchdog();
-    DEBUG_TestCode();
 
     GetTimeDelta(); // Run once to initialise
 
@@ -153,6 +166,11 @@ static void PropagateEvents(void)
     }
 }
 
+static void SwapFrameArenas(void)
+{
+    g_app.frame_arena_index = !g_app.frame_arena_index;
+}
+
 static int AppLoop(void)
 {
     b8 done = false;
@@ -164,9 +182,9 @@ static int AppLoop(void)
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
         GameUpdate(&g_app.game, delta);
-        RendererDraw(delta);
+        RendererDraw(&g_app.frame_arenas[g_app.frame_arena_index], delta);
         ResetInput();
-        DEBUG_TestCode();
+        SwapFrameArenas();
     }
     return CU_SUCCESS;
 }
@@ -182,7 +200,6 @@ static int Shutdown(void)
         return error_code;
     }
     ArenaShutdown(&g_app.perm_storage_arena);
-    error_code = StackAllocatorShutdown();
     DestroyWindow(g_app.window);
 
     return error_code;

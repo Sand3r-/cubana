@@ -6,8 +6,6 @@
 #include "igintegration.h"
 #include "i3integration.h"
 #include "log/log.h"
-#include "memory/stackallocator.h"
-#include "memory/linearallocator.h"
 #include "math/scalar.h"
 #include "math/mat.h"
 #include <memory.h>
@@ -229,17 +227,12 @@ static VkBool32 AreQueueFamilyIndicesComplete(QueueFamilyIndices* indices)
            indices->presentFamily != INVALID_QUEUE_FAMILY_INDEX;
 }
 
-static void FreeSwapChainSupportDetails(SwapChainSupportDetails* details)
-{
-    if (details->present_modes != NULL) StackFree(details->present_modes);
-    if (details->formats != NULL) StackFree(details->formats);
-}
-
-static VkBool32 CheckValidationLayerSupport(void)
+static VkBool32 CheckValidationLayerSupport(Arena* arena)
 {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, NULL);
-    VkLayerProperties* availableLayers = StackMalloc(layerCount * sizeof(VkLayerProperties), "VkLayerProperties");
+    ArenaMarker marker = ArenaMarkerCreate(arena);
+    VkLayerProperties* availableLayers = PushArray(arena, VkLayerProperties, layerCount);
     vkEnumerateInstanceLayerProperties(&layerCount, availableLayers);
 
     for (int i = 0; i < ArrayCount(C.validation_layers); i++)
@@ -259,21 +252,20 @@ static VkBool32 CheckValidationLayerSupport(void)
 
         if (!layerFound)
         {
-            StackFree(availableLayers);
+            ArenaMarkerRollback(marker);
             return VK_FALSE;
         }
     }
-    StackFree(availableLayers);
 
+    ArenaMarkerRollback(marker);
     return VK_TRUE;
 }
 
-static char** GetRequiredExtensions(uint32_t* extensionCount)
+static char** GetRequiredExtensions(Arena* arena, uint32_t* extensionCount)
 {
     GetVulkanExtensions(C.window, extensionCount, NULL);
-    size_t allocSize =
-        (*extensionCount + C.enable_validation_layers) * sizeof(char*);
-    char** extensions = StackMalloc(allocSize, "Vk Extensions array");
+    char** extensions = PushArray(arena, char*,
+        *extensionCount + C.enable_validation_layers);
     // Please note that the call to GetVulkanExtensions
     // resets the extensionCount to it's original value.
     GetVulkanExtensions(C.window, extensionCount, extensions);
@@ -307,11 +299,12 @@ static void PopulateDebugMessengerCreateInfo(VkDebugReportCallbackCreateInfoEXT*
     *createInfo = info;
 }
 
-static void PrintExtensions(void)
+static void PrintExtensions(Arena* arena)
 {
+    ArenaMarker marker = ArenaMarkerCreate(arena);
     u32 num_extensions;
     vkEnumerateInstanceExtensionProperties(NULL, &num_extensions, NULL);
-    VkExtensionProperties* extensions = StackMalloc(num_extensions * sizeof(VkExtensionProperties), "VkExtensionProperites");
+    VkExtensionProperties* extensions = PushArray(arena, VkExtensionProperties, num_extensions);
     vkEnumerateInstanceExtensionProperties(NULL, &num_extensions, extensions);
 
 
@@ -321,12 +314,12 @@ static void PrintExtensions(void)
         L_DEBUG("%s in version of %u", extensions[i].extensionName, extensions[i].specVersion);
     }
 
-    StackFree(extensions);
+    ArenaMarkerRollback(marker);
 }
 
-static void CreateInstance(void)
+static void CreateInstance(Arena* arena)
 {
-    if (C.enable_validation_layers && !CheckValidationLayerSupport())
+    if (C.enable_validation_layers && !CheckValidationLayerSupport(arena))
         ERROR("The validation layers couldn't have been enabled");
 
     VkApplicationInfo appInfo = {
@@ -343,8 +336,9 @@ static void CreateInstance(void)
         createInfo.pApplicationInfo = &appInfo,
     };
 
+    ArenaMarker marker = ArenaMarkerCreate(arena);
     uint32_t extensionsCount;
-    char** extensions = GetRequiredExtensions(&extensionsCount);
+    char** extensions = GetRequiredExtensions(arena, &extensionsCount);
     createInfo.enabledExtensionCount = extensionsCount;
     createInfo.ppEnabledExtensionNames = extensions;
     VkDebugReportCallbackCreateInfoEXT debugCreateInfo;
@@ -364,7 +358,7 @@ static void CreateInstance(void)
     if (vkCreateInstance(&createInfo, NULL, &C.instance) != VK_SUCCESS)
         ERROR("Vulkan Instance creation failure");
 
-    StackFree(extensions);
+    ArenaMarkerRollback(marker);
 }
 
 static void SetupDebugMessenger(void)
@@ -385,14 +379,15 @@ static void CreateSurface(void)
         ERROR("Vulkan surface creation error.");
 }
 
-static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device) {
+static QueueFamilyIndices FindQueueFamilies(Arena* arena, VkPhysicalDevice device) {
     QueueFamilyIndices indices;
     InitQueueFamilyIndices(&indices);
 
     u32 queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, NULL);
 
-    VkQueueFamilyProperties* queueFamilies = StackMalloc(queueFamilyCount * sizeof(VkQueueFamilyProperties), "VkQueueFamilyProperties");
+    ArenaMarker marker = ArenaMarkerCreate(arena);
+    VkQueueFamilyProperties* queueFamilies = PushArray(arena, VkQueueFamilyProperties, queueFamilyCount);
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies);
 
 
@@ -413,17 +408,18 @@ static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device) {
         }
     }
 
-    StackFree(queueFamilies);
+    ArenaMarkerRollback(marker);
 
     return indices;
 }
 
-static VkBool32 CheckDeviceExtensionSupport(VkPhysicalDevice device)
+static VkBool32 CheckDeviceExtensionSupport(Arena* arena, VkPhysicalDevice device)
 {
+    ArenaMarker marker = ArenaMarkerCreate(arena);
     u32 extensionCount;
     vkEnumerateDeviceExtensionProperties(device, NULL, &extensionCount, NULL);
 
-    VkExtensionProperties* availableExtensions = StackMalloc(extensionCount * sizeof(VkExtensionProperties), "VkExtensionProperties");
+    VkExtensionProperties* availableExtensions = PushArray(arena, VkExtensionProperties, extensionCount);
     vkEnumerateDeviceExtensionProperties(device, NULL, &extensionCount, availableExtensions);
 
     int matchedExtensionsNum = 0;
@@ -437,13 +433,12 @@ static VkBool32 CheckDeviceExtensionSupport(VkPhysicalDevice device)
         }
     }
 
-    StackFree(availableExtensions);
-
+    ArenaMarkerRollback(marker);
     return matchedExtensionsNum == ArrayCount(C.device_extensions);
 }
 
-// It's callers responsible to free memory with FreeSwapChainSupportDetails
-static SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device)
+// It's caller's responsibility to free memory allocated with provided arena
+static SwapChainSupportDetails QuerySwapChainSupport(Arena* arena, VkPhysicalDevice device)
 {
     SwapChainSupportDetails details;
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, C.surface, &details.capabilites);
@@ -451,7 +446,7 @@ static SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device)
     uint32_t formatCount;
     vkGetPhysicalDeviceSurfaceFormatsKHR(device, C.surface, &formatCount, NULL);
     if (formatCount > 0) {
-        details.formats = StackMalloc(formatCount * sizeof(VkSurfaceFormatKHR), "Swapchain Formats");
+        details.formats = PushArray(arena, VkSurfaceFormatKHR, formatCount);
         details.formats_num = formatCount;
         vkGetPhysicalDeviceSurfaceFormatsKHR(device, C.surface, &formatCount, details.formats);
     }
@@ -459,7 +454,7 @@ static SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device)
     uint32_t presentModeCount;
     vkGetPhysicalDeviceSurfacePresentModesKHR(device, C.surface, &presentModeCount, NULL);
     if (presentModeCount > 0) {
-        details.present_modes = StackMalloc(presentModeCount * sizeof(VkPresentModeKHR), "Vk Present modes");
+        details.present_modes = PushArray(arena, VkPresentModeKHR, presentModeCount);
         details.present_modes_num = presentModeCount;
         vkGetPhysicalDeviceSurfacePresentModesKHR(device, C.surface, &presentModeCount, details.present_modes);
     }
@@ -467,7 +462,7 @@ static SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device)
     return details;
 }
 
-static VkBool32 IsDeviceSuitable(VkPhysicalDevice device)
+static VkBool32 IsDeviceSuitable(Arena* arena, VkPhysicalDevice device)
 {
     VkPhysicalDeviceProperties deviceProperties;
     vkGetPhysicalDeviceProperties(device, &deviceProperties);
@@ -475,7 +470,7 @@ static VkBool32 IsDeviceSuitable(VkPhysicalDevice device)
     VkPhysicalDeviceFeatures deviceFeatures;
     vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-    QueueFamilyIndices indices = FindQueueFamilies(device);
+    QueueFamilyIndices indices = FindQueueFamilies(arena, device);
 
     const char* device_type_to_string[] = {
         "OTHER", "INTEGRATED_GPU", "DISCRETE_GPU", "VIRTUAL_GPU", "CPU",
@@ -501,19 +496,21 @@ static VkBool32 IsDeviceSuitable(VkPhysicalDevice device)
     Capabilities.point_size_range = v2(point_size_range[0], point_size_range[1]);
     Capabilities.push_constants_size = deviceProperties.limits.maxPushConstantsSize;
 
-    VkBool32 extensionsSupported = CheckDeviceExtensionSupport(device);
+    VkBool32 extensionsSupported = CheckDeviceExtensionSupport(arena, device);
 
     VkBool32 swapChainAdequate = VK_FALSE;
     if (extensionsSupported) {
-        SwapChainSupportDetails details = QuerySwapChainSupport(device);
-        swapChainAdequate = details.formats_num && details.present_modes_num;
-        FreeSwapChainSupportDetails(&details);
+        with_arena(arena)
+        {
+            SwapChainSupportDetails details = QuerySwapChainSupport(arena, device);
+            swapChainAdequate = details.formats_num && details.present_modes_num;
+        }
     }
 
     return AreQueueFamilyIndicesComplete(&indices) && extensionsSupported && swapChainAdequate;
 }
 
-static void PickPhysicalDevice(void)
+static void PickPhysicalDevice(Arena* arena)
 {
     u32 deviceCount = 0;
     vkEnumeratePhysicalDevices(C.instance, &deviceCount, NULL);
@@ -521,13 +518,14 @@ static void PickPhysicalDevice(void)
     if (deviceCount == 0)
         ERROR("No GPUs found on the machine.");
 
-    VkPhysicalDevice* devices = StackMalloc(deviceCount * sizeof(VkPhysicalDevice), "VkPhysicalDevices");
+    ArenaMarker marker = ArenaMarkerCreate(arena);
+    VkPhysicalDevice* devices = PushArray(arena, VkPhysicalDevice, deviceCount);
     vkEnumeratePhysicalDevices(C.instance, &deviceCount, devices);
 
 
     for (u32 i = 0; i < deviceCount; i++)
     {
-        if (IsDeviceSuitable(devices[i]))
+        if (IsDeviceSuitable(arena, devices[i]))
         {
             C.physical_device = devices[i];
             break;
@@ -537,12 +535,12 @@ static void PickPhysicalDevice(void)
     if (C.physical_device == VK_NULL_HANDLE)
         ERROR("No suitable GPU found.");
 
-    StackFree(devices);
+    ArenaMarkerRollback(marker);
 }
 
-static void CreateLogicalDevice(void)
+static void CreateLogicalDevice(Arena* arena)
 {
-    QueueFamilyIndices indices = FindQueueFamilies(C.physical_device);
+    QueueFamilyIndices indices = FindQueueFamilies(arena, C.physical_device);
 
     VkDeviceQueueCreateInfo queueCreateInfos[QUEUES_NUM];
 
@@ -636,9 +634,10 @@ static VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR* capabilities)
     }
 }
 
-static void CreateSwapChain(void)
+static void CreateSwapChain(Arena* arena)
 {
-    SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(C.physical_device);
+    ArenaMarker marker = ArenaMarkerCreate(arena);
+    SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(arena, C.physical_device);
 
     VkSurfaceFormatKHR surfaceFormat = ChooseSwapSurfaceFormat(swapChainSupport.formats, swapChainSupport.formats_num);
     VkPresentModeKHR presentMode = ChooseSwapPresentMode(swapChainSupport.present_modes, swapChainSupport.present_modes_num);
@@ -662,7 +661,7 @@ static void CreateSwapChain(void)
         .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
     };
 
-    QueueFamilyIndices indices = FindQueueFamilies(C.physical_device);
+    QueueFamilyIndices indices = FindQueueFamilies(arena, C.physical_device);
 
     if(indices.graphicsFamily != indices.presentFamily)
     {
@@ -687,12 +686,12 @@ static void CreateSwapChain(void)
     {
         ERROR("SwapChain creation failure.");
     }
-    FreeSwapChainSupportDetails(&swapChainSupport);
+    ArenaMarkerRollback(marker);
 
     L_INFO("Swapchain created.");
 
     vkGetSwapchainImagesKHR(C.device, C.swapchain, &imageCount, NULL);
-    C.swapchain_images = LinearMalloc(imageCount * sizeof(VkImage));
+    C.swapchain_images = PushArray(arena, VkImage, imageCount);
     C.swapchain_images_num = imageCount;
     vkGetSwapchainImagesKHR(C.device, C.swapchain, &imageCount, C.swapchain_images);
 
@@ -700,9 +699,9 @@ static void CreateSwapChain(void)
     C.swapchain_extent = extent;
 }
 
-static void CreateImageViews(void)
+static void CreateImageViews(Arena* arena)
 {
-    C.swapchain_image_views = LinearMalloc(C.swapchain_images_num * sizeof(VkImageView));
+    C.swapchain_image_views = PushArray(arena, VkImageView, C.swapchain_images_num);
     VkImageViewCreateInfo createInfo = {
         .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         .format = C.swapchain_image_format,
@@ -848,16 +847,17 @@ static void CreatePushConstantsRange(void)
     C.push_constant_range.size = sizeof(PushConstantsObject);
 }
 
-static void CreateGraphicsPipeline(void)
+static void CreateGraphicsPipeline(Arena* arena)
 {
-    Buffer vertShaderCode = File2Buffer("shaders/shader.vert.spv");
-    Buffer fragShaderCode = File2Buffer("shaders/shader.frag.spv");
+    VkShaderModule vertShaderModule, fragShaderModule;
+    with_arena(arena)
+    {
+        Buffer vertShaderCode = BufferFromFile(arena, "shaders/shader.vert.spv");
+        Buffer fragShaderCode = BufferFromFile(arena, "shaders/shader.frag.spv");
 
-    VkShaderModule vertShaderModule = CreateShaderModule(vertShaderCode);
-    VkShaderModule fragShaderModule = CreateShaderModule(fragShaderCode);
-
-    FreeBuffer(fragShaderCode);
-    FreeBuffer(vertShaderCode);
+        vertShaderModule = CreateShaderModule(vertShaderCode);
+        fragShaderModule = CreateShaderModule(fragShaderCode);
+    }
 
     VkPipelineShaderStageCreateInfo vertexShaderStageInfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
@@ -1024,10 +1024,10 @@ static void CreateGraphicsPipeline(void)
     vkDestroyShaderModule(C.device, vertShaderModule, NULL);
 }
 
-static void CreateFramebuffers(void)
+static void CreateFramebuffers(Arena* arena)
 {
     C.swapchain_framebuffers =
-        LinearMalloc(C.swapchain_images_num * sizeof(VkFramebuffer));
+        PushArray(arena, VkFramebuffer, C.swapchain_images_num);
 
     for (size_t i = 0; i < C.swapchain_images_num; i++)
     {
@@ -1054,9 +1054,9 @@ static void CreateFramebuffers(void)
     L_INFO("Framebuffers created");
 }
 
-static void CreateCommandPool(void)
+static void CreateCommandPool(Arena* arena)
 {
-    QueueFamilyIndices queueFamilyIndices = FindQueueFamilies(C.physical_device);
+    QueueFamilyIndices queueFamilyIndices = FindQueueFamilies(arena, C.physical_device);
 
     VkCommandPoolCreateInfo poolInfo = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
@@ -1387,9 +1387,9 @@ static void CreateDescriptorSets(void)
     }
 }
 
-static void CreateCommandBuffers(void)
+static void CreateCommandBuffers(Arena* arena)
 {
-    C.command_buffers = LinearMalloc(C.swapchain_images_num * sizeof(VkCommandBuffer));
+    C.command_buffers = PushArray(arena, VkCommandBuffer, C.swapchain_images_num);
 
     VkCommandBufferAllocateInfo alloc_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
@@ -1403,7 +1403,7 @@ static void CreateCommandBuffers(void)
         ERROR("Command buffer allocation failure");
 }
 
-static void RecordCommandBuffer(u32 current_image)
+static void RecordCommandBuffer(Arena* arena, u32 current_image)
 {
     VkCommandBufferBeginInfo begin_info = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
@@ -1447,7 +1447,7 @@ static void RecordCommandBuffer(u32 current_image)
         0, sizeof(PushConstantsObject), &D.push_constants);
     vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 64, 0, 0, 0);
 
-    im3dVkEndFrame(cmd_buffer);
+    im3dVkEndFrame(arena, cmd_buffer);
     ImGuiRender(cmd_buffer);
     vkCmdEndRenderPass(cmd_buffer);
 
@@ -1455,13 +1455,12 @@ static void RecordCommandBuffer(u32 current_image)
         ERROR("EndCommandBuffer failure");
 }
 
-static void CreateSyncObjects(void)
+static void CreateSyncObjects(Arena* arena)
 {
-    C.image_available_semaphores = LinearMalloc(sizeof(VkSemaphore) * MAX_FRAMES_IN_FLIGHT);
-    C.render_finished_semaphores = LinearMalloc(sizeof(VkSemaphore) * MAX_FRAMES_IN_FLIGHT);
-    C.in_flight_fences = LinearMalloc(sizeof(VkFence) * MAX_FRAMES_IN_FLIGHT);
-    C.images_in_flight = LinearMalloc(sizeof(VkFence) * C.swapchain_images_num);
-    cu_memset(C.images_in_flight, 0, sizeof(VkFence) * C.swapchain_images_num);
+    C.image_available_semaphores = PushArray(arena, VkSemaphore, MAX_FRAMES_IN_FLIGHT);
+    C.render_finished_semaphores = PushArray(arena, VkSemaphore, MAX_FRAMES_IN_FLIGHT);
+    C.in_flight_fences = PushArray(arena, VkFence, MAX_FRAMES_IN_FLIGHT);
+    C.images_in_flight = PushArray(arena, VkFence, C.swapchain_images_num);
 
     VkSemaphoreCreateInfo semaphoreInfo = {
         .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO
@@ -1511,7 +1510,7 @@ static void InitImGui(Window window)
     ImGuiNewFrame(0.0f);
 }
 
-static void InitIm3d()
+static void InitIm3d(Arena* arena)
 {
     Im3dVkInitInfo info = {
         .device = C.device,
@@ -1522,40 +1521,42 @@ static void InitIm3d()
         .graphics_queue = C.graphics_queue,
         .projection_matrix = D.projection_matrix
     };
-    im3dVkInit(info);
+    im3dVkInit(arena, info);
 }
 
-int VkRendererInit(Window window)
+int VkRendererInit(Arena* arena, Window window)
 {
     InitVkContext(window);
-    CreateInstance();
+    CreateInstance(arena);
     SetupDebugMessenger();
     CreateSurface();
-    PickPhysicalDevice();
-    CreateLogicalDevice();
-    CreateSwapChain();
-    CreateImageViews();
+    PickPhysicalDevice(arena);
+    CreateLogicalDevice(arena);
+    CreateSwapChain(arena);
+    CreateImageViews(arena);
     CreateRenderPass();
     CreateDescriptorSetLayout();
     CreatePushConstantsRange();
-    CreateGraphicsPipeline();
-    CreateCommandPool();
+    CreateGraphicsPipeline(arena);
+    CreateCommandPool(arena);
     CreateDepthResources();
-    CreateFramebuffers();
+    CreateFramebuffers(arena);
     CreateVertexBuffer();
     CreateIndexBuffer();
     CreateUniformBuffer();
     CreateDescriptorPool();
     CreateDescriptorSets();
-    CreateCommandBuffers();
-    CreateSyncObjects();
+    CreateCommandBuffers(arena);
+    CreateSyncObjects(arena);
     InitImGui(window);
-    InitIm3d();
+    InitIm3d(arena);
+
+    DEBUG_ArenaPrintAllocations(arena);
 
     return CU_SUCCESS;
 }
 
-void VkRendererDraw(f32 delta)
+void VkRendererDraw(Arena* arena, f32 delta)
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
@@ -1566,7 +1567,7 @@ void VkRendererDraw(f32 delta)
     if (C.images_in_flight[image_index] != VK_NULL_HANDLE)
         vkWaitForFences(C.device, 1, &C.images_in_flight[image_index], VK_TRUE, UINT64_MAX);
 
-    RecordCommandBuffer(image_index);
+    RecordCommandBuffer(arena, image_index);
 
     VkSemaphore wait_semaphores[] =
         { C.image_available_semaphores[C.current_frame] };

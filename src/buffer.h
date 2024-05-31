@@ -1,4 +1,5 @@
 #pragma once
+#include "memory/arena.h"
 
 typedef struct Buffer
 {
@@ -6,6 +7,5 @@ typedef struct Buffer
     size_t length;
 } Buffer;
 
-Buffer AllocBuffer(size_t size, const char* alloc_name);
-Buffer FreeBuffer(Buffer buffer);
-Buffer File2Buffer(const char* filename);
+Buffer AllocBuffer(Arena* arena, size_t size, const char* alloc_name);
+Buffer BufferFromFile(Arena* arena, const char* filename);

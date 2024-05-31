@@ -1,17 +1,17 @@
 #include "renderer.h"
 #include "renderervk.h"
 
-int RendererInit(Window window)
+int RendererInit(Arena* arena, Window window)
 {
 #ifdef USE_VK_RENDERER
-    return VkRendererInit(window);
+    return VkRendererInit(arena, window);
 #endif
 }
 
-void RendererDraw(f32 delta)
+void RendererDraw(Arena* arena, f32 delta)
 {
 #ifdef USE_VK_RENDERER
-    VkRendererDraw(delta);
+    VkRendererDraw(arena, delta);
 #endif
 }
 

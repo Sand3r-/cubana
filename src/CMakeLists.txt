@@ -35,8 +35,6 @@ set(SOURCES
     math/vec.c
     math/scalar.c
     memory/arena.c
-    memory/stackallocator.c
-    memory/linearallocator.c
     memory/thread_scratch.c
     platform.c
     renderer/renderer.c

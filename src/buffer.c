@@ -1,26 +1,17 @@
 #include "buffer.h"
 #include "error.h"
 #include "file.h"
-#include "memory/stackallocator.h"
 
-Buffer AllocBuffer(size_t size, const char* alloc_name)
+Buffer AllocBuffer(Arena* arena, size_t size, const char* alloc_name)
 {
     Buffer buffer = {
-        .ptr = StackMalloc(size, alloc_name),
+        .ptr = (void*)PushArray(arena, u8, size),
         .length = size
     };
     return buffer;
 }
 
-Buffer FreeBuffer(Buffer buffer)
-{
-    StackFree(buffer.ptr);
-    buffer.ptr = NULL;
-    buffer.length = 0;
-    return buffer;
-}
-
-Buffer File2Buffer(const char* filename)
+Buffer BufferFromFile(Arena* arena, const char* filename)
 {
     Buffer result = {0};
     File file = FileOpen(filename, "rb");
@@ -30,22 +21,25 @@ Buffer File2Buffer(const char* filename)
         return result;
     }
 
-    s64 fileSize =  FileSize(&file);
-    result = AllocBuffer(fileSize, filename);
+    ArenaMarker marker = ArenaMarkerCreate(arena);
+    s64 file_size =  FileSize(&file);
+    result = AllocBuffer(arena, file_size, filename);
     char* fileContents = (char*)result.ptr;
 
-    s64 totalObjectsRead = 0, objectsRead = 1;
+    s64 totaj_objs_read = 0, objs_read = 1;
     char* buffer = fileContents;
-    while (totalObjectsRead < fileSize && objectsRead != 0)
+    while (totaj_objs_read < file_size && objs_read != 0)
     {
-        objectsRead = FileRead(&file, buffer, 1, (fileSize - totalObjectsRead));
-        totalObjectsRead += objectsRead;
-        buffer += objectsRead;
+        objs_read = FileRead(&file, buffer, 1, (file_size - totaj_objs_read));
+        totaj_objs_read += objs_read;
+        buffer += objs_read;
     }
     FileClose(&file);
-    if (totalObjectsRead != fileSize)
+    if (totaj_objs_read != file_size)
     {
-        result = FreeBuffer(result);
+        result.ptr = NULL;
+        result.length = 0;
+        ArenaMarkerRollback(marker);
         return result;
     }
 

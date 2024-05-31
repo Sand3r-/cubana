@@ -5,7 +5,7 @@
 #include "log/log.h"
 #include "math/mat.h"
 #include "math/scalar.h"
-#include "memory/stackallocator.h"
+#include "memory/arena.h"
 #include "types.h"
 #include <cim3d.h>
 #include <math.h>
@@ -90,7 +90,8 @@ static void GetAttributeDescriptions(VkVertexInputAttributeDescription* descs, u
     *num = ArrayCount(attribute_descriptions);
 }
 
-static VkPipeline CreateGraphicsPipeline(const char** shader_files, u32 shader_num,
+static VkPipeline CreateGraphicsPipeline(Arena* arena, const char** shader_files,
+                                         u32 shader_num,
                                          VkPrimitiveTopology topology)
 {
     enum
@@ -103,11 +104,13 @@ static VkPipeline CreateGraphicsPipeline(const char** shader_files, u32 shader_n
     };
 
     VkShaderModule shader_modules[MAX_SHADER_STAGES];
-    for (u32 i = 0; i < shader_num; i++)
+    with_arena(arena)
     {
-        Buffer shader_code = File2Buffer(shader_files[i]);
-        shader_modules[i] = CreateShaderModule(shader_code);
-        FreeBuffer(shader_code);
+        for (u32 i = 0; i < shader_num; i++)
+        {
+            Buffer shader_code = BufferFromFile(arena, shader_files[i]);
+            shader_modules[i] = CreateShaderModule(shader_code);
+        }
     }
 
     VkPipelineShaderStageCreateInfo shader_stages[MAX_SHADER_STAGES] = {
@@ -293,7 +296,7 @@ static void CreatePipelineLayout()
         ERROR("PipelineLayout creation failure.");
 }
 
-static CreatePipelines()
+static void CreatePipelines(Arena* arena)
 {
     const char* line_shaders[] = {
         "shaders/im3d.lines.vert.spv",
@@ -301,21 +304,21 @@ static CreatePipelines()
         "shaders/im3d.lines.geom.spv"
     };
     C.lines_pipeline = CreateGraphicsPipeline(
-        line_shaders, ArrayCount(line_shaders), VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
+        arena, line_shaders, ArrayCount(line_shaders), VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
 
     const char* point_shaders[] = {
         "shaders/im3d.points.vert.spv",
         "shaders/im3d.points.frag.spv"
     };
     C.points_pipeline = CreateGraphicsPipeline(
-        point_shaders, ArrayCount(point_shaders), VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
+        arena, point_shaders, ArrayCount(point_shaders), VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
 
     const char* triangle_shaders[] = {
         "shaders/im3d.triangles.vert.spv",
         "shaders/im3d.triangles.frag.spv"
     };
     C.triangles_pipeline = CreateGraphicsPipeline(
-        triangle_shaders, ArrayCount(triangle_shaders), VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+        arena, triangle_shaders, ArrayCount(triangle_shaders), VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 }
 
 static u32 FindMemoryType(u32 type_filter, VkMemoryPropertyFlags properties)
@@ -439,12 +442,12 @@ static InitContext(Im3dVkInitInfo info)
     C.projection_matrix = info.projection_matrix;
 }
 
-bool im3dVkInit(Im3dVkInitInfo info)
+bool im3dVkInit(Arena* arena, Im3dVkInitInfo info)
 {
     InitContext(info);
     CreateVertexBuffer();
     CreatePipelineLayout();
-    CreatePipelines();
+    CreatePipelines(arena);
     return true;
 }
 
@@ -500,7 +503,7 @@ void im3dVkNewFrame(void)
     im3dNewFrame();
 }
 
-void im3dVkEndFrame(VkCommandBuffer cmd_buffer)
+void im3dVkEndFrame(Arena* arena, VkCommandBuffer cmd_buffer)
 {
     im3dEndFrame();
 
@@ -538,16 +541,14 @@ void im3dVkEndFrame(VkCommandBuffer cmd_buffer)
         u32 vertex_count;
     } DrawCallInfo;
 
+    ArenaMarker marker = ArenaMarkerCreate(arena);
     DrawCallInfo* draw_infos[DrawPrimitive_Count] = {
-        [DrawPrimitive_Triangles] = StackMalloc(
-            prim_counts[DrawPrimitive_Triangles] * sizeof(DrawCallInfo),
-            "im3d Triangle DrawCall list"),
-        [DrawPrimitive_Lines] = StackMalloc(
-            prim_counts[DrawPrimitive_Lines] * sizeof(DrawCallInfo),
-            "im3d Line DrawCall list"),
-        [DrawPrimitive_Points] = StackMalloc(
-            prim_counts[DrawPrimitive_Points] * sizeof(DrawCallInfo),
-            "im3d Point DrawCall list"),
+        [DrawPrimitive_Triangles] = PushArray(
+            arena, DrawCallInfo, prim_counts[DrawPrimitive_Triangles]),
+        [DrawPrimitive_Lines] = PushArray(
+            arena, DrawCallInfo, prim_counts[DrawPrimitive_Lines]),
+        [DrawPrimitive_Points] = PushArray(
+            arena, DrawCallInfo, prim_counts[DrawPrimitive_Points])
     };
 
     u32 draw_info_sizes[DrawPrimitive_Count] = {0};
@@ -592,9 +593,7 @@ void im3dVkEndFrame(VkCommandBuffer cmd_buffer)
                   1, draw_infos[DrawPrimitive_Points][i].vertex_index, 0);
     }
 
-    StackFree(draw_infos[DrawPrimitive_Points]);
-    StackFree(draw_infos[DrawPrimitive_Lines]);
-    StackFree(draw_infos[DrawPrimitive_Triangles]);
+    ArenaMarkerRollback(marker);
 }
 
 void im3dVkSetCamera(v3 position, v3 direction)
