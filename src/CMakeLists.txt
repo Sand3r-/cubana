@@ -37,6 +37,7 @@ set(SOURCES
     memory/arena.c
     memory/stackallocator.c
     memory/linearallocator.c
+    memory/thread_scratch.c
     platform.c
     renderer/renderer.c
     renderer/renderervk.c
