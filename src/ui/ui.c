@@ -1,9 +1,9 @@
 #include "ui.h"
 #include "scripteditor.h"
 
-void InitUI()
+void InitUI(Arena* arena)
 {
-    InitializeScriptEditor();
+    InitializeScriptEditor(arena);
 }
 
 void UpdateUI()

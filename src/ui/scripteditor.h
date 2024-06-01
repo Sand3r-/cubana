@@ -6,5 +6,7 @@
     #define EXTERN extern
 #endif
 
-EXTERN void InitializeScriptEditor(void);
+typedef struct Arena Arena;
+
+EXTERN void InitializeScriptEditor(Arena* arena);
 EXTERN void UpdateScriptEditor(void);

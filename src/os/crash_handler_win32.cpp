@@ -5,7 +5,7 @@
 
 extern "C" {
     #include "log/log.h"
-    #include "memory/linearallocator.h"
+    #include "memory/thread_scratch.h"
 }
 
 struct SignalDescription
@@ -48,7 +48,7 @@ static int crash_callback_count = 0;
 static const char* CharFromWchar(const wchar_t* in) {
     size_t len = wcslen(in);
     size_t converted = 0;
-    char* cstr = (char*)LinearMalloc(len + 1);
+    char* cstr = PushArray(GetScratchArena(), char, len + 1);
     wcstombs_s(&converted, cstr, len + 1, in, len);
     return cstr;
 }

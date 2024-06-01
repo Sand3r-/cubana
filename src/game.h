@@ -1,5 +1,6 @@
 #pragma once
 #include "entity.h"
+#include "memory/arena.h"
 
 #define MAX_ENTITIES 8
 
@@ -12,7 +13,7 @@ typedef struct Game
     b16    mouse_snap;
 } Game;
 
-int GameInit(Game* game);
+int GameInit(Arena* arena, Game* game);
 void GameUpdate(Game* game, f32 delta);
 void GameProcessEvent(Game* game, Event event);
 void GameDestroy(Game* game);

@@ -34,8 +34,8 @@ set(SOURCES
     math/mat.c
     math/vec.c
     math/scalar.c
-    memory/stackallocator.c
-    memory/linearallocator.c
+    memory/arena.c
+    memory/thread_scratch.c
     platform.c
     renderer/renderer.c
     renderer/renderervk.c
@@ -45,6 +45,7 @@ set(SOURCES
     script/scriptreg.c
     script/imgui_registrar.cpp
     timer.c
+    types_str.c
     ui/scripteditor.cpp
     ui/ui.c
     window.c
@@ -52,8 +53,12 @@ set(SOURCES
 
 if (WIN32)
     list(APPEND SOURCES os/crash_handler_win32.cpp)
+    list(APPEND SOURCES os/os_memory_win32.c)
+    list(APPEND SOURCES os/os_error_win32.c)
 else(WIN32)
     list(APPEND SOURCES os/crash_handler_generic.cpp)
+    list(APPEND SOURCES os/os_memory_linux.c)
+    list(APPEND SOURCES os/os_error_linux.c)
 endif(WIN32)
 
 target_sources(${TARGET} PRIVATE ${SOURCES} ${IMGUI_COLOR_TEXT_EDIT_SOURCES})
@@ -83,7 +88,11 @@ target_include_directories(${TARGET} PRIVATE ${INCLUDES})
 
 # Specify compile definitions
 target_compile_definitions(${TARGET} PRIVATE
-    CUBANA_DEVELOPMENT USE_VK_RENDERER=1 CIMGUI_DEFINE_ENUMS_AND_STRUCTS )
+    CUBANA_DEVELOPMENT
+    USE_VK_RENDERER=1
+    CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+    DEBUG_ARENA_ALLOCATIONS
+)
 
 # For logging purposes define relative file name for each file
 define_file_basename_for_sources(${TARGET})

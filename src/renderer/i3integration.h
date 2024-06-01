@@ -1,6 +1,7 @@
 #pragma once
 #include "math/mat.h"
 #include "math/vec.h"
+#include "memory/arena.h"
 #include <stdbool.h>
 #include <vulkan/vulkan.h>
 
@@ -16,8 +17,8 @@ typedef struct Im3dVkInitInfo
     m4 projection_matrix;
 } Im3dVkInitInfo;
 
-bool im3dVkInit(Im3dVkInitInfo info);
+bool im3dVkInit(Arena* arena, Im3dVkInitInfo info);
 void im3dVkShutdown(void);
 void im3dVkNewFrame(void);
-void im3dVkEndFrame(VkCommandBuffer cmd_buffer);
+void im3dVkEndFrame(Arena* arena, VkCommandBuffer cmd_buffer);
 void im3dVkSetCamera(v3 position, v3 direction);
