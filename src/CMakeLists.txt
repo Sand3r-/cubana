@@ -43,7 +43,7 @@ set(SOURCES
     renderer/i3integration.c
     script/scripting.c
     script/scriptreg.c
-    script/imgui_registrar.cpp
+    script/imgui_lua.cpp
     timer.c
     types_str.c
     ui/scripteditor.cpp

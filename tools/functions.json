@@ -1,0 +1,6146 @@
+[
+    {
+        "name": "CreateContext",
+        "return_type": "ImGuiContext *",
+        "parameters": [
+            {
+                "type": "ImFontAtlas *",
+                "name": "shared_font_atlas",
+                "default_value": "ImFontAtlas"
+            }
+        ]
+    },
+    {
+        "name": "DestroyContext",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiContext *",
+                "name": "ctx",
+                "default_value": "ImGuiContext"
+            }
+        ]
+    },
+    {
+        "name": "GetCurrentContext",
+        "return_type": "ImGuiContext *",
+        "parameters": []
+    },
+    {
+        "name": "SetCurrentContext",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiContext *",
+                "name": "ctx",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetIO",
+        "return_type": "ImGuiIO &",
+        "parameters": []
+    },
+    {
+        "name": "GetStyle",
+        "return_type": "ImGuiStyle &",
+        "parameters": []
+    },
+    {
+        "name": "NewFrame",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "EndFrame",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "Render",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetDrawData",
+        "return_type": "ImDrawData *",
+        "parameters": []
+    },
+    {
+        "name": "ShowDemoWindow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "ShowMetricsWindow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "ShowDebugLogWindow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "ShowStackToolWindow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "ShowAboutWindow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "ShowStyleEditor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyle *",
+                "name": "ref",
+                "default_value": "ImGuiStyle"
+            }
+        ]
+    },
+    {
+        "name": "ShowStyleSelector",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ShowFontSelector",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ShowUserGuide",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetVersion",
+        "return_type": "const char *",
+        "parameters": []
+    },
+    {
+        "name": "StyleColorsDark",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyle *",
+                "name": "dst",
+                "default_value": "ImGuiStyle"
+            }
+        ]
+    },
+    {
+        "name": "StyleColorsLight",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyle *",
+                "name": "dst",
+                "default_value": "ImGuiStyle"
+            }
+        ]
+    },
+    {
+        "name": "StyleColorsClassic",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyle *",
+                "name": "dst",
+                "default_value": "ImGuiStyle"
+            }
+        ]
+    },
+    {
+        "name": "Begin",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "End",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginChild",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            },
+            {
+                "type": "bool",
+                "name": "border",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "BeginChild",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            },
+            {
+                "type": "bool",
+                "name": "border",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndChild",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "IsWindowAppearing",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsWindowCollapsed",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsWindowFocused",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiFocusedFlags",
+                "name": "flags",
+                "default_value": "ImGuiFocusedFlags"
+            }
+        ]
+    },
+    {
+        "name": "IsWindowHovered",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiHoveredFlags",
+                "name": "flags",
+                "default_value": "ImGuiHoveredFlags"
+            }
+        ]
+    },
+    {
+        "name": "GetWindowDrawList",
+        "return_type": "ImDrawList *",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowDpiScale",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowPos",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowSize",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowWidth",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowHeight",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowViewport",
+        "return_type": "ImGuiViewport *",
+        "parameters": []
+    },
+    {
+        "name": "SetNextWindowPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "pos",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "pivot",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowSize",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowSizeConstraints",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size_min",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size_max",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiSizeCallback",
+                "name": "custom_callback",
+                "default_value": "ImGuiSizeCallback"
+            },
+            {
+                "type": "void *",
+                "name": "custom_callback_data",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowContentSize",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowCollapsed",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "collapsed",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowFocus",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetNextWindowScroll",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "scroll",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowBgAlpha",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "alpha",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowViewport",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "viewport_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetWindowPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "pos",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowSize",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowCollapsed",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "collapsed",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowFocus",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetWindowFontScale",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "scale",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetWindowPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "pos",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowSize",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowCollapsed",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "collapsed",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetWindowFocus",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetContentRegionAvail",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetContentRegionMax",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowContentRegionMin",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetWindowContentRegionMax",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetScrollX",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetScrollY",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "SetScrollX",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "scroll_x",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetScrollY",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "scroll_y",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetScrollMaxX",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetScrollMaxY",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "SetScrollHereX",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "center_x_ratio",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "SetScrollHereY",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "center_y_ratio",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "SetScrollFromPosX",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "local_x",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "center_x_ratio",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "SetScrollFromPosY",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "local_y",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "center_y_ratio",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "PushFont",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImFont *",
+                "name": "font",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopFont",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "PushStyleColor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiCol",
+                "name": "idx",
+                "default_value": null
+            },
+            {
+                "type": "ImU32",
+                "name": "col",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PushStyleColor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiCol",
+                "name": "idx",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "col",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopStyleColor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "count",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "PushStyleVar",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyleVar",
+                "name": "idx",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "val",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PushStyleVar",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStyleVar",
+                "name": "idx",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "val",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopStyleVar",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "count",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "PushAllowKeyboardFocus",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "allow_keyboard_focus",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopAllowKeyboardFocus",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "PushButtonRepeat",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "repeat",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopButtonRepeat",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "PushItemWidth",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "item_width",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopItemWidth",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetNextItemWidth",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "item_width",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "CalcItemWidth",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "PushTextWrapPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "wrap_local_pos_x",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "PopTextWrapPos",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetFont",
+        "return_type": "ImFont *",
+        "parameters": []
+    },
+    {
+        "name": "GetFontSize",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetFontTexUvWhitePixel",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetColorU32",
+        "return_type": "ImU32",
+        "parameters": [
+            {
+                "type": "ImGuiCol",
+                "name": "idx",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "alpha_mul",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "GetColorU32",
+        "return_type": "ImU32",
+        "parameters": [
+            {
+                "type": "const ImVec4 &",
+                "name": "col",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetColorU32",
+        "return_type": "ImU32",
+        "parameters": [
+            {
+                "type": "ImU32",
+                "name": "col",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetStyleColorVec4",
+        "return_type": "const ImVec4 &",
+        "parameters": [
+            {
+                "type": "ImGuiCol",
+                "name": "idx",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Separator",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SameLine",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "offset_from_start_x",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "spacing",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "NewLine",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "Spacing",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "Dummy",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Indent",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "indent_w",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "Unindent",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "indent_w",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "BeginGroup",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "EndGroup",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetCursorPos",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetCursorPosX",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetCursorPosY",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "SetCursorPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "local_pos",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetCursorPosX",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "local_x",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetCursorPosY",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "local_y",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetCursorStartPos",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetCursorScreenPos",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "SetCursorScreenPos",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "pos",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "AlignTextToFramePadding",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetTextLineHeight",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetTextLineHeightWithSpacing",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetFrameHeight",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "GetFrameHeightWithSpacing",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "PushID",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PushID",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id_begin",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "str_id_end",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PushID",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PushID",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "int_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopID",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetID",
+        "return_type": "ImGuiID",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetID",
+        "return_type": "ImGuiID",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id_begin",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "str_id_end",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetID",
+        "return_type": "ImGuiID",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextUnformatted",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "text",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "text_end",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "Text",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextColored",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec4 &",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextColoredV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec4 &",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextDisabled",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextDisabledV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextWrapped",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TextWrappedV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "LabelText",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "LabelTextV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "BulletText",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "BulletTextV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SeparatorText",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Button",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "SmallButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "InvisibleButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiButtonFlags",
+                "name": "flags",
+                "default_value": "ImGuiButtonFlags"
+            }
+        ]
+    },
+    {
+        "name": "ArrowButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDir",
+                "name": "dir",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Checkbox",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "v",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "CheckboxFlags",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "flags_value",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "CheckboxFlags",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "unsigned int *",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "unsigned int",
+                "name": "flags_value",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "RadioButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "active",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "RadioButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_button",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ProgressBar",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "fraction",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size_arg",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "overlay",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "Bullet",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "Image",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImTextureID",
+                "name": "user_texture_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv0",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv1",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "tint_col",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "border_col",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "ImageButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImTextureID",
+                "name": "user_texture_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv0",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv1",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "bg_col",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "tint_col",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "BeginCombo",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "preview_value",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiComboFlags",
+                "name": "flags",
+                "default_value": "ImGuiComboFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndCombo",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "Combo",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "current_item",
+                "default_value": null
+            },
+            {
+                "type": "const char *const[]",
+                "name": "items",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "popup_max_height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "Combo",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "current_item",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "items_separated_by_zeros",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "popup_max_height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "Combo",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "current_item",
+                "default_value": null
+            },
+            {
+                "type": "bool (*)(void *, int, const char **)",
+                "name": "items_getter",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "popup_max_height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "DragFloat",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragFloat2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragFloat3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragFloat4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragFloatRange2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v_current_min",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v_current_max",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format_max",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragInt",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragInt2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragInt3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragInt4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragIntRange2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v_current_min",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v_current_max",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format_max",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragScalar",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "const void *",
+                "name": "p_min",
+                "default_value": "const"
+            },
+            {
+                "type": "const void *",
+                "name": "p_max",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "DragScalarN",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "components",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_speed",
+                "default_value": "float"
+            },
+            {
+                "type": "const void *",
+                "name": "p_min",
+                "default_value": "const"
+            },
+            {
+                "type": "const void *",
+                "name": "p_max",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderFloat",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderFloat2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderFloat3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderFloat4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderAngle",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v_rad",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_degrees_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "v_degrees_max",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderInt",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderInt2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderInt3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderInt4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderScalar",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_min",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "SliderScalarN",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "components",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_min",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "VSliderFloat",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "VSliderInt",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_min",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "VSliderScalar",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_min",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_max",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiSliderFlags",
+                "name": "flags",
+                "default_value": "ImGuiSliderFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputText",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "char *",
+                "name": "buf",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "buf_size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            },
+            {
+                "type": "ImGuiInputTextCallback",
+                "name": "callback",
+                "default_value": "ImGuiInputTextCallback"
+            },
+            {
+                "type": "void *",
+                "name": "user_data",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "InputTextMultiline",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "char *",
+                "name": "buf",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "buf_size",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            },
+            {
+                "type": "ImGuiInputTextCallback",
+                "name": "callback",
+                "default_value": "ImGuiInputTextCallback"
+            },
+            {
+                "type": "void *",
+                "name": "user_data",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "InputTextWithHint",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "hint",
+                "default_value": null
+            },
+            {
+                "type": "char *",
+                "name": "buf",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "buf_size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            },
+            {
+                "type": "ImGuiInputTextCallback",
+                "name": "callback",
+                "default_value": "ImGuiInputTextCallback"
+            },
+            {
+                "type": "void *",
+                "name": "user_data",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "InputFloat",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "step",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "step_fast",
+                "default_value": "float"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputFloat2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputFloat3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputFloat4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputInt",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "step",
+                "default_value": "int"
+            },
+            {
+                "type": "int",
+                "name": "step_fast",
+                "default_value": "int"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputInt2",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[2]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputInt3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[3]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputInt4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int[4]",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputDouble",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "double *",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "double",
+                "name": "step",
+                "default_value": "double"
+            },
+            {
+                "type": "double",
+                "name": "step_fast",
+                "default_value": "double"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputScalar",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_step",
+                "default_value": "const"
+            },
+            {
+                "type": "const void *",
+                "name": "p_step_fast",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "InputScalarN",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDataType",
+                "name": "data_type",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "p_data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "components",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "p_step",
+                "default_value": "const"
+            },
+            {
+                "type": "const void *",
+                "name": "p_step_fast",
+                "default_value": "const"
+            },
+            {
+                "type": "const char *",
+                "name": "format",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiInputTextFlags",
+                "name": "flags",
+                "default_value": "ImGuiInputTextFlags"
+            }
+        ]
+    },
+    {
+        "name": "ColorEdit3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[3]",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": "ImGuiColorEditFlags"
+            }
+        ]
+    },
+    {
+        "name": "ColorEdit4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[4]",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": "ImGuiColorEditFlags"
+            }
+        ]
+    },
+    {
+        "name": "ColorPicker3",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[3]",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": "ImGuiColorEditFlags"
+            }
+        ]
+    },
+    {
+        "name": "ColorPicker4",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float[4]",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": "ImGuiColorEditFlags"
+            },
+            {
+                "type": "const float *",
+                "name": "ref_col",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "ColorButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "desc_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "col",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": "ImGuiColorEditFlags"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "SetColorEditOptions",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiColorEditFlags",
+                "name": "flags",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNode",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNode",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNode",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeV",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeV",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeEx",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": "ImGuiTreeNodeFlags"
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeEx",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeEx",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeExV",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreeNodeExV",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreePush",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreePush",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const void *",
+                "name": "ptr_id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TreePop",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetTreeNodeToLabelSpacing",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "CollapsingHeader",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": "ImGuiTreeNodeFlags"
+            }
+        ]
+    },
+    {
+        "name": "CollapsingHeader",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_visible",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTreeNodeFlags",
+                "name": "flags",
+                "default_value": "ImGuiTreeNodeFlags"
+            }
+        ]
+    },
+    {
+        "name": "SetNextItemOpen",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "is_open",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "Selectable",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "selected",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiSelectableFlags",
+                "name": "flags",
+                "default_value": "ImGuiSelectableFlags"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "Selectable",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_selected",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiSelectableFlags",
+                "name": "flags",
+                "default_value": "ImGuiSelectableFlags"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "BeginListBox",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "EndListBox",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "ListBox",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "current_item",
+                "default_value": null
+            },
+            {
+                "type": "const char *const[]",
+                "name": "items",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "ListBox",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "current_item",
+                "default_value": null
+            },
+            {
+                "type": "bool (*)(void *, int, const char **)",
+                "name": "items_getter",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "PlotLines",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const float *",
+                "name": "values",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_offset",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "overlay_text",
+                "default_value": "const"
+            },
+            {
+                "type": "float",
+                "name": "scale_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "scale_max",
+                "default_value": "float"
+            },
+            {
+                "type": "ImVec2",
+                "name": "graph_size",
+                "default_value": "ImVec2"
+            },
+            {
+                "type": "int",
+                "name": "stride",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "PlotLines",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float (*)(void *, int)",
+                "name": "values_getter",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_offset",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "overlay_text",
+                "default_value": "const"
+            },
+            {
+                "type": "float",
+                "name": "scale_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "scale_max",
+                "default_value": "float"
+            },
+            {
+                "type": "ImVec2",
+                "name": "graph_size",
+                "default_value": "ImVec2"
+            }
+        ]
+    },
+    {
+        "name": "PlotHistogram",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const float *",
+                "name": "values",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_offset",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "overlay_text",
+                "default_value": "const"
+            },
+            {
+                "type": "float",
+                "name": "scale_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "scale_max",
+                "default_value": "float"
+            },
+            {
+                "type": "ImVec2",
+                "name": "graph_size",
+                "default_value": "ImVec2"
+            },
+            {
+                "type": "int",
+                "name": "stride",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "PlotHistogram",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "float (*)(void *, int)",
+                "name": "values_getter",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "data",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "values_offset",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "overlay_text",
+                "default_value": "const"
+            },
+            {
+                "type": "float",
+                "name": "scale_min",
+                "default_value": "float"
+            },
+            {
+                "type": "float",
+                "name": "scale_max",
+                "default_value": "float"
+            },
+            {
+                "type": "ImVec2",
+                "name": "graph_size",
+                "default_value": "ImVec2"
+            }
+        ]
+    },
+    {
+        "name": "Value",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "prefix",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "b",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Value",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "prefix",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "v",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Value",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "prefix",
+                "default_value": null
+            },
+            {
+                "type": "unsigned int",
+                "name": "v",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "Value",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "prefix",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "float_format",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "BeginMenuBar",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "EndMenuBar",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginMainMenuBar",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "EndMainMenuBar",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginMenu",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "enabled",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "EndMenu",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "MenuItem",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "shortcut",
+                "default_value": "const"
+            },
+            {
+                "type": "bool",
+                "name": "selected",
+                "default_value": "bool"
+            },
+            {
+                "type": "bool",
+                "name": "enabled",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "MenuItem",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "shortcut",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_selected",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "enabled",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "BeginTooltip",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "EndTooltip",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetTooltip",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetTooltipV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "BeginPopup",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "BeginPopupModal",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "name",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndPopup",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "OpenPopup",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "OpenPopup",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "OpenPopupOnItemClick",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "CloseCurrentPopup",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginPopupContextItem",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "BeginPopupContextWindow",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "BeginPopupContextVoid",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "popup_flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "IsPopupOpen",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiPopupFlags",
+                "name": "flags",
+                "default_value": "ImGuiPopupFlags"
+            }
+        ]
+    },
+    {
+        "name": "BeginTable",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "column",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTableFlags",
+                "name": "flags",
+                "default_value": "ImGuiTableFlags"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "outer_size",
+                "default_value": "const"
+            },
+            {
+                "type": "float",
+                "name": "inner_width",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "EndTable",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "TableNextRow",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiTableRowFlags",
+                "name": "row_flags",
+                "default_value": "ImGuiTableRowFlags"
+            },
+            {
+                "type": "float",
+                "name": "min_row_height",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "TableNextColumn",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "TableSetColumnIndex",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_n",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TableSetupColumn",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTableColumnFlags",
+                "name": "flags",
+                "default_value": "ImGuiTableColumnFlags"
+            },
+            {
+                "type": "float",
+                "name": "init_width_or_weight",
+                "default_value": "float"
+            },
+            {
+                "type": "ImGuiID",
+                "name": "user_id",
+                "default_value": "ImGuiID"
+            }
+        ]
+    },
+    {
+        "name": "TableSetupScrollFreeze",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "cols",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "rows",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TableHeadersRow",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "TableHeader",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TableGetSortSpecs",
+        "return_type": "ImGuiTableSortSpecs *",
+        "parameters": []
+    },
+    {
+        "name": "TableGetColumnCount",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "TableGetColumnIndex",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "TableGetRowIndex",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "TableGetColumnName",
+        "return_type": "const char *",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_n",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "TableGetColumnFlags",
+        "return_type": "ImGuiTableColumnFlags",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_n",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "TableSetColumnEnabled",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_n",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "v",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "TableSetBgColor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiTableBgTarget",
+                "name": "target",
+                "default_value": null
+            },
+            {
+                "type": "ImU32",
+                "name": "color",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "column_n",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "Columns",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "count",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "id",
+                "default_value": "const"
+            },
+            {
+                "type": "bool",
+                "name": "border",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "NextColumn",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetColumnIndex",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "GetColumnWidth",
+        "return_type": "float",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_index",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "SetColumnWidth",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_index",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "width",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetColumnOffset",
+        "return_type": "float",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_index",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "SetColumnOffset",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "column_index",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "offset_x",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetColumnsCount",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "BeginTabBar",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "str_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTabBarFlags",
+                "name": "flags",
+                "default_value": "ImGuiTabBarFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndTabBar",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginTabItem",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "bool *",
+                "name": "p_open",
+                "default_value": "bool"
+            },
+            {
+                "type": "ImGuiTabItemFlags",
+                "name": "flags",
+                "default_value": "ImGuiTabItemFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndTabItem",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "TabItemButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiTabItemFlags",
+                "name": "flags",
+                "default_value": "ImGuiTabItemFlags"
+            }
+        ]
+    },
+    {
+        "name": "SetTabItemClosed",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "tab_or_docked_window_label",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "DockSpace",
+        "return_type": "ImGuiID",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiDockNodeFlags",
+                "name": "flags",
+                "default_value": "ImGuiDockNodeFlags"
+            },
+            {
+                "type": "const ImGuiWindowClass *",
+                "name": "window_class",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "DockSpaceOverViewport",
+        "return_type": "ImGuiID",
+        "parameters": [
+            {
+                "type": "const ImGuiViewport *",
+                "name": "viewport",
+                "default_value": "const"
+            },
+            {
+                "type": "ImGuiDockNodeFlags",
+                "name": "flags",
+                "default_value": "ImGuiDockNodeFlags"
+            },
+            {
+                "type": "const ImGuiWindowClass *",
+                "name": "window_class",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowDockID",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "dock_id",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "SetNextWindowClass",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImGuiWindowClass *",
+                "name": "window_class",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetWindowDockID",
+        "return_type": "ImGuiID",
+        "parameters": []
+    },
+    {
+        "name": "IsWindowDocked",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "LogToTTY",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "auto_open_depth",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "LogToFile",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "auto_open_depth",
+                "default_value": "int"
+            },
+            {
+                "type": "const char *",
+                "name": "filename",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "LogToClipboard",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "auto_open_depth",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "LogFinish",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "LogButtons",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "LogText",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "LogTextV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "fmt",
+                "default_value": null
+            },
+            {
+                "type": "va_list",
+                "name": "args",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "BeginDragDropSource",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiDragDropFlags",
+                "name": "flags",
+                "default_value": "ImGuiDragDropFlags"
+            }
+        ]
+    },
+    {
+        "name": "SetDragDropPayload",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "type",
+                "default_value": null
+            },
+            {
+                "type": "const void *",
+                "name": "data",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiCond",
+                "name": "cond",
+                "default_value": "ImGuiCond"
+            }
+        ]
+    },
+    {
+        "name": "EndDragDropSource",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "BeginDragDropTarget",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "AcceptDragDropPayload",
+        "return_type": "const ImGuiPayload *",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "type",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiDragDropFlags",
+                "name": "flags",
+                "default_value": "ImGuiDragDropFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndDragDropTarget",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetDragDropPayload",
+        "return_type": "const ImGuiPayload *",
+        "parameters": []
+    },
+    {
+        "name": "BeginDisabled",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "disabled",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "EndDisabled",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "PushClipRect",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "clip_rect_min",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "clip_rect_max",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "intersect_with_current_clip_rect",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "PopClipRect",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetItemDefaultFocus",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "SetKeyboardFocusHere",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "offset",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "IsItemHovered",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiHoveredFlags",
+                "name": "flags",
+                "default_value": "ImGuiHoveredFlags"
+            }
+        ]
+    },
+    {
+        "name": "IsItemActive",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemFocused",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemClicked",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "mouse_button",
+                "default_value": "ImGuiMouseButton"
+            }
+        ]
+    },
+    {
+        "name": "IsItemVisible",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemEdited",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemActivated",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemDeactivated",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemDeactivatedAfterEdit",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsItemToggledOpen",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsAnyItemHovered",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsAnyItemActive",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "IsAnyItemFocused",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "GetItemID",
+        "return_type": "ImGuiID",
+        "parameters": []
+    },
+    {
+        "name": "GetItemRectMin",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetItemRectMax",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetItemRectSize",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "SetItemAllowOverlap",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "GetMainViewport",
+        "return_type": "ImGuiViewport *",
+        "parameters": []
+    },
+    {
+        "name": "GetBackgroundDrawList",
+        "return_type": "ImDrawList *",
+        "parameters": []
+    },
+    {
+        "name": "GetForegroundDrawList",
+        "return_type": "ImDrawList *",
+        "parameters": []
+    },
+    {
+        "name": "GetBackgroundDrawList",
+        "return_type": "ImDrawList *",
+        "parameters": [
+            {
+                "type": "ImGuiViewport *",
+                "name": "viewport",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetForegroundDrawList",
+        "return_type": "ImDrawList *",
+        "parameters": [
+            {
+                "type": "ImGuiViewport *",
+                "name": "viewport",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsRectVisible",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsRectVisible",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "rect_min",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "rect_max",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetTime",
+        "return_type": "double",
+        "parameters": []
+    },
+    {
+        "name": "GetFrameCount",
+        "return_type": "int",
+        "parameters": []
+    },
+    {
+        "name": "GetDrawListSharedData",
+        "return_type": "ImDrawListSharedData *",
+        "parameters": []
+    },
+    {
+        "name": "GetStyleColorName",
+        "return_type": "const char *",
+        "parameters": [
+            {
+                "type": "ImGuiCol",
+                "name": "idx",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetStateStorage",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiStorage *",
+                "name": "storage",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetStateStorage",
+        "return_type": "ImGuiStorage *",
+        "parameters": []
+    },
+    {
+        "name": "BeginChildFrame",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiWindowFlags",
+                "name": "flags",
+                "default_value": "ImGuiWindowFlags"
+            }
+        ]
+    },
+    {
+        "name": "EndChildFrame",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "CalcTextSize",
+        "return_type": "ImVec2",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "text",
+                "default_value": null
+            },
+            {
+                "type": "const char *",
+                "name": "text_end",
+                "default_value": "const"
+            },
+            {
+                "type": "bool",
+                "name": "hide_text_after_double_hash",
+                "default_value": "bool"
+            },
+            {
+                "type": "float",
+                "name": "wrap_width",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "ColorConvertU32ToFloat4",
+        "return_type": "ImVec4",
+        "parameters": [
+            {
+                "type": "ImU32",
+                "name": "in",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ColorConvertFloat4ToU32",
+        "return_type": "ImU32",
+        "parameters": [
+            {
+                "type": "const ImVec4 &",
+                "name": "in",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ColorConvertRGBtoHSV",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "r",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "g",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "b",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_h",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_s",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_v",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ColorConvertHSVtoRGB",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "float",
+                "name": "h",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "s",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "v",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_r",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_g",
+                "default_value": null
+            },
+            {
+                "type": "float &",
+                "name": "out_b",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsKeyDown",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsKeyPressed",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "repeat",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "IsKeyReleased",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetKeyPressedAmount",
+        "return_type": "int",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "repeat_delay",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "rate",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetKeyName",
+        "return_type": "const char *",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetNextFrameWantCaptureKeyboard",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "want_capture_keyboard",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsMouseDown",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsMouseClicked",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "repeat",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "IsMouseReleased",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsMouseDoubleClicked",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetMouseClickedCount",
+        "return_type": "int",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "IsMouseHoveringRect",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const ImVec2 &",
+                "name": "r_min",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "r_max",
+                "default_value": null
+            },
+            {
+                "type": "bool",
+                "name": "clip",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "IsMousePosValid",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const ImVec2 *",
+                "name": "mouse_pos",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "IsAnyMouseDown",
+        "return_type": "bool",
+        "parameters": []
+    },
+    {
+        "name": "GetMousePos",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "GetMousePosOnOpeningCurrentPopup",
+        "return_type": "ImVec2",
+        "parameters": []
+    },
+    {
+        "name": "IsMouseDragging",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "lock_threshold",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "GetMouseDragDelta",
+        "return_type": "ImVec2",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": "ImGuiMouseButton"
+            },
+            {
+                "type": "float",
+                "name": "lock_threshold",
+                "default_value": "float"
+            }
+        ]
+    },
+    {
+        "name": "ResetMouseDragDelta",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiMouseButton",
+                "name": "button",
+                "default_value": "ImGuiMouseButton"
+            }
+        ]
+    },
+    {
+        "name": "GetMouseCursor",
+        "return_type": "ImGuiMouseCursor",
+        "parameters": []
+    },
+    {
+        "name": "SetMouseCursor",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiMouseCursor",
+                "name": "cursor_type",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetNextFrameWantCaptureMouse",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "want_capture_mouse",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetClipboardText",
+        "return_type": "const char *",
+        "parameters": []
+    },
+    {
+        "name": "SetClipboardText",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "text",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "LoadIniSettingsFromDisk",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "ini_filename",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "LoadIniSettingsFromMemory",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "ini_data",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "ini_size",
+                "default_value": "size_t"
+            }
+        ]
+    },
+    {
+        "name": "SaveIniSettingsToDisk",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "ini_filename",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SaveIniSettingsToMemory",
+        "return_type": "const char *",
+        "parameters": [
+            {
+                "type": "size_t *",
+                "name": "out_ini_size",
+                "default_value": "size_t"
+            }
+        ]
+    },
+    {
+        "name": "DebugTextEncoding",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "text",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "DebugCheckVersionAndDataLayout",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "version_str",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_io",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_style",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_vec2",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_vec4",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_drawvert",
+                "default_value": null
+            },
+            {
+                "type": "size_t",
+                "name": "sz_drawidx",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "SetAllocatorFunctions",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiMemAllocFunc",
+                "name": "alloc_func",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiMemFreeFunc",
+                "name": "free_func",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "user_data",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "GetAllocatorFunctions",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "ImGuiMemAllocFunc *",
+                "name": "p_alloc_func",
+                "default_value": null
+            },
+            {
+                "type": "ImGuiMemFreeFunc *",
+                "name": "p_free_func",
+                "default_value": null
+            },
+            {
+                "type": "void **",
+                "name": "p_user_data",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "MemAlloc",
+        "return_type": "void *",
+        "parameters": [
+            {
+                "type": "size_t",
+                "name": "size",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "MemFree",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "void *",
+                "name": "ptr",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetPlatformIO",
+        "return_type": "ImGuiPlatformIO &",
+        "parameters": []
+    },
+    {
+        "name": "UpdatePlatformWindows",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "RenderPlatformWindowsDefault",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "void *",
+                "name": "platform_render_arg",
+                "default_value": "void"
+            },
+            {
+                "type": "void *",
+                "name": "renderer_render_arg",
+                "default_value": "void"
+            }
+        ]
+    },
+    {
+        "name": "DestroyPlatformWindows",
+        "return_type": "void",
+        "parameters": []
+    },
+    {
+        "name": "FindViewportByID",
+        "return_type": "ImGuiViewport *",
+        "parameters": [
+            {
+                "type": "ImGuiID",
+                "name": "id",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "FindViewportByPlatformHandle",
+        "return_type": "ImGuiViewport *",
+        "parameters": [
+            {
+                "type": "void *",
+                "name": "platform_handle",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "operator new",
+        "return_type": "void *",
+        "parameters": [
+            {
+                "type": "size_t",
+                "name": "",
+                "default_value": null
+            },
+            {
+                "type": "ImNewWrapper",
+                "name": "",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "ptr",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "operator delete",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "void *",
+                "name": "",
+                "default_value": null
+            },
+            {
+                "type": "ImNewWrapper",
+                "name": "",
+                "default_value": null
+            },
+            {
+                "type": "void *",
+                "name": "",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetKeyIndex",
+        "return_type": "ImGuiKey",
+        "parameters": [
+            {
+                "type": "ImGuiKey",
+                "name": "key",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "ImageButton",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "ImTextureID",
+                "name": "user_texture_id",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv0",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "uv1",
+                "default_value": "const"
+            },
+            {
+                "type": "int",
+                "name": "frame_padding",
+                "default_value": "int"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "bg_col",
+                "default_value": "const"
+            },
+            {
+                "type": "const ImVec4 &",
+                "name": "tint_col",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "CaptureKeyboardFromApp",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "want_capture_keyboard",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "CaptureMouseFromApp",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "bool",
+                "name": "want_capture_mouse",
+                "default_value": "bool"
+            }
+        ]
+    },
+    {
+        "name": "CalcListClipping",
+        "return_type": "void",
+        "parameters": [
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "float",
+                "name": "items_height",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "out_items_display_start",
+                "default_value": null
+            },
+            {
+                "type": "int *",
+                "name": "out_items_display_end",
+                "default_value": null
+            }
+        ]
+    },
+    {
+        "name": "GetWindowContentRegionWidth",
+        "return_type": "float",
+        "parameters": []
+    },
+    {
+        "name": "ListBoxHeader",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "items_count",
+                "default_value": null
+            },
+            {
+                "type": "int",
+                "name": "height_in_items",
+                "default_value": "int"
+            }
+        ]
+    },
+    {
+        "name": "ListBoxHeader",
+        "return_type": "bool",
+        "parameters": [
+            {
+                "type": "const char *",
+                "name": "label",
+                "default_value": null
+            },
+            {
+                "type": "const ImVec2 &",
+                "name": "size",
+                "default_value": "const"
+            }
+        ]
+    },
+    {
+        "name": "ListBoxFooter",
+        "return_type": "void",
+        "parameters": []
+    }
+]
