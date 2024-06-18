@@ -1200,57 +1200,565 @@ static int lua_IsItemClicked(lua_State* L) {
     return 0;
 }
 } // namespace ImGui
+
+static void register_enums(lua_State* L) {
+    using namespace ImGui;
+    // ImGuiWindowFlags_
+    lua_createtable(L, 32, 0);
+    lua_pushinteger(L, ImGuiWindowFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiWindowFlags_NoTitleBar);
+    lua_setfield(L, -2, "NoTitleBar");
+    lua_pushinteger(L, ImGuiWindowFlags_NoResize);
+    lua_setfield(L, -2, "NoResize");
+    lua_pushinteger(L, ImGuiWindowFlags_NoMove);
+    lua_setfield(L, -2, "NoMove");
+    lua_pushinteger(L, ImGuiWindowFlags_NoScrollbar);
+    lua_setfield(L, -2, "NoScrollbar");
+    lua_pushinteger(L, ImGuiWindowFlags_NoScrollWithMouse);
+    lua_setfield(L, -2, "NoScrollWithMouse");
+    lua_pushinteger(L, ImGuiWindowFlags_NoCollapse);
+    lua_setfield(L, -2, "NoCollapse");
+    lua_pushinteger(L, ImGuiWindowFlags_AlwaysAutoResize);
+    lua_setfield(L, -2, "AlwaysAutoResize");
+    lua_pushinteger(L, ImGuiWindowFlags_NoBackground);
+    lua_setfield(L, -2, "NoBackground");
+    lua_pushinteger(L, ImGuiWindowFlags_NoSavedSettings);
+    lua_setfield(L, -2, "NoSavedSettings");
+    lua_pushinteger(L, ImGuiWindowFlags_NoMouseInputs);
+    lua_setfield(L, -2, "NoMouseInputs");
+    lua_pushinteger(L, ImGuiWindowFlags_MenuBar);
+    lua_setfield(L, -2, "MenuBar");
+    lua_pushinteger(L, ImGuiWindowFlags_HorizontalScrollbar);
+    lua_setfield(L, -2, "HorizontalScrollbar");
+    lua_pushinteger(L, ImGuiWindowFlags_NoFocusOnAppearing);
+    lua_setfield(L, -2, "NoFocusOnAppearing");
+    lua_pushinteger(L, ImGuiWindowFlags_NoBringToFrontOnFocus);
+    lua_setfield(L, -2, "NoBringToFrontOnFocus");
+    lua_pushinteger(L, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+    lua_setfield(L, -2, "AlwaysVerticalScrollbar");
+    lua_pushinteger(L, ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+    lua_setfield(L, -2, "AlwaysHorizontalScrollbar");
+    lua_pushinteger(L, ImGuiWindowFlags_AlwaysUseWindowPadding);
+    lua_setfield(L, -2, "AlwaysUseWindowPadding");
+    lua_pushinteger(L, ImGuiWindowFlags_NoNavInputs);
+    lua_setfield(L, -2, "NoNavInputs");
+    lua_pushinteger(L, ImGuiWindowFlags_NoNavFocus);
+    lua_setfield(L, -2, "NoNavFocus");
+    lua_pushinteger(L, ImGuiWindowFlags_UnsavedDocument);
+    lua_setfield(L, -2, "UnsavedDocument");
+    lua_pushinteger(L, ImGuiWindowFlags_NoDocking);
+    lua_setfield(L, -2, "NoDocking");
+    lua_pushinteger(L, ImGuiWindowFlags_NoNav);
+    lua_setfield(L, -2, "NoNav");
+    lua_pushinteger(L, ImGuiWindowFlags_NoDecoration);
+    lua_setfield(L, -2, "NoDecoration");
+    lua_pushinteger(L, ImGuiWindowFlags_NoInputs);
+    lua_setfield(L, -2, "NoInputs");
+    lua_pushinteger(L, ImGuiWindowFlags_NavFlattened);
+    lua_setfield(L, -2, "NavFlattened");
+    lua_pushinteger(L, ImGuiWindowFlags_ChildWindow);
+    lua_setfield(L, -2, "ChildWindow");
+    lua_pushinteger(L, ImGuiWindowFlags_Tooltip);
+    lua_setfield(L, -2, "Tooltip");
+    lua_pushinteger(L, ImGuiWindowFlags_Popup);
+    lua_setfield(L, -2, "Popup");
+    lua_pushinteger(L, ImGuiWindowFlags_Modal);
+    lua_setfield(L, -2, "Modal");
+    lua_pushinteger(L, ImGuiWindowFlags_ChildMenu);
+    lua_setfield(L, -2, "ChildMenu");
+    lua_pushinteger(L, ImGuiWindowFlags_DockNodeHost);
+    lua_setfield(L, -2, "DockNodeHost");
+    lua_setglobal(L, "ImGuiWindowFlags");
+
+    // ImGuiInputTextFlags_
+    lua_createtable(L, 23, 0);
+    lua_pushinteger(L, ImGuiInputTextFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiInputTextFlags_CharsDecimal);
+    lua_setfield(L, -2, "CharsDecimal");
+    lua_pushinteger(L, ImGuiInputTextFlags_CharsHexadecimal);
+    lua_setfield(L, -2, "CharsHexadecimal");
+    lua_pushinteger(L, ImGuiInputTextFlags_CharsUppercase);
+    lua_setfield(L, -2, "CharsUppercase");
+    lua_pushinteger(L, ImGuiInputTextFlags_CharsNoBlank);
+    lua_setfield(L, -2, "CharsNoBlank");
+    lua_pushinteger(L, ImGuiInputTextFlags_AutoSelectAll);
+    lua_setfield(L, -2, "AutoSelectAll");
+    lua_pushinteger(L, ImGuiInputTextFlags_EnterReturnsTrue);
+    lua_setfield(L, -2, "EnterReturnsTrue");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackCompletion);
+    lua_setfield(L, -2, "CallbackCompletion");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackHistory);
+    lua_setfield(L, -2, "CallbackHistory");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackAlways);
+    lua_setfield(L, -2, "CallbackAlways");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackCharFilter);
+    lua_setfield(L, -2, "CallbackCharFilter");
+    lua_pushinteger(L, ImGuiInputTextFlags_AllowTabInput);
+    lua_setfield(L, -2, "AllowTabInput");
+    lua_pushinteger(L, ImGuiInputTextFlags_CtrlEnterForNewLine);
+    lua_setfield(L, -2, "CtrlEnterForNewLine");
+    lua_pushinteger(L, ImGuiInputTextFlags_NoHorizontalScroll);
+    lua_setfield(L, -2, "NoHorizontalScroll");
+    lua_pushinteger(L, ImGuiInputTextFlags_AlwaysOverwrite);
+    lua_setfield(L, -2, "AlwaysOverwrite");
+    lua_pushinteger(L, ImGuiInputTextFlags_ReadOnly);
+    lua_setfield(L, -2, "ReadOnly");
+    lua_pushinteger(L, ImGuiInputTextFlags_Password);
+    lua_setfield(L, -2, "Password");
+    lua_pushinteger(L, ImGuiInputTextFlags_NoUndoRedo);
+    lua_setfield(L, -2, "NoUndoRedo");
+    lua_pushinteger(L, ImGuiInputTextFlags_CharsScientific);
+    lua_setfield(L, -2, "CharsScientific");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackResize);
+    lua_setfield(L, -2, "CallbackResize");
+    lua_pushinteger(L, ImGuiInputTextFlags_CallbackEdit);
+    lua_setfield(L, -2, "CallbackEdit");
+    lua_pushinteger(L, ImGuiInputTextFlags_EscapeClearsAll);
+    lua_setfield(L, -2, "EscapeClearsAll");
+    lua_pushinteger(L, ImGuiInputTextFlags_AlwaysInsertMode);
+    lua_setfield(L, -2, "AlwaysInsertMode");
+    lua_setglobal(L, "ImGuiInputTextFlags");
+
+    // ImGuiPopupFlags_
+    lua_createtable(L, 11, 0);
+    lua_pushinteger(L, ImGuiPopupFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiPopupFlags_MouseButtonLeft);
+    lua_setfield(L, -2, "MouseButtonLeft");
+    lua_pushinteger(L, ImGuiPopupFlags_MouseButtonRight);
+    lua_setfield(L, -2, "MouseButtonRight");
+    lua_pushinteger(L, ImGuiPopupFlags_MouseButtonMiddle);
+    lua_setfield(L, -2, "MouseButtonMiddle");
+    lua_pushinteger(L, ImGuiPopupFlags_MouseButtonMask_);
+    lua_setfield(L, -2, "MouseButtonMask_");
+    lua_pushinteger(L, ImGuiPopupFlags_MouseButtonDefault_);
+    lua_setfield(L, -2, "MouseButtonDefault_");
+    lua_pushinteger(L, ImGuiPopupFlags_NoOpenOverExistingPopup);
+    lua_setfield(L, -2, "NoOpenOverExistingPopup");
+    lua_pushinteger(L, ImGuiPopupFlags_NoOpenOverItems);
+    lua_setfield(L, -2, "NoOpenOverItems");
+    lua_pushinteger(L, ImGuiPopupFlags_AnyPopupId);
+    lua_setfield(L, -2, "AnyPopupId");
+    lua_pushinteger(L, ImGuiPopupFlags_AnyPopupLevel);
+    lua_setfield(L, -2, "AnyPopupLevel");
+    lua_pushinteger(L, ImGuiPopupFlags_AnyPopup);
+    lua_setfield(L, -2, "AnyPopup");
+    lua_setglobal(L, "ImGuiPopupFlags");
+
+    // ImGuiSelectableFlags_
+    lua_createtable(L, 6, 0);
+    lua_pushinteger(L, ImGuiSelectableFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiSelectableFlags_DontClosePopups);
+    lua_setfield(L, -2, "DontClosePopups");
+    lua_pushinteger(L, ImGuiSelectableFlags_SpanAllColumns);
+    lua_setfield(L, -2, "SpanAllColumns");
+    lua_pushinteger(L, ImGuiSelectableFlags_AllowDoubleClick);
+    lua_setfield(L, -2, "AllowDoubleClick");
+    lua_pushinteger(L, ImGuiSelectableFlags_Disabled);
+    lua_setfield(L, -2, "Disabled");
+    lua_pushinteger(L, ImGuiSelectableFlags_AllowItemOverlap);
+    lua_setfield(L, -2, "AllowItemOverlap");
+    lua_setglobal(L, "ImGuiSelectableFlags");
+
+    // ImGuiComboFlags_
+    lua_createtable(L, 9, 0);
+    lua_pushinteger(L, ImGuiComboFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiComboFlags_PopupAlignLeft);
+    lua_setfield(L, -2, "PopupAlignLeft");
+    lua_pushinteger(L, ImGuiComboFlags_HeightSmall);
+    lua_setfield(L, -2, "HeightSmall");
+    lua_pushinteger(L, ImGuiComboFlags_HeightRegular);
+    lua_setfield(L, -2, "HeightRegular");
+    lua_pushinteger(L, ImGuiComboFlags_HeightLarge);
+    lua_setfield(L, -2, "HeightLarge");
+    lua_pushinteger(L, ImGuiComboFlags_HeightLargest);
+    lua_setfield(L, -2, "HeightLargest");
+    lua_pushinteger(L, ImGuiComboFlags_NoArrowButton);
+    lua_setfield(L, -2, "NoArrowButton");
+    lua_pushinteger(L, ImGuiComboFlags_NoPreview);
+    lua_setfield(L, -2, "NoPreview");
+    lua_pushinteger(L, ImGuiComboFlags_HeightMask_);
+    lua_setfield(L, -2, "HeightMask_");
+    lua_setglobal(L, "ImGuiComboFlags");
+
+    // ImGuiHoveredFlags_
+    lua_createtable(L, 16, 0);
+    lua_pushinteger(L, ImGuiHoveredFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiHoveredFlags_ChildWindows);
+    lua_setfield(L, -2, "ChildWindows");
+    lua_pushinteger(L, ImGuiHoveredFlags_RootWindow);
+    lua_setfield(L, -2, "RootWindow");
+    lua_pushinteger(L, ImGuiHoveredFlags_AnyWindow);
+    lua_setfield(L, -2, "AnyWindow");
+    lua_pushinteger(L, ImGuiHoveredFlags_NoPopupHierarchy);
+    lua_setfield(L, -2, "NoPopupHierarchy");
+    lua_pushinteger(L, ImGuiHoveredFlags_DockHierarchy);
+    lua_setfield(L, -2, "DockHierarchy");
+    lua_pushinteger(L, ImGuiHoveredFlags_AllowWhenBlockedByPopup);
+    lua_setfield(L, -2, "AllowWhenBlockedByPopup");
+    lua_pushinteger(L, ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
+    lua_setfield(L, -2, "AllowWhenBlockedByActiveItem");
+    lua_pushinteger(L, ImGuiHoveredFlags_AllowWhenOverlapped);
+    lua_setfield(L, -2, "AllowWhenOverlapped");
+    lua_pushinteger(L, ImGuiHoveredFlags_AllowWhenDisabled);
+    lua_setfield(L, -2, "AllowWhenDisabled");
+    lua_pushinteger(L, ImGuiHoveredFlags_NoNavOverride);
+    lua_setfield(L, -2, "NoNavOverride");
+    lua_pushinteger(L, ImGuiHoveredFlags_RectOnly);
+    lua_setfield(L, -2, "RectOnly");
+    lua_pushinteger(L, ImGuiHoveredFlags_RootAndChildWindows);
+    lua_setfield(L, -2, "RootAndChildWindows");
+    lua_pushinteger(L, ImGuiHoveredFlags_DelayNormal);
+    lua_setfield(L, -2, "DelayNormal");
+    lua_pushinteger(L, ImGuiHoveredFlags_DelayShort);
+    lua_setfield(L, -2, "DelayShort");
+    lua_pushinteger(L, ImGuiHoveredFlags_NoSharedDelay);
+    lua_setfield(L, -2, "NoSharedDelay");
+    lua_setglobal(L, "ImGuiHoveredFlags");
+
+    // ImGuiCol_
+    lua_createtable(L, 56, 0);
+    lua_pushinteger(L, ImGuiCol_Text);
+    lua_setfield(L, -2, "Text");
+    lua_pushinteger(L, ImGuiCol_TextDisabled);
+    lua_setfield(L, -2, "TextDisabled");
+    lua_pushinteger(L, ImGuiCol_WindowBg);
+    lua_setfield(L, -2, "WindowBg");
+    lua_pushinteger(L, ImGuiCol_ChildBg);
+    lua_setfield(L, -2, "ChildBg");
+    lua_pushinteger(L, ImGuiCol_PopupBg);
+    lua_setfield(L, -2, "PopupBg");
+    lua_pushinteger(L, ImGuiCol_Border);
+    lua_setfield(L, -2, "Border");
+    lua_pushinteger(L, ImGuiCol_BorderShadow);
+    lua_setfield(L, -2, "BorderShadow");
+    lua_pushinteger(L, ImGuiCol_FrameBg);
+    lua_setfield(L, -2, "FrameBg");
+    lua_pushinteger(L, ImGuiCol_FrameBgHovered);
+    lua_setfield(L, -2, "FrameBgHovered");
+    lua_pushinteger(L, ImGuiCol_FrameBgActive);
+    lua_setfield(L, -2, "FrameBgActive");
+    lua_pushinteger(L, ImGuiCol_TitleBg);
+    lua_setfield(L, -2, "TitleBg");
+    lua_pushinteger(L, ImGuiCol_TitleBgActive);
+    lua_setfield(L, -2, "TitleBgActive");
+    lua_pushinteger(L, ImGuiCol_TitleBgCollapsed);
+    lua_setfield(L, -2, "TitleBgCollapsed");
+    lua_pushinteger(L, ImGuiCol_MenuBarBg);
+    lua_setfield(L, -2, "MenuBarBg");
+    lua_pushinteger(L, ImGuiCol_ScrollbarBg);
+    lua_setfield(L, -2, "ScrollbarBg");
+    lua_pushinteger(L, ImGuiCol_ScrollbarGrab);
+    lua_setfield(L, -2, "ScrollbarGrab");
+    lua_pushinteger(L, ImGuiCol_ScrollbarGrabHovered);
+    lua_setfield(L, -2, "ScrollbarGrabHovered");
+    lua_pushinteger(L, ImGuiCol_ScrollbarGrabActive);
+    lua_setfield(L, -2, "ScrollbarGrabActive");
+    lua_pushinteger(L, ImGuiCol_CheckMark);
+    lua_setfield(L, -2, "CheckMark");
+    lua_pushinteger(L, ImGuiCol_SliderGrab);
+    lua_setfield(L, -2, "SliderGrab");
+    lua_pushinteger(L, ImGuiCol_SliderGrabActive);
+    lua_setfield(L, -2, "SliderGrabActive");
+    lua_pushinteger(L, ImGuiCol_Button);
+    lua_setfield(L, -2, "Button");
+    lua_pushinteger(L, ImGuiCol_ButtonHovered);
+    lua_setfield(L, -2, "ButtonHovered");
+    lua_pushinteger(L, ImGuiCol_ButtonActive);
+    lua_setfield(L, -2, "ButtonActive");
+    lua_pushinteger(L, ImGuiCol_Header);
+    lua_setfield(L, -2, "Header");
+    lua_pushinteger(L, ImGuiCol_HeaderHovered);
+    lua_setfield(L, -2, "HeaderHovered");
+    lua_pushinteger(L, ImGuiCol_HeaderActive);
+    lua_setfield(L, -2, "HeaderActive");
+    lua_pushinteger(L, ImGuiCol_Separator);
+    lua_setfield(L, -2, "Separator");
+    lua_pushinteger(L, ImGuiCol_SeparatorHovered);
+    lua_setfield(L, -2, "SeparatorHovered");
+    lua_pushinteger(L, ImGuiCol_SeparatorActive);
+    lua_setfield(L, -2, "SeparatorActive");
+    lua_pushinteger(L, ImGuiCol_ResizeGrip);
+    lua_setfield(L, -2, "ResizeGrip");
+    lua_pushinteger(L, ImGuiCol_ResizeGripHovered);
+    lua_setfield(L, -2, "ResizeGripHovered");
+    lua_pushinteger(L, ImGuiCol_ResizeGripActive);
+    lua_setfield(L, -2, "ResizeGripActive");
+    lua_pushinteger(L, ImGuiCol_Tab);
+    lua_setfield(L, -2, "Tab");
+    lua_pushinteger(L, ImGuiCol_TabHovered);
+    lua_setfield(L, -2, "TabHovered");
+    lua_pushinteger(L, ImGuiCol_TabActive);
+    lua_setfield(L, -2, "TabActive");
+    lua_pushinteger(L, ImGuiCol_TabUnfocused);
+    lua_setfield(L, -2, "TabUnfocused");
+    lua_pushinteger(L, ImGuiCol_TabUnfocusedActive);
+    lua_setfield(L, -2, "TabUnfocusedActive");
+    lua_pushinteger(L, ImGuiCol_DockingPreview);
+    lua_setfield(L, -2, "DockingPreview");
+    lua_pushinteger(L, ImGuiCol_DockingEmptyBg);
+    lua_setfield(L, -2, "DockingEmptyBg");
+    lua_pushinteger(L, ImGuiCol_PlotLines);
+    lua_setfield(L, -2, "PlotLines");
+    lua_pushinteger(L, ImGuiCol_PlotLinesHovered);
+    lua_setfield(L, -2, "PlotLinesHovered");
+    lua_pushinteger(L, ImGuiCol_PlotHistogram);
+    lua_setfield(L, -2, "PlotHistogram");
+    lua_pushinteger(L, ImGuiCol_PlotHistogramHovered);
+    lua_setfield(L, -2, "PlotHistogramHovered");
+    lua_pushinteger(L, ImGuiCol_TableHeaderBg);
+    lua_setfield(L, -2, "TableHeaderBg");
+    lua_pushinteger(L, ImGuiCol_TableBorderStrong);
+    lua_setfield(L, -2, "TableBorderStrong");
+    lua_pushinteger(L, ImGuiCol_TableBorderLight);
+    lua_setfield(L, -2, "TableBorderLight");
+    lua_pushinteger(L, ImGuiCol_TableRowBg);
+    lua_setfield(L, -2, "TableRowBg");
+    lua_pushinteger(L, ImGuiCol_TableRowBgAlt);
+    lua_setfield(L, -2, "TableRowBgAlt");
+    lua_pushinteger(L, ImGuiCol_TextSelectedBg);
+    lua_setfield(L, -2, "TextSelectedBg");
+    lua_pushinteger(L, ImGuiCol_DragDropTarget);
+    lua_setfield(L, -2, "DragDropTarget");
+    lua_pushinteger(L, ImGuiCol_NavHighlight);
+    lua_setfield(L, -2, "NavHighlight");
+    lua_pushinteger(L, ImGuiCol_NavWindowingHighlight);
+    lua_setfield(L, -2, "NavWindowingHighlight");
+    lua_pushinteger(L, ImGuiCol_NavWindowingDimBg);
+    lua_setfield(L, -2, "NavWindowingDimBg");
+    lua_pushinteger(L, ImGuiCol_ModalWindowDimBg);
+    lua_setfield(L, -2, "ModalWindowDimBg");
+    lua_pushinteger(L, ImGuiCol_COUNT);
+    lua_setfield(L, -2, "COUNT");
+    lua_setglobal(L, "ImGuiCol");
+
+    // ImGuiStyleVar_
+    lua_createtable(L, 29, 0);
+    lua_pushinteger(L, ImGuiStyleVar_Alpha);
+    lua_setfield(L, -2, "Alpha");
+    lua_pushinteger(L, ImGuiStyleVar_DisabledAlpha);
+    lua_setfield(L, -2, "DisabledAlpha");
+    lua_pushinteger(L, ImGuiStyleVar_WindowPadding);
+    lua_setfield(L, -2, "WindowPadding");
+    lua_pushinteger(L, ImGuiStyleVar_WindowRounding);
+    lua_setfield(L, -2, "WindowRounding");
+    lua_pushinteger(L, ImGuiStyleVar_WindowBorderSize);
+    lua_setfield(L, -2, "WindowBorderSize");
+    lua_pushinteger(L, ImGuiStyleVar_WindowMinSize);
+    lua_setfield(L, -2, "WindowMinSize");
+    lua_pushinteger(L, ImGuiStyleVar_WindowTitleAlign);
+    lua_setfield(L, -2, "WindowTitleAlign");
+    lua_pushinteger(L, ImGuiStyleVar_ChildRounding);
+    lua_setfield(L, -2, "ChildRounding");
+    lua_pushinteger(L, ImGuiStyleVar_ChildBorderSize);
+    lua_setfield(L, -2, "ChildBorderSize");
+    lua_pushinteger(L, ImGuiStyleVar_PopupRounding);
+    lua_setfield(L, -2, "PopupRounding");
+    lua_pushinteger(L, ImGuiStyleVar_PopupBorderSize);
+    lua_setfield(L, -2, "PopupBorderSize");
+    lua_pushinteger(L, ImGuiStyleVar_FramePadding);
+    lua_setfield(L, -2, "FramePadding");
+    lua_pushinteger(L, ImGuiStyleVar_FrameRounding);
+    lua_setfield(L, -2, "FrameRounding");
+    lua_pushinteger(L, ImGuiStyleVar_FrameBorderSize);
+    lua_setfield(L, -2, "FrameBorderSize");
+    lua_pushinteger(L, ImGuiStyleVar_ItemSpacing);
+    lua_setfield(L, -2, "ItemSpacing");
+    lua_pushinteger(L, ImGuiStyleVar_ItemInnerSpacing);
+    lua_setfield(L, -2, "ItemInnerSpacing");
+    lua_pushinteger(L, ImGuiStyleVar_IndentSpacing);
+    lua_setfield(L, -2, "IndentSpacing");
+    lua_pushinteger(L, ImGuiStyleVar_CellPadding);
+    lua_setfield(L, -2, "CellPadding");
+    lua_pushinteger(L, ImGuiStyleVar_ScrollbarSize);
+    lua_setfield(L, -2, "ScrollbarSize");
+    lua_pushinteger(L, ImGuiStyleVar_ScrollbarRounding);
+    lua_setfield(L, -2, "ScrollbarRounding");
+    lua_pushinteger(L, ImGuiStyleVar_GrabMinSize);
+    lua_setfield(L, -2, "GrabMinSize");
+    lua_pushinteger(L, ImGuiStyleVar_GrabRounding);
+    lua_setfield(L, -2, "GrabRounding");
+    lua_pushinteger(L, ImGuiStyleVar_TabRounding);
+    lua_setfield(L, -2, "TabRounding");
+    lua_pushinteger(L, ImGuiStyleVar_ButtonTextAlign);
+    lua_setfield(L, -2, "ButtonTextAlign");
+    lua_pushinteger(L, ImGuiStyleVar_SelectableTextAlign);
+    lua_setfield(L, -2, "SelectableTextAlign");
+    lua_pushinteger(L, ImGuiStyleVar_SeparatorTextBorderSize);
+    lua_setfield(L, -2, "SeparatorTextBorderSize");
+    lua_pushinteger(L, ImGuiStyleVar_SeparatorTextAlign);
+    lua_setfield(L, -2, "SeparatorTextAlign");
+    lua_pushinteger(L, ImGuiStyleVar_SeparatorTextPadding);
+    lua_setfield(L, -2, "SeparatorTextPadding");
+    lua_pushinteger(L, ImGuiStyleVar_COUNT);
+    lua_setfield(L, -2, "COUNT");
+    lua_setglobal(L, "ImGuiStyleVar");
+
+    // ImGuiColorEditFlags_
+    lua_createtable(L, 29, 0);
+    lua_pushinteger(L, ImGuiColorEditFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoAlpha);
+    lua_setfield(L, -2, "NoAlpha");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoPicker);
+    lua_setfield(L, -2, "NoPicker");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoOptions);
+    lua_setfield(L, -2, "NoOptions");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoSmallPreview);
+    lua_setfield(L, -2, "NoSmallPreview");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoInputs);
+    lua_setfield(L, -2, "NoInputs");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoTooltip);
+    lua_setfield(L, -2, "NoTooltip");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoLabel);
+    lua_setfield(L, -2, "NoLabel");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoSidePreview);
+    lua_setfield(L, -2, "NoSidePreview");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoDragDrop);
+    lua_setfield(L, -2, "NoDragDrop");
+    lua_pushinteger(L, ImGuiColorEditFlags_NoBorder);
+    lua_setfield(L, -2, "NoBorder");
+    lua_pushinteger(L, ImGuiColorEditFlags_AlphaBar);
+    lua_setfield(L, -2, "AlphaBar");
+    lua_pushinteger(L, ImGuiColorEditFlags_AlphaPreview);
+    lua_setfield(L, -2, "AlphaPreview");
+    lua_pushinteger(L, ImGuiColorEditFlags_AlphaPreviewHalf);
+    lua_setfield(L, -2, "AlphaPreviewHalf");
+    lua_pushinteger(L, ImGuiColorEditFlags_HDR);
+    lua_setfield(L, -2, "HDR");
+    lua_pushinteger(L, ImGuiColorEditFlags_DisplayRGB);
+    lua_setfield(L, -2, "DisplayRGB");
+    lua_pushinteger(L, ImGuiColorEditFlags_DisplayHSV);
+    lua_setfield(L, -2, "DisplayHSV");
+    lua_pushinteger(L, ImGuiColorEditFlags_DisplayHex);
+    lua_setfield(L, -2, "DisplayHex");
+    lua_pushinteger(L, ImGuiColorEditFlags_Uint8);
+    lua_setfield(L, -2, "Uint8");
+    lua_pushinteger(L, ImGuiColorEditFlags_Float);
+    lua_setfield(L, -2, "Float");
+    lua_pushinteger(L, ImGuiColorEditFlags_PickerHueBar);
+    lua_setfield(L, -2, "PickerHueBar");
+    lua_pushinteger(L, ImGuiColorEditFlags_PickerHueWheel);
+    lua_setfield(L, -2, "PickerHueWheel");
+    lua_pushinteger(L, ImGuiColorEditFlags_InputRGB);
+    lua_setfield(L, -2, "InputRGB");
+    lua_pushinteger(L, ImGuiColorEditFlags_InputHSV);
+    lua_setfield(L, -2, "InputHSV");
+    lua_pushinteger(L, ImGuiColorEditFlags_DefaultOptions_);
+    lua_setfield(L, -2, "DefaultOptions_");
+    lua_pushinteger(L, ImGuiColorEditFlags_DisplayMask_);
+    lua_setfield(L, -2, "DisplayMask_");
+    lua_pushinteger(L, ImGuiColorEditFlags_DataTypeMask_);
+    lua_setfield(L, -2, "DataTypeMask_");
+    lua_pushinteger(L, ImGuiColorEditFlags_PickerMask_);
+    lua_setfield(L, -2, "PickerMask_");
+    lua_pushinteger(L, ImGuiColorEditFlags_InputMask_);
+    lua_setfield(L, -2, "InputMask_");
+    lua_setglobal(L, "ImGuiColorEditFlags");
+
+    // ImGuiSliderFlags_
+    lua_createtable(L, 7, 0);
+    lua_pushinteger(L, ImGuiSliderFlags_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiSliderFlags_AlwaysClamp);
+    lua_setfield(L, -2, "AlwaysClamp");
+    lua_pushinteger(L, ImGuiSliderFlags_Logarithmic);
+    lua_setfield(L, -2, "Logarithmic");
+    lua_pushinteger(L, ImGuiSliderFlags_NoRoundToFormat);
+    lua_setfield(L, -2, "NoRoundToFormat");
+    lua_pushinteger(L, ImGuiSliderFlags_NoInput);
+    lua_setfield(L, -2, "NoInput");
+    lua_pushinteger(L, ImGuiSliderFlags_InvalidMask_);
+    lua_setfield(L, -2, "InvalidMask_");
+    lua_pushinteger(L, ImGuiSliderFlags_ClampOnInput);
+    lua_setfield(L, -2, "ClampOnInput");
+    lua_setglobal(L, "ImGuiSliderFlags");
+
+    // ImGuiMouseButton_
+    lua_createtable(L, 4, 0);
+    lua_pushinteger(L, ImGuiMouseButton_Left);
+    lua_setfield(L, -2, "Left");
+    lua_pushinteger(L, ImGuiMouseButton_Right);
+    lua_setfield(L, -2, "Right");
+    lua_pushinteger(L, ImGuiMouseButton_Middle);
+    lua_setfield(L, -2, "Middle");
+    lua_pushinteger(L, ImGuiMouseButton_COUNT);
+    lua_setfield(L, -2, "COUNT");
+    lua_setglobal(L, "ImGuiMouseButton");
+
+    // ImGuiCond_
+    lua_createtable(L, 5, 0);
+    lua_pushinteger(L, ImGuiCond_None);
+    lua_setfield(L, -2, "None");
+    lua_pushinteger(L, ImGuiCond_Always);
+    lua_setfield(L, -2, "Always");
+    lua_pushinteger(L, ImGuiCond_Once);
+    lua_setfield(L, -2, "Once");
+    lua_pushinteger(L, ImGuiCond_FirstUseEver);
+    lua_setfield(L, -2, "FirstUseEver");
+    lua_pushinteger(L, ImGuiCond_Appearing);
+    lua_setfield(L, -2, "Appearing");
+    lua_setglobal(L, "ImGuiCond");
+
+}
+
 static const struct luaL_Reg imgui_lib[] = {
-    {"SetNextWindowPos", ImGui::lua_SetNextWindowPos},
-    {"EndPopup", ImGui::lua_EndPopup},
-    {"PushID", ImGui::lua_PushID},
-    {"EndListBox", ImGui::lua_EndListBox},
-    {"Columns", ImGui::lua_Columns},
-    {"PopID", ImGui::lua_PopID},
-    {"Spacing", ImGui::lua_Spacing},
-    {"EndCombo", ImGui::lua_EndCombo},
-    {"SliderFloat", ImGui::lua_SliderFloat},
-    {"InputFloat", ImGui::lua_InputFloat},
-    {"NextColumn", ImGui::lua_NextColumn},
-    {"CloseCurrentPopup", ImGui::lua_CloseCurrentPopup},
-    {"BeginListBox", ImGui::lua_BeginListBox},
-    {"Checkbox", ImGui::lua_Checkbox},
-    {"InputInt", ImGui::lua_InputInt},
-    {"Begin", ImGui::lua_Begin},
-    {"DragFloat", ImGui::lua_DragFloat},
-    {"RadioButton", ImGui::lua_RadioButton},
-    {"DragInt", ImGui::lua_DragInt},
-    {"TextUnformatted", ImGui::lua_TextUnformatted},
-    {"EndTooltip", ImGui::lua_EndTooltip},
-    {"BeginPopup", ImGui::lua_BeginPopup},
-    {"InputText", ImGui::lua_InputText},
-    {"End", ImGui::lua_End},
-    {"Button", ImGui::lua_Button},
-    {"PopStyleVar", ImGui::lua_PopStyleVar},
-    {"EndChild", ImGui::lua_EndChild},
-    {"BeginCombo", ImGui::lua_BeginCombo},
     {"BeginTooltip", ImGui::lua_BeginTooltip},
-    {"ColorEdit3", ImGui::lua_ColorEdit3},
-    {"PushStyleColor", ImGui::lua_PushStyleColor},
-    {"OpenPopup", ImGui::lua_OpenPopup},
+    {"ColorEdit4", ImGui::lua_ColorEdit4},
+    {"SetNextWindowSize", ImGui::lua_SetNextWindowSize},
+    {"DragInt", ImGui::lua_DragInt},
+    {"SliderFloat", ImGui::lua_SliderFloat},
+    {"RadioButton", ImGui::lua_RadioButton},
+    {"DragFloat", ImGui::lua_DragFloat},
+    {"IsItemHovered", ImGui::lua_IsItemHovered},
+    {"Button", ImGui::lua_Button},
+    {"SetNextWindowPos", ImGui::lua_SetNextWindowPos},
+    {"EndChild", ImGui::lua_EndChild},
+    {"PopID", ImGui::lua_PopID},
     {"Selectable", ImGui::lua_Selectable},
     {"IsItemClicked", ImGui::lua_IsItemClicked},
+    {"TextUnformatted", ImGui::lua_TextUnformatted},
+    {"EndCombo", ImGui::lua_EndCombo},
     {"IsItemActive", ImGui::lua_IsItemActive},
-    {"SetNextWindowSize", ImGui::lua_SetNextWindowSize},
-    {"PushStyleVar", ImGui::lua_PushStyleVar},
-    {"IsItemHovered", ImGui::lua_IsItemHovered},
-    {"Separator", ImGui::lua_Separator},
-    {"ProgressBar", ImGui::lua_ProgressBar},
-    {"SameLine", ImGui::lua_SameLine},
-    {"BeginChild", ImGui::lua_BeginChild},
-    {"ColorEdit4", ImGui::lua_ColorEdit4},
+    {"Begin", ImGui::lua_Begin},
+    {"ColorEdit3", ImGui::lua_ColorEdit3},
     {"PopStyleColor", ImGui::lua_PopStyleColor},
+    {"ProgressBar", ImGui::lua_ProgressBar},
+    {"PushID", ImGui::lua_PushID},
+    {"SameLine", ImGui::lua_SameLine},
+    {"OpenPopup", ImGui::lua_OpenPopup},
+    {"BeginCombo", ImGui::lua_BeginCombo},
+    {"EndPopup", ImGui::lua_EndPopup},
+    {"PushStyleColor", ImGui::lua_PushStyleColor},
+    {"PopStyleVar", ImGui::lua_PopStyleVar},
+    {"End", ImGui::lua_End},
+    {"InputFloat", ImGui::lua_InputFloat},
+    {"BeginPopup", ImGui::lua_BeginPopup},
+    {"BeginListBox", ImGui::lua_BeginListBox},
+    {"NextColumn", ImGui::lua_NextColumn},
+    {"EndListBox", ImGui::lua_EndListBox},
+    {"InputText", ImGui::lua_InputText},
+    {"InputInt", ImGui::lua_InputInt},
+    {"CloseCurrentPopup", ImGui::lua_CloseCurrentPopup},
+    {"PushStyleVar", ImGui::lua_PushStyleVar},
+    {"Checkbox", ImGui::lua_Checkbox},
+    {"BeginChild", ImGui::lua_BeginChild},
+    {"EndTooltip", ImGui::lua_EndTooltip},
+    {"Columns", ImGui::lua_Columns},
+    {"Spacing", ImGui::lua_Spacing},
+    {"Separator", ImGui::lua_Separator},
     {NULL, NULL}  // Sentinel
 };
 
 int luaopen_imgui_lib(lua_State *L) {
     luaL_newlibtable(L, imgui_lib);
     luaL_setfuncs(L, imgui_lib, 0);
-    lua_setglobal(L, "imgui");
+    lua_setglobal(L, "ImGui");
+    register_enums(L);
     return 1;
 }

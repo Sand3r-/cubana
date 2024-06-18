@@ -1,6 +1,6 @@
 """
     Cubana lua bindings generator
-    Copyright (c) 2022 Michał Gallus
+    Copyright (c) 2024 Michał Gallus
 
     Generates C++ bindings for lua functions listed in functions_to_gen.txt.
     Assumes the Current Working Directory (cwd) to be the tools/ dir.
@@ -53,6 +53,7 @@ special_types = {
     "char *": ("lua_isstring", "char", None)
 }
 
+used_enums = set()
 registered_functions = set()
 unsupported_types = set()
 functions_not_generated = []
@@ -214,11 +215,11 @@ def generate_wrapper_function(func_name, overloads):
 
     wrapper.append(f"static int lua_{func_name}(lua_State* L) {{")
     wrapper.append(f"    int num_args = lua_gettop(L);")
-    
+
     for i, func in enumerate(overloads):
         conditions = []
         parameters = func['parameters']
-        
+
         max_arg_num = len(parameters)
 
         # Check the number of arguments
@@ -232,6 +233,8 @@ def generate_wrapper_function(func_name, overloads):
             if param_type in lua_to_cpp:
                 _, _, lua_check = lua_to_cpp[param_type]
                 conditions.append(f"{lua_check}(L, {j + 1})")
+                if "ImGui" in param_type and lua_to_cpp[param_type][2] == "lua_isinteger":
+                    used_enums.add(param_type)
             elif param_type in special_types:
                 conditions.append(f"{special_types[param_type][0]}(L, {j + 1})")
             elif "void" in param_type:
@@ -256,7 +259,7 @@ def generate_wrapper_function(func_name, overloads):
 
         conditions.insert(1, f"num_args >= {required_param_count}")
         wrapper.append(f"    if ({' && '.join(conditions[:2 + required_param_count])}) {{")
-        
+
         if required_param_count == 0:
             append_call_and_return(wrapper, func, func_name, 0, parameters)
 
@@ -266,7 +269,7 @@ def generate_wrapper_function(func_name, overloads):
                 break
             param_type = param['type']
             param_name = param['name']
-            
+
             if param_type in lua_to_cpp:
                 lua_check, lua_push, _ = lua_to_cpp[param_type]
                 wrapper.append(f"        {param_type} {param_name} = ({param_type}){lua_check}(L, {j + 1});")
@@ -307,12 +310,12 @@ def generate_wrapper_function(func_name, overloads):
                 unsupported_types.add(param_type)
                 functions_not_generated.append(func_name)
                 return ""
-            
+
             if j + 1 >= required_param_count:
                 append_call_and_return(wrapper, func, func_name, j+1, parameters)
 
         wrapper.append(f"    }}")
-    
+
     wrapper.append(f"    L_WARN(\"No matching overload found for {func_name}\");")
     wrapper.append(f"    return 0;")
     wrapper.append("}")
@@ -320,6 +323,24 @@ def generate_wrapper_function(func_name, overloads):
     registered_functions.add(func_name)
 
     return "\n".join(wrapper)
+
+def generate_enum_reg_function(enums):
+    lines = ["\n\nstatic void register_enums(lua_State* L) {"]
+    lines.append("    using namespace ImGui;")
+    for enum in enums:
+        # Omit _ at the end of enum names
+        if enum["name"][:-1] not in used_enums:
+            continue
+        lines.append(f"    // {enum['name']}")
+        lines.append(f"    lua_createtable(L, {len(enum['constants'])}, 0);")
+        for constant in enum["constants"]:
+            lines.append(f"    lua_pushinteger(L, {constant['name']});")
+            lines.append(f"    lua_setfield(L, -2, \"{constant['name'].replace(enum['name'], '')}\");")
+        lines.append(f"    lua_setglobal(L, \"{enum['name'][:-1]}\");\n")
+    lines.append("}\n")
+
+    return "\n".join(lines)
+
 
 def generate_lua_registration():
     registration = []
@@ -337,7 +358,8 @@ static const struct luaL_Reg imgui_lib[] = {{
 int luaopen_imgui_lib(lua_State *L) {{
     luaL_newlibtable(L, imgui_lib);
     luaL_setfuncs(L, imgui_lib, 0);
-    lua_setglobal(L, "imgui");
+    lua_setglobal(L, "ImGui");
+    register_enums(L);
     return 1;
 }}
 """
@@ -345,26 +367,28 @@ int luaopen_imgui_lib(lua_State *L) {{
 
 def main():
     functions = parse_json('functions.json')
+    enums = parse_json('enums.json')
     functions_to_generate = parse_functions_to_generate('functions_to_gen.txt')
-    
+
     generated_wrappers = []
     function_groups = defaultdict(list)
-    
+
     for func in functions:
         function_groups[func['name']].append(func)
-    
+
     for func_name, func_list in function_groups.items():
         if func_name in functions_to_generate:
             wrapper = generate_wrapper_function(func_name, func_list)
             if wrapper:
                 generated_wrappers.append(wrapper)
-    
+
     with open('../src/script/imgui_lua.cpp', 'w') as f:
         f.write(generate_header())
         f.write(generate_get_set_global_functions(generated_wrappers))
         f.write("\n\n")
         f.write("\n\n".join(generated_wrappers))
         f.write("\n} // namespace ImGui")
+        f.write(generate_enum_reg_function(enums))
         f.write(generate_lua_registration())
 
     if unsupported_types:

@@ -59,9 +59,11 @@ function(configure_files DEST GLOB_EXP)
     endforeach(FILE ${FILES})
 endfunction(configure_files)
 
-# Copy shaders to binary directory
-configure_files(${CMAKE_BINARY_DIR}/bin/shaders "shaders/*.spv")
+include(CopyAssets)
 
-# Copy scripts to binary directory
-configure_files(${CMAKE_BINARY_DIR}/bin/scripts "scripts/*.lua")
-configure_files(${CMAKE_BINARY_DIR}/bin/scripts/core "scripts/core/*.lua")
+# # Copy shaders to binary directory
+# configure_files(${CMAKE_BINARY_DIR}/bin/shaders "shaders/*.spv")
+
+# # Copy scripts to binary directory
+# configure_files(${CMAKE_BINARY_DIR}/bin/scripts "scripts/*.lua")
+# configure_files(${CMAKE_BINARY_DIR}/bin/scripts/core "scripts/core/*.lua")
