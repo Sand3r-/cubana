@@ -1,4 +1,5 @@
 #include "buffer.h"
+#include "culibc.h"
 #include "error.h"
 #include "file.h"
 
@@ -44,4 +45,11 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
     }
 
     return result;
+}
+
+const char* CStringFromBuffer(Arena* arena, Buffer* buffer)
+{
+    char* c_string = PushArray(arena, char, buffer->length + 1);
+    cu_strlcpy(c_string, buffer->ptr, buffer->length + 1);
+    return c_string;
 }
