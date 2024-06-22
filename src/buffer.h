@@ -9,4 +9,4 @@ typedef struct Buffer
 
 Buffer AllocBuffer(Arena* arena, size_t size, const char* alloc_name);
 Buffer BufferFromFile(Arena* arena, const char* filename);
-const char* CStringFromBuffer(Arena* arena, Buffer* buffer);
+const char* CStringFromBuffer(Buffer* buffer);

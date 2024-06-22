@@ -24,7 +24,8 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
 
     ArenaMarker marker = ArenaMarkerCreate(arena);
     s64 file_size =  FileSize(&file);
-    result = AllocBuffer(arena, file_size, filename);
+    // Add one more byte for string null termination \0
+    result = AllocBuffer(arena, file_size + 1, filename);
     char* fileContents = (char*)result.ptr;
 
     s64 totaj_objs_read = 0, objs_read = 1;
@@ -44,12 +45,12 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
         return result;
     }
 
+    fileContents[file_size] = '\0';
     return result;
 }
 
-const char* CStringFromBuffer(Arena* arena, Buffer* buffer)
+const char* CStringFromBuffer(Buffer* buffer)
 {
-    char* c_string = PushArray(arena, char, buffer->length + 1);
-    cu_strlcpy(c_string, buffer->ptr, buffer->length + 1);
+    const char* c_string = (const char*)buffer->ptr;
     return c_string;
 }
