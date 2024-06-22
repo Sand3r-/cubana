@@ -48,6 +48,7 @@ set(SOURCES
     types_str.c
     ui/scripteditor.cpp
     ui/ui.c
+    ui/cld_parser.c
     window.c
 )
 
