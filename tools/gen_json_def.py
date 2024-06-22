@@ -1,12 +1,15 @@
 import json
 import clang.cindex
+import argparse
 
-clang.cindex.Config.set_library_path("C:/Users/Sand3r/Documents/Visual Studio 2019/Projects/llvm-project/build/Release/bin")
+clang.cindex.Config.set_library_path("C:/llvm/bin")
 
 # Function to parse the header file and return the translation unit
-def parse_header_file(filename):
+def parse_header_file(filename, include_paths):
     index = clang.cindex.Index.create()
-    args = ['-x', 'c++', '-std=c++11', '-I../external/imgui/']
+    args = ['-x', 'c++', '-std=c++11']
+    for include_path in include_paths:
+        args.append("-I" + include_path)
     return index.parse(filename, args=args)
 
 # Function to extract function signatures from the translation unit
@@ -21,6 +24,7 @@ def extract_functions(translation_unit):
             return_type = cursor.result_type.spelling
             func_name = cursor.spelling
             params = []
+            line_number = cursor.location.line
             for arg in cursor.get_arguments():
                 param_type = arg.type.spelling
                 param_name = arg.spelling
@@ -38,7 +42,8 @@ def extract_functions(translation_unit):
             functions.append({
                 'name': func_name,
                 'return_type': return_type,
-                'parameters': params
+                'parameters': params,
+                'line': line_number
             })
 
         # Recursively traverse children
@@ -113,21 +118,27 @@ def save_to_json(data, output_file):
 
 # Main function
 def main():
-    input_header = 'imgui.h'  # Change this to your header file name
-    output_json_functions = 'functions.json'
-    output_json_enums = 'enums.json'
+    parser = argparse.ArgumentParser(description='Extract functions and enum data from a C/C++ file to json files.')
+    parser.add_argument('-p', '--libclang_path', type=str, help='Path to libclang binary', default="C:/llvm/bin")
+    parser.add_argument('-i', '--input', type=str, help='The input file pattern containing the inference times', default='imgui.h')
+    parser.add_argument('-I', '--include_paths', action="extend", nargs="+", type=str, help='Include paths', default=["../external/imgui/"])
+    parser.add_argument('-f', '--output_functions', type=str, default="functions.json")
+    parser.add_argument('-e', '--output_enums', type=str, default="enums.json")
+    args = parser.parse_args()
 
-    translation_unit = parse_header_file(input_header)
+    clang.cindex.Config.set_library_path(args.libclang_path)
+
+    translation_unit = parse_header_file(args.input, args.include_paths)
     functions = extract_functions(translation_unit)
     # Extract enums from the translation unit
     enums = extract_enums(translation_unit)
     enriched_enums = enrich_enum_values(enums)
 
-    save_to_json(functions, output_json_functions)
-    save_to_json(enriched_enums, output_json_enums)
+    save_to_json(functions, args.output_functions)
+    save_to_json(enriched_enums, args.output_enums)
 
-    print(f'Function signatures have been saved to {output_json_functions}')
-    print(f'Enums have been saved to {output_json_enums}')
+    print(f'Function signatures have been saved to {args.output_functions}')
+    print(f'Enums have been saved to {args.output_enums}')
 
 if __name__ == '__main__':
     main()
