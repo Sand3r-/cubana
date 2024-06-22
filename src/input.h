@@ -60,6 +60,7 @@ typedef enum
 
     KEY_SPACE,
     KEY_ENTER,
+    KEY_ESC,
 
     KEY_CTRL,
     KEY_SHIFT,
