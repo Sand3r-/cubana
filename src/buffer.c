@@ -3,15 +3,6 @@
 #include "error.h"
 #include "file.h"
 
-Buffer AllocBuffer(Arena* arena, size_t size, const char* alloc_name)
-{
-    Buffer buffer = {
-        .ptr = (void*)PushArray(arena, u8, size),
-        .length = size
-    };
-    return buffer;
-}
-
 Buffer BufferFromFile(Arena* arena, const char* filename)
 {
     Buffer result = {0};
@@ -25,7 +16,9 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
     ArenaMarker marker = ArenaMarkerCreate(arena);
     s64 file_size =  FileSize(&file);
     // Add one more byte for string null termination \0
-    result = AllocBuffer(arena, file_size + 1, filename);
+    result.ptr = (void*)PushArray(arena, u8, file_size + 1);
+    result.length = file_size;
+
     char* fileContents = (char*)result.ptr;
 
     s64 totaj_objs_read = 0, objs_read = 1;
