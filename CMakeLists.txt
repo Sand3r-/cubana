@@ -51,19 +51,5 @@ add_subdirectory(external/nfd)
 # Add all of the source code for the exe itself
 add_subdirectory(src)
 
-function(configure_files DEST GLOB_EXP)
-    file(MAKE_DIRECTORY ${DEST})
-    file(GLOB FILES ${GLOB_EXP})
-    foreach(FILE ${FILES})
-        configure_file(${FILE} ${DEST} COPYONLY)
-    endforeach(FILE ${FILES})
-endfunction(configure_files)
-
+# Add a custom target to copy assets directory
 include(CopyAssets)
-
-# # Copy shaders to binary directory
-# configure_files(${CMAKE_BINARY_DIR}/bin/shaders "shaders/*.spv")
-
-# # Copy scripts to binary directory
-# configure_files(${CMAKE_BINARY_DIR}/bin/scripts "scripts/*.lua")
-# configure_files(${CMAKE_BINARY_DIR}/bin/scripts/core "scripts/core/*.lua")
