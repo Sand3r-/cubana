@@ -11,3 +11,6 @@
 [submodule "external/nfd"]
 	path = external/nfd
 	url = https://github.com/btzy/nativefiledialog-extended.git
+[submodule "assets"]
+	path = assets
+	url = https://github.com/Sand3r-/cubana-assets.git
