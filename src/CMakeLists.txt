@@ -41,6 +41,8 @@ set(SOURCES
     renderer/renderervk.c
     renderer/igintegration.c
     renderer/i3integration.c
+    renderer/imfont_storage.c
+    renderer/vkhelper.c
     script/scripting.c
     script/scriptreg.c
     script/imgui_lua.cpp
