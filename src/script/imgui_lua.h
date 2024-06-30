@@ -10,11 +10,8 @@
 extern "C" {
 #endif
   #include "lua.h"
-  #include "lualib.h"
-  #include "lauxlib.h"
 #if defined __cplusplus
 }
 #endif
 
-EXTERN lua_State* g_ImguiBindingsState;
-EXTERN void LoadImguiBindings();
+EXTERN int luaopen_imgui_lib(lua_State* L);

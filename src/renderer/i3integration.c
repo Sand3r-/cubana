@@ -7,6 +7,7 @@
 #include "math/scalar.h"
 #include "memory/arena.h"
 #include "types.h"
+#include "vkhelper.h"
 #include <cim3d.h>
 #include <math.h>
 #include <cimgui.h>
@@ -41,22 +42,6 @@ static struct Im3dVkContext
     v3  camera_position;
     v3  camera_direction;
 } C;
-
-static VkShaderModule CreateShaderModule(Buffer code)
-{
-    VkShaderModuleCreateInfo createInfo = {
-        .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
-        .codeSize = code.length,
-        .pCode = (uint32_t*)code.ptr
-    };
-
-    VkShaderModule shaderModule;
-    if (vkCreateShaderModule(C.device, &createInfo, NULL, &shaderModule)
-        != VK_SUCCESS)
-            ERROR("Shader module creation failure.");
-
-    return shaderModule;
-}
 
 static VkVertexInputBindingDescription GetBindingDescription(void)
 {
@@ -104,13 +89,9 @@ static VkPipeline CreateGraphicsPipeline(Arena* arena, const char** shader_files
     };
 
     VkShaderModule shader_modules[MAX_SHADER_STAGES];
-    with_arena(arena)
+    for (u32 i = 0; i < shader_num; i++)
     {
-        for (u32 i = 0; i < shader_num; i++)
-        {
-            Buffer shader_code = BufferFromFile(arena, shader_files[i]);
-            shader_modules[i] = CreateShaderModule(shader_code);
-        }
+        shader_modules[i] = VkShaderModuleFromFile(shader_files[i], C.device);
     }
 
     VkPipelineShaderStageCreateInfo shader_stages[MAX_SHADER_STAGES] = {
@@ -152,11 +133,8 @@ static VkPipeline CreateGraphicsPipeline(Arena* arena, const char** shader_files
         .pVertexAttributeDescriptions = attribute_descs,
     };
 
-    VkPipelineInputAssemblyStateCreateInfo input_assembly = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
-        .topology = topology,
-        .primitiveRestartEnable = VK_FALSE,
-    };
+    VkPipelineInputAssemblyStateCreateInfo input_assembly =
+        VkCreateDefaultInputAssemblyInfo(topology);
 
     VkViewport viewport = {
         .x = 0.0f,
@@ -172,38 +150,12 @@ static VkPipeline CreateGraphicsPipeline(Arena* arena, const char** shader_files
         .extent = C.swapchain_extent,
     };
 
-    VkPipelineViewportStateCreateInfo viewport_state = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
-        .viewportCount = 1,
-        .pViewports = &viewport,
-        .scissorCount = 1,
-        .pScissors = &scissor,
-    };
-
-    VkPipelineRasterizationStateCreateInfo rasterizer = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
-        .depthClampEnable = VK_FALSE,
-        .rasterizerDiscardEnable = VK_FALSE,
-        .polygonMode = VK_POLYGON_MODE_FILL,
-        .lineWidth = 1.0f,
-        .cullMode = VK_CULL_MODE_NONE,
-        .frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE,
-        .depthBiasEnable = VK_FALSE,
-        .depthBiasConstantFactor = 0.0f,
-        .depthBiasClamp = 0.0f,
-        .depthBiasSlopeFactor = 0.0f,
-    };
-
-    // Requires enabling GPU Feature.
-    VkPipelineMultisampleStateCreateInfo multisampling = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO,
-        .sampleShadingEnable = VK_FALSE,
-        .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
-        .minSampleShading = 1.0f,
-        .pSampleMask = NULL,
-        .alphaToCoverageEnable = VK_FALSE,
-        .alphaToOneEnable = VK_FALSE,
-    };
+    VkPipelineViewportStateCreateInfo viewport_state =
+        VkCreateDefaultViewportInfo(&viewport, &scissor);
+    VkPipelineRasterizationStateCreateInfo rasterizer = 
+        VkCreateDefaultRasterizationInfo(VK_CULL_MODE_NONE);
+    VkPipelineMultisampleStateCreateInfo multisampling =
+        VkCreateDefaultMultisampleInfo();
 
     VkPipelineColorBlendAttachmentState color_blend_attachement = {
         .colorWriteMask =
@@ -265,7 +217,7 @@ static VkPipeline CreateGraphicsPipeline(Arena* arena, const char** shader_files
         NULL, &pipeline) != VK_SUCCESS)
         ERROR("Graphics Pipelines creation failure");
 
-    L_INFO("Graphics Pipeline has been created.");
+    L_INFO("Im3d Graphics Pipeline has been created.");
 
     for (u32 i = 0; i < shader_num; i++)
     {

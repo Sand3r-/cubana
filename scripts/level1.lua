@@ -27,31 +27,29 @@ g_imgui_switch = false
 g_imgui_text_buffer = ""
 g_imgui_input_integer = 0
 g_imgui_input_float = 0.0
+g_imgui_size = {0, 0}
 
 function imgui_demo(dt)
     if g_imgui_menu_opened then
-        revealed, g_imgui_menu_opened = imgui.Begin("Demo menu", g_imgui_menu_opened, 0)
-        clicked, g_imgui_checkbox = imgui.Checkbox("Checkbox", g_imgui_checkbox)
-        imgui.Text("Delta time: %f", dt)
-        imgui.Text("Checked?: %s", bool2str(g_imgui_checkbox))
-        if imgui.SmallButton("Flip the switch") then
+        revealed = ImGui.Begin("Demo menu", "g_imgui_menu_opened")
+        clicked = ImGui.Checkbox("Checkbox", "g_imgui_checkbox")
+        ImGui.Text("Delta time: %f", dt)
+        ImGui.Text("Checked?: %s", bool2str(g_imgui_checkbox))
+        if ImGui.Button("Flip the switch", "g_imgui_size") then
             g_imgui_switch = not g_imgui_switch
         end
-        button_pressed, new_buffer = imgui.InputTextAuto("Test", g_imgui_text_buffer)
-        if button_pressed then
-            g_imgui_text_buffer = new_buffer
-        end
+        button_pressed = ImGui.InputTextAuto("Test", "g_imgui_text_buffer")
 
-        _, g_imgui_input_integer = imgui.InputInt("Value", g_imgui_input_integer)
-        imgui.Text("integer = %d ", g_imgui_input_integer)
+        ImGui.InputInt("Value", "g_imgui_input_integer")
+        ImGui.Text("integer = %d ", g_imgui_input_integer)
 
-        _, g_imgui_input_float = imgui.InputFloat("ValueFloat", g_imgui_input_float)
-        imgui.Text("float = %f ", g_imgui_input_float)
+        ImGui.InputFloat("ValueFloat", "g_imgui_input_float")
+        ImGui.Text("float = %f ", g_imgui_input_float)
 
-        imgui.Text(g_imgui_text_buffer)
-        imgui.Text("Is input text active? %s", bool2str(button_pressed))
-        imgui.Text("Switch?: %s", bool2str(g_imgui_switch))
-        imgui.End()
+        ImGui.Text(g_imgui_text_buffer)
+        ImGui.Text("Is input text active? %s", bool2str(button_pressed))
+        ImGui.Text("Switch?: %s", bool2str(g_imgui_switch))
+        ImGui.End()
     end
 end
 

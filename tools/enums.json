@@ -1,0 +1,3402 @@
+[
+    {
+        "name": "ImGuiWindowFlags_",
+        "constants": [
+            {
+                "name": "ImGuiWindowFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiWindowFlags_NoTitleBar",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiWindowFlags_NoResize",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiWindowFlags_NoMove",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiWindowFlags_NoScrollbar",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiWindowFlags_NoScrollWithMouse",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiWindowFlags_NoCollapse",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiWindowFlags_AlwaysAutoResize",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiWindowFlags_NoBackground",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiWindowFlags_NoSavedSettings",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiWindowFlags_NoMouseInputs",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiWindowFlags_MenuBar",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiWindowFlags_HorizontalScrollbar",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiWindowFlags_NoFocusOnAppearing",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiWindowFlags_NoBringToFrontOnFocus",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiWindowFlags_AlwaysVerticalScrollbar",
+                "expression": "1 << 14",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiWindowFlags_AlwaysHorizontalScrollbar",
+                "expression": "1 << 15",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiWindowFlags_AlwaysUseWindowPadding",
+                "expression": "1 << 16",
+                "value": 65536
+            },
+            {
+                "name": "ImGuiWindowFlags_NoNavInputs",
+                "expression": "1 << 18",
+                "value": 262144
+            },
+            {
+                "name": "ImGuiWindowFlags_NoNavFocus",
+                "expression": "1 << 19",
+                "value": 524288
+            },
+            {
+                "name": "ImGuiWindowFlags_UnsavedDocument",
+                "expression": "1 << 20",
+                "value": 1048576
+            },
+            {
+                "name": "ImGuiWindowFlags_NoDocking",
+                "expression": "1 << 21",
+                "value": 2097152
+            },
+            {
+                "name": "ImGuiWindowFlags_NoNav",
+                "expression": "ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus",
+                "value": 786432
+            },
+            {
+                "name": "ImGuiWindowFlags_NoDecoration",
+                "expression": "ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse",
+                "value": 43
+            },
+            {
+                "name": "ImGuiWindowFlags_NoInputs",
+                "expression": "ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus",
+                "value": 786944
+            },
+            {
+                "name": "ImGuiWindowFlags_NavFlattened",
+                "expression": "1 << 23",
+                "value": 8388608
+            },
+            {
+                "name": "ImGuiWindowFlags_ChildWindow",
+                "expression": "1 << 24",
+                "value": 16777216
+            },
+            {
+                "name": "ImGuiWindowFlags_Tooltip",
+                "expression": "1 << 25",
+                "value": 33554432
+            },
+            {
+                "name": "ImGuiWindowFlags_Popup",
+                "expression": "1 << 26",
+                "value": 67108864
+            },
+            {
+                "name": "ImGuiWindowFlags_Modal",
+                "expression": "1 << 27",
+                "value": 134217728
+            },
+            {
+                "name": "ImGuiWindowFlags_ChildMenu",
+                "expression": "1 << 28",
+                "value": 268435456
+            },
+            {
+                "name": "ImGuiWindowFlags_DockNodeHost",
+                "expression": "1 << 29",
+                "value": 536870912
+            }
+        ]
+    },
+    {
+        "name": "ImGuiInputTextFlags_",
+        "constants": [
+            {
+                "name": "ImGuiInputTextFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiInputTextFlags_CharsDecimal",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiInputTextFlags_CharsHexadecimal",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiInputTextFlags_CharsUppercase",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiInputTextFlags_CharsNoBlank",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiInputTextFlags_AutoSelectAll",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiInputTextFlags_EnterReturnsTrue",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackCompletion",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackHistory",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackAlways",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackCharFilter",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiInputTextFlags_AllowTabInput",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiInputTextFlags_CtrlEnterForNewLine",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiInputTextFlags_NoHorizontalScroll",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiInputTextFlags_AlwaysOverwrite",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiInputTextFlags_ReadOnly",
+                "expression": "1 << 14",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiInputTextFlags_Password",
+                "expression": "1 << 15",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiInputTextFlags_NoUndoRedo",
+                "expression": "1 << 16",
+                "value": 65536
+            },
+            {
+                "name": "ImGuiInputTextFlags_CharsScientific",
+                "expression": "1 << 17",
+                "value": 131072
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackResize",
+                "expression": "1 << 18",
+                "value": 262144
+            },
+            {
+                "name": "ImGuiInputTextFlags_CallbackEdit",
+                "expression": "1 << 19",
+                "value": 524288
+            },
+            {
+                "name": "ImGuiInputTextFlags_EscapeClearsAll",
+                "expression": "1 << 20",
+                "value": 1048576
+            },
+            {
+                "name": "ImGuiInputTextFlags_AlwaysInsertMode",
+                "expression": "ImGuiInputTextFlags_AlwaysOverwrite",
+                "value": 8192
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTreeNodeFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTreeNodeFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_Selected",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_Framed",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_AllowItemOverlap",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_NoTreePushOnOpen",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_NoAutoOpenOnLog",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_DefaultOpen",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_OpenOnDoubleClick",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_OpenOnArrow",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_Leaf",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_Bullet",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_FramePadding",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_SpanAvailWidth",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_SpanFullWidth",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_NavLeftJumpsBackHere",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiTreeNodeFlags_CollapsingHeader",
+                "expression": "ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_NoAutoOpenOnLog",
+                "value": 26
+            }
+        ]
+    },
+    {
+        "name": "ImGuiPopupFlags_",
+        "constants": [
+            {
+                "name": "ImGuiPopupFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiPopupFlags_MouseButtonLeft",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiPopupFlags_MouseButtonRight",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiPopupFlags_MouseButtonMiddle",
+                "expression": "2",
+                "value": 2
+            },
+            {
+                "name": "ImGuiPopupFlags_MouseButtonMask_",
+                "expression": "0x1F",
+                "value": 31
+            },
+            {
+                "name": "ImGuiPopupFlags_MouseButtonDefault_",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiPopupFlags_NoOpenOverExistingPopup",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiPopupFlags_NoOpenOverItems",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiPopupFlags_AnyPopupId",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiPopupFlags_AnyPopupLevel",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiPopupFlags_AnyPopup",
+                "expression": "ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel",
+                "value": 384
+            }
+        ]
+    },
+    {
+        "name": "ImGuiSelectableFlags_",
+        "constants": [
+            {
+                "name": "ImGuiSelectableFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiSelectableFlags_DontClosePopups",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiSelectableFlags_SpanAllColumns",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiSelectableFlags_AllowDoubleClick",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiSelectableFlags_Disabled",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiSelectableFlags_AllowItemOverlap",
+                "expression": "1 << 4",
+                "value": 16
+            }
+        ]
+    },
+    {
+        "name": "ImGuiComboFlags_",
+        "constants": [
+            {
+                "name": "ImGuiComboFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiComboFlags_PopupAlignLeft",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiComboFlags_HeightSmall",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiComboFlags_HeightRegular",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiComboFlags_HeightLarge",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiComboFlags_HeightLargest",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiComboFlags_NoArrowButton",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiComboFlags_NoPreview",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiComboFlags_HeightMask_",
+                "expression": "ImGuiComboFlags_HeightSmall | ImGuiComboFlags_HeightRegular | ImGuiComboFlags_HeightLarge | ImGuiComboFlags_HeightLargest",
+                "value": 30
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTabBarFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTabBarFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTabBarFlags_Reorderable",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTabBarFlags_AutoSelectNewTabs",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTabBarFlags_TabListPopupButton",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiTabBarFlags_NoCloseWithMiddleMouseButton",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiTabBarFlags_NoTabListScrollingButtons",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiTabBarFlags_NoTooltip",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiTabBarFlags_FittingPolicyResizeDown",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiTabBarFlags_FittingPolicyScroll",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiTabBarFlags_FittingPolicyMask_",
+                "expression": "ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_FittingPolicyScroll",
+                "value": 192
+            },
+            {
+                "name": "ImGuiTabBarFlags_FittingPolicyDefault_",
+                "expression": "ImGuiTabBarFlags_FittingPolicyResizeDown",
+                "value": 64
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTabItemFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTabItemFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTabItemFlags_UnsavedDocument",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTabItemFlags_SetSelected",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTabItemFlags_NoCloseWithMiddleMouseButton",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiTabItemFlags_NoPushId",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiTabItemFlags_NoTooltip",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiTabItemFlags_NoReorder",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiTabItemFlags_Leading",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiTabItemFlags_Trailing",
+                "expression": "1 << 7",
+                "value": 128
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTableFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTableFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTableFlags_Resizable",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTableFlags_Reorderable",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTableFlags_Hideable",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiTableFlags_Sortable",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiTableFlags_NoSavedSettings",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiTableFlags_ContextMenuInBody",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiTableFlags_RowBg",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiTableFlags_BordersInnerH",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiTableFlags_BordersOuterH",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiTableFlags_BordersInnerV",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiTableFlags_BordersOuterV",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiTableFlags_BordersH",
+                "expression": "ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersOuterH",
+                "value": 384
+            },
+            {
+                "name": "ImGuiTableFlags_BordersV",
+                "expression": "ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV",
+                "value": 1536
+            },
+            {
+                "name": "ImGuiTableFlags_BordersInner",
+                "expression": "ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersInnerH",
+                "value": 640
+            },
+            {
+                "name": "ImGuiTableFlags_BordersOuter",
+                "expression": "ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersOuterH",
+                "value": 1280
+            },
+            {
+                "name": "ImGuiTableFlags_Borders",
+                "expression": "ImGuiTableFlags_BordersInner | ImGuiTableFlags_BordersOuter",
+                "value": 1920
+            },
+            {
+                "name": "ImGuiTableFlags_NoBordersInBody",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiTableFlags_NoBordersInBodyUntilResize",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiTableFlags_SizingFixedFit",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiTableFlags_SizingFixedSame",
+                "expression": "2 << 13",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiTableFlags_SizingStretchProp",
+                "expression": "3 << 13",
+                "value": 24576
+            },
+            {
+                "name": "ImGuiTableFlags_SizingStretchSame",
+                "expression": "4 << 13",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiTableFlags_NoHostExtendX",
+                "expression": "1 << 16",
+                "value": 65536
+            },
+            {
+                "name": "ImGuiTableFlags_NoHostExtendY",
+                "expression": "1 << 17",
+                "value": 131072
+            },
+            {
+                "name": "ImGuiTableFlags_NoKeepColumnsVisible",
+                "expression": "1 << 18",
+                "value": 262144
+            },
+            {
+                "name": "ImGuiTableFlags_PreciseWidths",
+                "expression": "1 << 19",
+                "value": 524288
+            },
+            {
+                "name": "ImGuiTableFlags_NoClip",
+                "expression": "1 << 20",
+                "value": 1048576
+            },
+            {
+                "name": "ImGuiTableFlags_PadOuterX",
+                "expression": "1 << 21",
+                "value": 2097152
+            },
+            {
+                "name": "ImGuiTableFlags_NoPadOuterX",
+                "expression": "1 << 22",
+                "value": 4194304
+            },
+            {
+                "name": "ImGuiTableFlags_NoPadInnerX",
+                "expression": "1 << 23",
+                "value": 8388608
+            },
+            {
+                "name": "ImGuiTableFlags_ScrollX",
+                "expression": "1 << 24",
+                "value": 16777216
+            },
+            {
+                "name": "ImGuiTableFlags_ScrollY",
+                "expression": "1 << 25",
+                "value": 33554432
+            },
+            {
+                "name": "ImGuiTableFlags_SortMulti",
+                "expression": "1 << 26",
+                "value": 67108864
+            },
+            {
+                "name": "ImGuiTableFlags_SortTristate",
+                "expression": "1 << 27",
+                "value": 134217728
+            },
+            {
+                "name": "ImGuiTableFlags_SizingMask_",
+                "expression": "ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_SizingFixedSame | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_SizingStretchSame",
+                "value": 57344
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTableColumnFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTableColumnFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTableColumnFlags_Disabled",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTableColumnFlags_DefaultHide",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTableColumnFlags_DefaultSort",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiTableColumnFlags_WidthStretch",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiTableColumnFlags_WidthFixed",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoResize",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoReorder",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoHide",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoClip",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoSort",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoSortAscending",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoSortDescending",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoHeaderLabel",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoHeaderWidth",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiTableColumnFlags_PreferSortAscending",
+                "expression": "1 << 14",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiTableColumnFlags_PreferSortDescending",
+                "expression": "1 << 15",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IndentEnable",
+                "expression": "1 << 16",
+                "value": 65536
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IndentDisable",
+                "expression": "1 << 17",
+                "value": 131072
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IsEnabled",
+                "expression": "1 << 24",
+                "value": 16777216
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IsVisible",
+                "expression": "1 << 25",
+                "value": 33554432
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IsSorted",
+                "expression": "1 << 26",
+                "value": 67108864
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IsHovered",
+                "expression": "1 << 27",
+                "value": 134217728
+            },
+            {
+                "name": "ImGuiTableColumnFlags_WidthMask_",
+                "expression": "ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_WidthFixed",
+                "value": 24
+            },
+            {
+                "name": "ImGuiTableColumnFlags_IndentMask_",
+                "expression": "ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_IndentDisable",
+                "value": 196608
+            },
+            {
+                "name": "ImGuiTableColumnFlags_StatusMask_",
+                "expression": "ImGuiTableColumnFlags_IsEnabled | ImGuiTableColumnFlags_IsVisible | ImGuiTableColumnFlags_IsSorted | ImGuiTableColumnFlags_IsHovered",
+                "value": 251658240
+            },
+            {
+                "name": "ImGuiTableColumnFlags_NoDirectResize_",
+                "expression": "1 << 30",
+                "value": 1073741824
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTableRowFlags_",
+        "constants": [
+            {
+                "name": "ImGuiTableRowFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTableRowFlags_Headers",
+                "expression": "1 << 0",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "name": "ImGuiTableBgTarget_",
+        "constants": [
+            {
+                "name": "ImGuiTableBgTarget_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiTableBgTarget_RowBg0",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiTableBgTarget_RowBg1",
+                "expression": "2",
+                "value": 2
+            },
+            {
+                "name": "ImGuiTableBgTarget_CellBg",
+                "expression": "3",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "name": "ImGuiFocusedFlags_",
+        "constants": [
+            {
+                "name": "ImGuiFocusedFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiFocusedFlags_ChildWindows",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiFocusedFlags_RootWindow",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiFocusedFlags_AnyWindow",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiFocusedFlags_NoPopupHierarchy",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiFocusedFlags_DockHierarchy",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiFocusedFlags_RootAndChildWindows",
+                "expression": "ImGuiFocusedFlags_RootWindow | ImGuiFocusedFlags_ChildWindows",
+                "value": 3
+            }
+        ]
+    },
+    {
+        "name": "ImGuiHoveredFlags_",
+        "constants": [
+            {
+                "name": "ImGuiHoveredFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiHoveredFlags_ChildWindows",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiHoveredFlags_RootWindow",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiHoveredFlags_AnyWindow",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiHoveredFlags_NoPopupHierarchy",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiHoveredFlags_DockHierarchy",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiHoveredFlags_AllowWhenBlockedByPopup",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiHoveredFlags_AllowWhenBlockedByActiveItem",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiHoveredFlags_AllowWhenOverlapped",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiHoveredFlags_AllowWhenDisabled",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiHoveredFlags_NoNavOverride",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiHoveredFlags_RectOnly",
+                "expression": "ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped",
+                "value": 416
+            },
+            {
+                "name": "ImGuiHoveredFlags_RootAndChildWindows",
+                "expression": "ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows",
+                "value": 3
+            },
+            {
+                "name": "ImGuiHoveredFlags_DelayNormal",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiHoveredFlags_DelayShort",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiHoveredFlags_NoSharedDelay",
+                "expression": "1 << 13",
+                "value": 8192
+            }
+        ]
+    },
+    {
+        "name": "ImGuiDockNodeFlags_",
+        "constants": [
+            {
+                "name": "ImGuiDockNodeFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiDockNodeFlags_KeepAliveOnly",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiDockNodeFlags_NoDockingInCentralNode",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiDockNodeFlags_PassthruCentralNode",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiDockNodeFlags_NoSplit",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiDockNodeFlags_NoResize",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiDockNodeFlags_AutoHideTabBar",
+                "expression": "1 << 6",
+                "value": 64
+            }
+        ]
+    },
+    {
+        "name": "ImGuiDragDropFlags_",
+        "constants": [
+            {
+                "name": "ImGuiDragDropFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceNoPreviewTooltip",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceNoDisableHover",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceNoHoldToOpenOthers",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceAllowNullID",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceExtern",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiDragDropFlags_SourceAutoExpirePayload",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiDragDropFlags_AcceptBeforeDelivery",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiDragDropFlags_AcceptNoDrawDefaultRect",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiDragDropFlags_AcceptNoPreviewTooltip",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiDragDropFlags_AcceptPeekOnly",
+                "expression": "ImGuiDragDropFlags_AcceptBeforeDelivery | ImGuiDragDropFlags_AcceptNoDrawDefaultRect",
+                "value": 3072
+            }
+        ]
+    },
+    {
+        "name": "ImGuiDataType_",
+        "constants": [
+            {
+                "name": "ImGuiDataType_S8",
+                "expression": "",
+                "value": 0
+            },
+            {
+                "name": "ImGuiDataType_U8",
+                "expression": "",
+                "value": 1
+            },
+            {
+                "name": "ImGuiDataType_S16",
+                "expression": "",
+                "value": 2
+            },
+            {
+                "name": "ImGuiDataType_U16",
+                "expression": "",
+                "value": 3
+            },
+            {
+                "name": "ImGuiDataType_S32",
+                "expression": "",
+                "value": 4
+            },
+            {
+                "name": "ImGuiDataType_U32",
+                "expression": "",
+                "value": 5
+            },
+            {
+                "name": "ImGuiDataType_S64",
+                "expression": "",
+                "value": 6
+            },
+            {
+                "name": "ImGuiDataType_U64",
+                "expression": "",
+                "value": 7
+            },
+            {
+                "name": "ImGuiDataType_Float",
+                "expression": "",
+                "value": 8
+            },
+            {
+                "name": "ImGuiDataType_Double",
+                "expression": "",
+                "value": 9
+            },
+            {
+                "name": "ImGuiDataType_COUNT",
+                "expression": "",
+                "value": 10
+            }
+        ]
+    },
+    {
+        "name": "ImGuiDir_",
+        "constants": [
+            {
+                "name": "ImGuiDir_None",
+                "expression": "- 1",
+                "value": -1
+            },
+            {
+                "name": "ImGuiDir_Left",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiDir_Right",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiDir_Up",
+                "expression": "2",
+                "value": 2
+            },
+            {
+                "name": "ImGuiDir_Down",
+                "expression": "3",
+                "value": 3
+            },
+            {
+                "name": "ImGuiDir_COUNT",
+                "expression": "",
+                "value": 4
+            }
+        ]
+    },
+    {
+        "name": "ImGuiSortDirection_",
+        "constants": [
+            {
+                "name": "ImGuiSortDirection_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiSortDirection_Ascending",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiSortDirection_Descending",
+                "expression": "2",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "name": "ImGuiKey",
+        "constants": [
+            {
+                "name": "ImGuiKey_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiKey_Tab",
+                "expression": "512",
+                "value": 512
+            },
+            {
+                "name": "ImGuiKey_LeftArrow",
+                "expression": "",
+                "value": 513
+            },
+            {
+                "name": "ImGuiKey_RightArrow",
+                "expression": "",
+                "value": 514
+            },
+            {
+                "name": "ImGuiKey_UpArrow",
+                "expression": "",
+                "value": 515
+            },
+            {
+                "name": "ImGuiKey_DownArrow",
+                "expression": "",
+                "value": 516
+            },
+            {
+                "name": "ImGuiKey_PageUp",
+                "expression": "",
+                "value": 517
+            },
+            {
+                "name": "ImGuiKey_PageDown",
+                "expression": "",
+                "value": 518
+            },
+            {
+                "name": "ImGuiKey_Home",
+                "expression": "",
+                "value": 519
+            },
+            {
+                "name": "ImGuiKey_End",
+                "expression": "",
+                "value": 520
+            },
+            {
+                "name": "ImGuiKey_Insert",
+                "expression": "",
+                "value": 521
+            },
+            {
+                "name": "ImGuiKey_Delete",
+                "expression": "",
+                "value": 522
+            },
+            {
+                "name": "ImGuiKey_Backspace",
+                "expression": "",
+                "value": 523
+            },
+            {
+                "name": "ImGuiKey_Space",
+                "expression": "",
+                "value": 524
+            },
+            {
+                "name": "ImGuiKey_Enter",
+                "expression": "",
+                "value": 525
+            },
+            {
+                "name": "ImGuiKey_Escape",
+                "expression": "",
+                "value": 526
+            },
+            {
+                "name": "ImGuiKey_LeftCtrl",
+                "expression": "",
+                "value": 527
+            },
+            {
+                "name": "ImGuiKey_LeftShift",
+                "expression": "",
+                "value": 528
+            },
+            {
+                "name": "ImGuiKey_LeftAlt",
+                "expression": "",
+                "value": 529
+            },
+            {
+                "name": "ImGuiKey_LeftSuper",
+                "expression": "",
+                "value": 530
+            },
+            {
+                "name": "ImGuiKey_RightCtrl",
+                "expression": "",
+                "value": 531
+            },
+            {
+                "name": "ImGuiKey_RightShift",
+                "expression": "",
+                "value": 532
+            },
+            {
+                "name": "ImGuiKey_RightAlt",
+                "expression": "",
+                "value": 533
+            },
+            {
+                "name": "ImGuiKey_RightSuper",
+                "expression": "",
+                "value": 534
+            },
+            {
+                "name": "ImGuiKey_Menu",
+                "expression": "",
+                "value": 535
+            },
+            {
+                "name": "ImGuiKey_0",
+                "expression": "",
+                "value": 536
+            },
+            {
+                "name": "ImGuiKey_1",
+                "expression": "",
+                "value": 537
+            },
+            {
+                "name": "ImGuiKey_2",
+                "expression": "",
+                "value": 538
+            },
+            {
+                "name": "ImGuiKey_3",
+                "expression": "",
+                "value": 539
+            },
+            {
+                "name": "ImGuiKey_4",
+                "expression": "",
+                "value": 540
+            },
+            {
+                "name": "ImGuiKey_5",
+                "expression": "",
+                "value": 541
+            },
+            {
+                "name": "ImGuiKey_6",
+                "expression": "",
+                "value": 542
+            },
+            {
+                "name": "ImGuiKey_7",
+                "expression": "",
+                "value": 543
+            },
+            {
+                "name": "ImGuiKey_8",
+                "expression": "",
+                "value": 544
+            },
+            {
+                "name": "ImGuiKey_9",
+                "expression": "",
+                "value": 545
+            },
+            {
+                "name": "ImGuiKey_A",
+                "expression": "",
+                "value": 546
+            },
+            {
+                "name": "ImGuiKey_B",
+                "expression": "",
+                "value": 547
+            },
+            {
+                "name": "ImGuiKey_C",
+                "expression": "",
+                "value": 548
+            },
+            {
+                "name": "ImGuiKey_D",
+                "expression": "",
+                "value": 549
+            },
+            {
+                "name": "ImGuiKey_E",
+                "expression": "",
+                "value": 550
+            },
+            {
+                "name": "ImGuiKey_F",
+                "expression": "",
+                "value": 551
+            },
+            {
+                "name": "ImGuiKey_G",
+                "expression": "",
+                "value": 552
+            },
+            {
+                "name": "ImGuiKey_H",
+                "expression": "",
+                "value": 553
+            },
+            {
+                "name": "ImGuiKey_I",
+                "expression": "",
+                "value": 554
+            },
+            {
+                "name": "ImGuiKey_J",
+                "expression": "",
+                "value": 555
+            },
+            {
+                "name": "ImGuiKey_K",
+                "expression": "",
+                "value": 556
+            },
+            {
+                "name": "ImGuiKey_L",
+                "expression": "",
+                "value": 557
+            },
+            {
+                "name": "ImGuiKey_M",
+                "expression": "",
+                "value": 558
+            },
+            {
+                "name": "ImGuiKey_N",
+                "expression": "",
+                "value": 559
+            },
+            {
+                "name": "ImGuiKey_O",
+                "expression": "",
+                "value": 560
+            },
+            {
+                "name": "ImGuiKey_P",
+                "expression": "",
+                "value": 561
+            },
+            {
+                "name": "ImGuiKey_Q",
+                "expression": "",
+                "value": 562
+            },
+            {
+                "name": "ImGuiKey_R",
+                "expression": "",
+                "value": 563
+            },
+            {
+                "name": "ImGuiKey_S",
+                "expression": "",
+                "value": 564
+            },
+            {
+                "name": "ImGuiKey_T",
+                "expression": "",
+                "value": 565
+            },
+            {
+                "name": "ImGuiKey_U",
+                "expression": "",
+                "value": 566
+            },
+            {
+                "name": "ImGuiKey_V",
+                "expression": "",
+                "value": 567
+            },
+            {
+                "name": "ImGuiKey_W",
+                "expression": "",
+                "value": 568
+            },
+            {
+                "name": "ImGuiKey_X",
+                "expression": "",
+                "value": 569
+            },
+            {
+                "name": "ImGuiKey_Y",
+                "expression": "",
+                "value": 570
+            },
+            {
+                "name": "ImGuiKey_Z",
+                "expression": "",
+                "value": 571
+            },
+            {
+                "name": "ImGuiKey_F1",
+                "expression": "",
+                "value": 572
+            },
+            {
+                "name": "ImGuiKey_F2",
+                "expression": "",
+                "value": 573
+            },
+            {
+                "name": "ImGuiKey_F3",
+                "expression": "",
+                "value": 574
+            },
+            {
+                "name": "ImGuiKey_F4",
+                "expression": "",
+                "value": 575
+            },
+            {
+                "name": "ImGuiKey_F5",
+                "expression": "",
+                "value": 576
+            },
+            {
+                "name": "ImGuiKey_F6",
+                "expression": "",
+                "value": 577
+            },
+            {
+                "name": "ImGuiKey_F7",
+                "expression": "",
+                "value": 578
+            },
+            {
+                "name": "ImGuiKey_F8",
+                "expression": "",
+                "value": 579
+            },
+            {
+                "name": "ImGuiKey_F9",
+                "expression": "",
+                "value": 580
+            },
+            {
+                "name": "ImGuiKey_F10",
+                "expression": "",
+                "value": 581
+            },
+            {
+                "name": "ImGuiKey_F11",
+                "expression": "",
+                "value": 582
+            },
+            {
+                "name": "ImGuiKey_F12",
+                "expression": "",
+                "value": 583
+            },
+            {
+                "name": "ImGuiKey_Apostrophe",
+                "expression": "",
+                "value": 584
+            },
+            {
+                "name": "ImGuiKey_Comma",
+                "expression": "",
+                "value": 585
+            },
+            {
+                "name": "ImGuiKey_Minus",
+                "expression": "",
+                "value": 586
+            },
+            {
+                "name": "ImGuiKey_Period",
+                "expression": "",
+                "value": 587
+            },
+            {
+                "name": "ImGuiKey_Slash",
+                "expression": "",
+                "value": 588
+            },
+            {
+                "name": "ImGuiKey_Semicolon",
+                "expression": "",
+                "value": 589
+            },
+            {
+                "name": "ImGuiKey_Equal",
+                "expression": "",
+                "value": 590
+            },
+            {
+                "name": "ImGuiKey_LeftBracket",
+                "expression": "",
+                "value": 591
+            },
+            {
+                "name": "ImGuiKey_Backslash",
+                "expression": "",
+                "value": 592
+            },
+            {
+                "name": "ImGuiKey_RightBracket",
+                "expression": "",
+                "value": 593
+            },
+            {
+                "name": "ImGuiKey_GraveAccent",
+                "expression": "",
+                "value": 594
+            },
+            {
+                "name": "ImGuiKey_CapsLock",
+                "expression": "",
+                "value": 595
+            },
+            {
+                "name": "ImGuiKey_ScrollLock",
+                "expression": "",
+                "value": 596
+            },
+            {
+                "name": "ImGuiKey_NumLock",
+                "expression": "",
+                "value": 597
+            },
+            {
+                "name": "ImGuiKey_PrintScreen",
+                "expression": "",
+                "value": 598
+            },
+            {
+                "name": "ImGuiKey_Pause",
+                "expression": "",
+                "value": 599
+            },
+            {
+                "name": "ImGuiKey_Keypad0",
+                "expression": "",
+                "value": 600
+            },
+            {
+                "name": "ImGuiKey_Keypad1",
+                "expression": "",
+                "value": 601
+            },
+            {
+                "name": "ImGuiKey_Keypad2",
+                "expression": "",
+                "value": 602
+            },
+            {
+                "name": "ImGuiKey_Keypad3",
+                "expression": "",
+                "value": 603
+            },
+            {
+                "name": "ImGuiKey_Keypad4",
+                "expression": "",
+                "value": 604
+            },
+            {
+                "name": "ImGuiKey_Keypad5",
+                "expression": "",
+                "value": 605
+            },
+            {
+                "name": "ImGuiKey_Keypad6",
+                "expression": "",
+                "value": 606
+            },
+            {
+                "name": "ImGuiKey_Keypad7",
+                "expression": "",
+                "value": 607
+            },
+            {
+                "name": "ImGuiKey_Keypad8",
+                "expression": "",
+                "value": 608
+            },
+            {
+                "name": "ImGuiKey_Keypad9",
+                "expression": "",
+                "value": 609
+            },
+            {
+                "name": "ImGuiKey_KeypadDecimal",
+                "expression": "",
+                "value": 610
+            },
+            {
+                "name": "ImGuiKey_KeypadDivide",
+                "expression": "",
+                "value": 611
+            },
+            {
+                "name": "ImGuiKey_KeypadMultiply",
+                "expression": "",
+                "value": 612
+            },
+            {
+                "name": "ImGuiKey_KeypadSubtract",
+                "expression": "",
+                "value": 613
+            },
+            {
+                "name": "ImGuiKey_KeypadAdd",
+                "expression": "",
+                "value": 614
+            },
+            {
+                "name": "ImGuiKey_KeypadEnter",
+                "expression": "",
+                "value": 615
+            },
+            {
+                "name": "ImGuiKey_KeypadEqual",
+                "expression": "",
+                "value": 616
+            },
+            {
+                "name": "ImGuiKey_GamepadStart",
+                "expression": "",
+                "value": 617
+            },
+            {
+                "name": "ImGuiKey_GamepadBack",
+                "expression": "",
+                "value": 618
+            },
+            {
+                "name": "ImGuiKey_GamepadFaceLeft",
+                "expression": "",
+                "value": 619
+            },
+            {
+                "name": "ImGuiKey_GamepadFaceRight",
+                "expression": "",
+                "value": 620
+            },
+            {
+                "name": "ImGuiKey_GamepadFaceUp",
+                "expression": "",
+                "value": 621
+            },
+            {
+                "name": "ImGuiKey_GamepadFaceDown",
+                "expression": "",
+                "value": 622
+            },
+            {
+                "name": "ImGuiKey_GamepadDpadLeft",
+                "expression": "",
+                "value": 623
+            },
+            {
+                "name": "ImGuiKey_GamepadDpadRight",
+                "expression": "",
+                "value": 624
+            },
+            {
+                "name": "ImGuiKey_GamepadDpadUp",
+                "expression": "",
+                "value": 625
+            },
+            {
+                "name": "ImGuiKey_GamepadDpadDown",
+                "expression": "",
+                "value": 626
+            },
+            {
+                "name": "ImGuiKey_GamepadL1",
+                "expression": "",
+                "value": 627
+            },
+            {
+                "name": "ImGuiKey_GamepadR1",
+                "expression": "",
+                "value": 628
+            },
+            {
+                "name": "ImGuiKey_GamepadL2",
+                "expression": "",
+                "value": 629
+            },
+            {
+                "name": "ImGuiKey_GamepadR2",
+                "expression": "",
+                "value": 630
+            },
+            {
+                "name": "ImGuiKey_GamepadL3",
+                "expression": "",
+                "value": 631
+            },
+            {
+                "name": "ImGuiKey_GamepadR3",
+                "expression": "",
+                "value": 632
+            },
+            {
+                "name": "ImGuiKey_GamepadLStickLeft",
+                "expression": "",
+                "value": 633
+            },
+            {
+                "name": "ImGuiKey_GamepadLStickRight",
+                "expression": "",
+                "value": 634
+            },
+            {
+                "name": "ImGuiKey_GamepadLStickUp",
+                "expression": "",
+                "value": 635
+            },
+            {
+                "name": "ImGuiKey_GamepadLStickDown",
+                "expression": "",
+                "value": 636
+            },
+            {
+                "name": "ImGuiKey_GamepadRStickLeft",
+                "expression": "",
+                "value": 637
+            },
+            {
+                "name": "ImGuiKey_GamepadRStickRight",
+                "expression": "",
+                "value": 638
+            },
+            {
+                "name": "ImGuiKey_GamepadRStickUp",
+                "expression": "",
+                "value": 639
+            },
+            {
+                "name": "ImGuiKey_GamepadRStickDown",
+                "expression": "",
+                "value": 640
+            },
+            {
+                "name": "ImGuiKey_MouseLeft",
+                "expression": "",
+                "value": 641
+            },
+            {
+                "name": "ImGuiKey_MouseRight",
+                "expression": "",
+                "value": 642
+            },
+            {
+                "name": "ImGuiKey_MouseMiddle",
+                "expression": "",
+                "value": 643
+            },
+            {
+                "name": "ImGuiKey_MouseX1",
+                "expression": "",
+                "value": 644
+            },
+            {
+                "name": "ImGuiKey_MouseX2",
+                "expression": "",
+                "value": 645
+            },
+            {
+                "name": "ImGuiKey_MouseWheelX",
+                "expression": "",
+                "value": 646
+            },
+            {
+                "name": "ImGuiKey_MouseWheelY",
+                "expression": "",
+                "value": 647
+            },
+            {
+                "name": "ImGuiKey_ReservedForModCtrl",
+                "expression": "",
+                "value": 648
+            },
+            {
+                "name": "ImGuiKey_ReservedForModShift",
+                "expression": "",
+                "value": 649
+            },
+            {
+                "name": "ImGuiKey_ReservedForModAlt",
+                "expression": "",
+                "value": 650
+            },
+            {
+                "name": "ImGuiKey_ReservedForModSuper",
+                "expression": "",
+                "value": 651
+            },
+            {
+                "name": "ImGuiKey_COUNT",
+                "expression": "",
+                "value": 652
+            },
+            {
+                "name": "ImGuiMod_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiMod_Ctrl",
+                "expression": "1 << 12",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiMod_Shift",
+                "expression": "1 << 13",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiMod_Alt",
+                "expression": "1 << 14",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiMod_Super",
+                "expression": "1 << 15",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiMod_Shortcut",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiMod_Mask_",
+                "expression": "0xF800",
+                "value": 63488
+            },
+            {
+                "name": "ImGuiKey_NamedKey_BEGIN",
+                "expression": "512",
+                "value": 512
+            },
+            {
+                "name": "ImGuiKey_NamedKey_END",
+                "expression": "ImGuiKey_COUNT",
+                "value": 652
+            },
+            {
+                "name": "ImGuiKey_NamedKey_COUNT",
+                "expression": "ImGuiKey_NamedKey_END - ImGuiKey_NamedKey_BEGIN",
+                "value": 140
+            },
+            {
+                "name": "ImGuiKey_KeysData_SIZE",
+                "expression": "ImGuiKey_COUNT",
+                "value": 652
+            },
+            {
+                "name": "ImGuiKey_KeysData_OFFSET",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiKey_ModCtrl",
+                "expression": "ImGuiMod_Ctrl",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiKey_ModShift",
+                "expression": "ImGuiMod_Shift",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiKey_ModAlt",
+                "expression": "ImGuiMod_Alt",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiKey_ModSuper",
+                "expression": "ImGuiMod_Super",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiKey_KeyPadEnter",
+                "expression": "ImGuiKey_KeypadEnter",
+                "value": 615
+            }
+        ]
+    },
+    {
+        "name": "ImGuiNavInput",
+        "constants": [
+            {
+                "name": "ImGuiNavInput_Activate",
+                "expression": "",
+                "value": 0
+            },
+            {
+                "name": "ImGuiNavInput_Cancel",
+                "expression": "",
+                "value": 1
+            },
+            {
+                "name": "ImGuiNavInput_Input",
+                "expression": "",
+                "value": 2
+            },
+            {
+                "name": "ImGuiNavInput_Menu",
+                "expression": "",
+                "value": 3
+            },
+            {
+                "name": "ImGuiNavInput_DpadLeft",
+                "expression": "",
+                "value": 4
+            },
+            {
+                "name": "ImGuiNavInput_DpadRight",
+                "expression": "",
+                "value": 5
+            },
+            {
+                "name": "ImGuiNavInput_DpadUp",
+                "expression": "",
+                "value": 6
+            },
+            {
+                "name": "ImGuiNavInput_DpadDown",
+                "expression": "",
+                "value": 7
+            },
+            {
+                "name": "ImGuiNavInput_LStickLeft",
+                "expression": "",
+                "value": 8
+            },
+            {
+                "name": "ImGuiNavInput_LStickRight",
+                "expression": "",
+                "value": 9
+            },
+            {
+                "name": "ImGuiNavInput_LStickUp",
+                "expression": "",
+                "value": 10
+            },
+            {
+                "name": "ImGuiNavInput_LStickDown",
+                "expression": "",
+                "value": 11
+            },
+            {
+                "name": "ImGuiNavInput_FocusPrev",
+                "expression": "",
+                "value": 12
+            },
+            {
+                "name": "ImGuiNavInput_FocusNext",
+                "expression": "",
+                "value": 13
+            },
+            {
+                "name": "ImGuiNavInput_TweakSlow",
+                "expression": "",
+                "value": 14
+            },
+            {
+                "name": "ImGuiNavInput_TweakFast",
+                "expression": "",
+                "value": 15
+            },
+            {
+                "name": "ImGuiNavInput_COUNT",
+                "expression": "",
+                "value": 16
+            }
+        ]
+    },
+    {
+        "name": "ImGuiConfigFlags_",
+        "constants": [
+            {
+                "name": "ImGuiConfigFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiConfigFlags_NavEnableKeyboard",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiConfigFlags_NavEnableGamepad",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiConfigFlags_NavEnableSetMousePos",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiConfigFlags_NavNoCaptureKeyboard",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiConfigFlags_NoMouse",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiConfigFlags_NoMouseCursorChange",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiConfigFlags_DockingEnable",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiConfigFlags_ViewportsEnable",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiConfigFlags_DpiEnableScaleViewports",
+                "expression": "1 << 14",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiConfigFlags_DpiEnableScaleFonts",
+                "expression": "1 << 15",
+                "value": 32768
+            },
+            {
+                "name": "ImGuiConfigFlags_IsSRGB",
+                "expression": "1 << 20",
+                "value": 1048576
+            },
+            {
+                "name": "ImGuiConfigFlags_IsTouchScreen",
+                "expression": "1 << 21",
+                "value": 2097152
+            }
+        ]
+    },
+    {
+        "name": "ImGuiBackendFlags_",
+        "constants": [
+            {
+                "name": "ImGuiBackendFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiBackendFlags_HasGamepad",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiBackendFlags_HasMouseCursors",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiBackendFlags_HasSetMousePos",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiBackendFlags_RendererHasVtxOffset",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiBackendFlags_PlatformHasViewports",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiBackendFlags_HasMouseHoveredViewport",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiBackendFlags_RendererHasViewports",
+                "expression": "1 << 12",
+                "value": 4096
+            }
+        ]
+    },
+    {
+        "name": "ImGuiCol_",
+        "constants": [
+            {
+                "name": "ImGuiCol_Text",
+                "expression": "",
+                "value": 0
+            },
+            {
+                "name": "ImGuiCol_TextDisabled",
+                "expression": "",
+                "value": 1
+            },
+            {
+                "name": "ImGuiCol_WindowBg",
+                "expression": "",
+                "value": 2
+            },
+            {
+                "name": "ImGuiCol_ChildBg",
+                "expression": "",
+                "value": 3
+            },
+            {
+                "name": "ImGuiCol_PopupBg",
+                "expression": "",
+                "value": 4
+            },
+            {
+                "name": "ImGuiCol_Border",
+                "expression": "",
+                "value": 5
+            },
+            {
+                "name": "ImGuiCol_BorderShadow",
+                "expression": "",
+                "value": 6
+            },
+            {
+                "name": "ImGuiCol_FrameBg",
+                "expression": "",
+                "value": 7
+            },
+            {
+                "name": "ImGuiCol_FrameBgHovered",
+                "expression": "",
+                "value": 8
+            },
+            {
+                "name": "ImGuiCol_FrameBgActive",
+                "expression": "",
+                "value": 9
+            },
+            {
+                "name": "ImGuiCol_TitleBg",
+                "expression": "",
+                "value": 10
+            },
+            {
+                "name": "ImGuiCol_TitleBgActive",
+                "expression": "",
+                "value": 11
+            },
+            {
+                "name": "ImGuiCol_TitleBgCollapsed",
+                "expression": "",
+                "value": 12
+            },
+            {
+                "name": "ImGuiCol_MenuBarBg",
+                "expression": "",
+                "value": 13
+            },
+            {
+                "name": "ImGuiCol_ScrollbarBg",
+                "expression": "",
+                "value": 14
+            },
+            {
+                "name": "ImGuiCol_ScrollbarGrab",
+                "expression": "",
+                "value": 15
+            },
+            {
+                "name": "ImGuiCol_ScrollbarGrabHovered",
+                "expression": "",
+                "value": 16
+            },
+            {
+                "name": "ImGuiCol_ScrollbarGrabActive",
+                "expression": "",
+                "value": 17
+            },
+            {
+                "name": "ImGuiCol_CheckMark",
+                "expression": "",
+                "value": 18
+            },
+            {
+                "name": "ImGuiCol_SliderGrab",
+                "expression": "",
+                "value": 19
+            },
+            {
+                "name": "ImGuiCol_SliderGrabActive",
+                "expression": "",
+                "value": 20
+            },
+            {
+                "name": "ImGuiCol_Button",
+                "expression": "",
+                "value": 21
+            },
+            {
+                "name": "ImGuiCol_ButtonHovered",
+                "expression": "",
+                "value": 22
+            },
+            {
+                "name": "ImGuiCol_ButtonActive",
+                "expression": "",
+                "value": 23
+            },
+            {
+                "name": "ImGuiCol_Header",
+                "expression": "",
+                "value": 24
+            },
+            {
+                "name": "ImGuiCol_HeaderHovered",
+                "expression": "",
+                "value": 25
+            },
+            {
+                "name": "ImGuiCol_HeaderActive",
+                "expression": "",
+                "value": 26
+            },
+            {
+                "name": "ImGuiCol_Separator",
+                "expression": "",
+                "value": 27
+            },
+            {
+                "name": "ImGuiCol_SeparatorHovered",
+                "expression": "",
+                "value": 28
+            },
+            {
+                "name": "ImGuiCol_SeparatorActive",
+                "expression": "",
+                "value": 29
+            },
+            {
+                "name": "ImGuiCol_ResizeGrip",
+                "expression": "",
+                "value": 30
+            },
+            {
+                "name": "ImGuiCol_ResizeGripHovered",
+                "expression": "",
+                "value": 31
+            },
+            {
+                "name": "ImGuiCol_ResizeGripActive",
+                "expression": "",
+                "value": 32
+            },
+            {
+                "name": "ImGuiCol_Tab",
+                "expression": "",
+                "value": 33
+            },
+            {
+                "name": "ImGuiCol_TabHovered",
+                "expression": "",
+                "value": 34
+            },
+            {
+                "name": "ImGuiCol_TabActive",
+                "expression": "",
+                "value": 35
+            },
+            {
+                "name": "ImGuiCol_TabUnfocused",
+                "expression": "",
+                "value": 36
+            },
+            {
+                "name": "ImGuiCol_TabUnfocusedActive",
+                "expression": "",
+                "value": 37
+            },
+            {
+                "name": "ImGuiCol_DockingPreview",
+                "expression": "",
+                "value": 38
+            },
+            {
+                "name": "ImGuiCol_DockingEmptyBg",
+                "expression": "",
+                "value": 39
+            },
+            {
+                "name": "ImGuiCol_PlotLines",
+                "expression": "",
+                "value": 40
+            },
+            {
+                "name": "ImGuiCol_PlotLinesHovered",
+                "expression": "",
+                "value": 41
+            },
+            {
+                "name": "ImGuiCol_PlotHistogram",
+                "expression": "",
+                "value": 42
+            },
+            {
+                "name": "ImGuiCol_PlotHistogramHovered",
+                "expression": "",
+                "value": 43
+            },
+            {
+                "name": "ImGuiCol_TableHeaderBg",
+                "expression": "",
+                "value": 44
+            },
+            {
+                "name": "ImGuiCol_TableBorderStrong",
+                "expression": "",
+                "value": 45
+            },
+            {
+                "name": "ImGuiCol_TableBorderLight",
+                "expression": "",
+                "value": 46
+            },
+            {
+                "name": "ImGuiCol_TableRowBg",
+                "expression": "",
+                "value": 47
+            },
+            {
+                "name": "ImGuiCol_TableRowBgAlt",
+                "expression": "",
+                "value": 48
+            },
+            {
+                "name": "ImGuiCol_TextSelectedBg",
+                "expression": "",
+                "value": 49
+            },
+            {
+                "name": "ImGuiCol_DragDropTarget",
+                "expression": "",
+                "value": 50
+            },
+            {
+                "name": "ImGuiCol_NavHighlight",
+                "expression": "",
+                "value": 51
+            },
+            {
+                "name": "ImGuiCol_NavWindowingHighlight",
+                "expression": "",
+                "value": 52
+            },
+            {
+                "name": "ImGuiCol_NavWindowingDimBg",
+                "expression": "",
+                "value": 53
+            },
+            {
+                "name": "ImGuiCol_ModalWindowDimBg",
+                "expression": "",
+                "value": 54
+            },
+            {
+                "name": "ImGuiCol_COUNT",
+                "expression": "",
+                "value": 55
+            }
+        ]
+    },
+    {
+        "name": "ImGuiStyleVar_",
+        "constants": [
+            {
+                "name": "ImGuiStyleVar_Alpha",
+                "expression": "",
+                "value": 0
+            },
+            {
+                "name": "ImGuiStyleVar_DisabledAlpha",
+                "expression": "",
+                "value": 1
+            },
+            {
+                "name": "ImGuiStyleVar_WindowPadding",
+                "expression": "",
+                "value": 2
+            },
+            {
+                "name": "ImGuiStyleVar_WindowRounding",
+                "expression": "",
+                "value": 3
+            },
+            {
+                "name": "ImGuiStyleVar_WindowBorderSize",
+                "expression": "",
+                "value": 4
+            },
+            {
+                "name": "ImGuiStyleVar_WindowMinSize",
+                "expression": "",
+                "value": 5
+            },
+            {
+                "name": "ImGuiStyleVar_WindowTitleAlign",
+                "expression": "",
+                "value": 6
+            },
+            {
+                "name": "ImGuiStyleVar_ChildRounding",
+                "expression": "",
+                "value": 7
+            },
+            {
+                "name": "ImGuiStyleVar_ChildBorderSize",
+                "expression": "",
+                "value": 8
+            },
+            {
+                "name": "ImGuiStyleVar_PopupRounding",
+                "expression": "",
+                "value": 9
+            },
+            {
+                "name": "ImGuiStyleVar_PopupBorderSize",
+                "expression": "",
+                "value": 10
+            },
+            {
+                "name": "ImGuiStyleVar_FramePadding",
+                "expression": "",
+                "value": 11
+            },
+            {
+                "name": "ImGuiStyleVar_FrameRounding",
+                "expression": "",
+                "value": 12
+            },
+            {
+                "name": "ImGuiStyleVar_FrameBorderSize",
+                "expression": "",
+                "value": 13
+            },
+            {
+                "name": "ImGuiStyleVar_ItemSpacing",
+                "expression": "",
+                "value": 14
+            },
+            {
+                "name": "ImGuiStyleVar_ItemInnerSpacing",
+                "expression": "",
+                "value": 15
+            },
+            {
+                "name": "ImGuiStyleVar_IndentSpacing",
+                "expression": "",
+                "value": 16
+            },
+            {
+                "name": "ImGuiStyleVar_CellPadding",
+                "expression": "",
+                "value": 17
+            },
+            {
+                "name": "ImGuiStyleVar_ScrollbarSize",
+                "expression": "",
+                "value": 18
+            },
+            {
+                "name": "ImGuiStyleVar_ScrollbarRounding",
+                "expression": "",
+                "value": 19
+            },
+            {
+                "name": "ImGuiStyleVar_GrabMinSize",
+                "expression": "",
+                "value": 20
+            },
+            {
+                "name": "ImGuiStyleVar_GrabRounding",
+                "expression": "",
+                "value": 21
+            },
+            {
+                "name": "ImGuiStyleVar_TabRounding",
+                "expression": "",
+                "value": 22
+            },
+            {
+                "name": "ImGuiStyleVar_ButtonTextAlign",
+                "expression": "",
+                "value": 23
+            },
+            {
+                "name": "ImGuiStyleVar_SelectableTextAlign",
+                "expression": "",
+                "value": 24
+            },
+            {
+                "name": "ImGuiStyleVar_SeparatorTextBorderSize",
+                "expression": "",
+                "value": 25
+            },
+            {
+                "name": "ImGuiStyleVar_SeparatorTextAlign",
+                "expression": "",
+                "value": 26
+            },
+            {
+                "name": "ImGuiStyleVar_SeparatorTextPadding",
+                "expression": "",
+                "value": 27
+            },
+            {
+                "name": "ImGuiStyleVar_COUNT",
+                "expression": "",
+                "value": 28
+            }
+        ]
+    },
+    {
+        "name": "ImGuiButtonFlags_",
+        "constants": [
+            {
+                "name": "ImGuiButtonFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiButtonFlags_MouseButtonLeft",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiButtonFlags_MouseButtonRight",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiButtonFlags_MouseButtonMiddle",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiButtonFlags_MouseButtonMask_",
+                "expression": "ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight | ImGuiButtonFlags_MouseButtonMiddle",
+                "value": 7
+            },
+            {
+                "name": "ImGuiButtonFlags_MouseButtonDefault_",
+                "expression": "ImGuiButtonFlags_MouseButtonLeft",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "name": "ImGuiColorEditFlags_",
+        "constants": [
+            {
+                "name": "ImGuiColorEditFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoAlpha",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoPicker",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoOptions",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoSmallPreview",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoInputs",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoTooltip",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoLabel",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoSidePreview",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoDragDrop",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiColorEditFlags_NoBorder",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiColorEditFlags_AlphaBar",
+                "expression": "1 << 16",
+                "value": 65536
+            },
+            {
+                "name": "ImGuiColorEditFlags_AlphaPreview",
+                "expression": "1 << 17",
+                "value": 131072
+            },
+            {
+                "name": "ImGuiColorEditFlags_AlphaPreviewHalf",
+                "expression": "1 << 18",
+                "value": 262144
+            },
+            {
+                "name": "ImGuiColorEditFlags_HDR",
+                "expression": "1 << 19",
+                "value": 524288
+            },
+            {
+                "name": "ImGuiColorEditFlags_DisplayRGB",
+                "expression": "1 << 20",
+                "value": 1048576
+            },
+            {
+                "name": "ImGuiColorEditFlags_DisplayHSV",
+                "expression": "1 << 21",
+                "value": 2097152
+            },
+            {
+                "name": "ImGuiColorEditFlags_DisplayHex",
+                "expression": "1 << 22",
+                "value": 4194304
+            },
+            {
+                "name": "ImGuiColorEditFlags_Uint8",
+                "expression": "1 << 23",
+                "value": 8388608
+            },
+            {
+                "name": "ImGuiColorEditFlags_Float",
+                "expression": "1 << 24",
+                "value": 16777216
+            },
+            {
+                "name": "ImGuiColorEditFlags_PickerHueBar",
+                "expression": "1 << 25",
+                "value": 33554432
+            },
+            {
+                "name": "ImGuiColorEditFlags_PickerHueWheel",
+                "expression": "1 << 26",
+                "value": 67108864
+            },
+            {
+                "name": "ImGuiColorEditFlags_InputRGB",
+                "expression": "1 << 27",
+                "value": 134217728
+            },
+            {
+                "name": "ImGuiColorEditFlags_InputHSV",
+                "expression": "1 << 28",
+                "value": 268435456
+            },
+            {
+                "name": "ImGuiColorEditFlags_DefaultOptions_",
+                "expression": "ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_PickerHueBar",
+                "value": 177209344
+            },
+            {
+                "name": "ImGuiColorEditFlags_DisplayMask_",
+                "expression": "ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_DisplayHex",
+                "value": 7340032
+            },
+            {
+                "name": "ImGuiColorEditFlags_DataTypeMask_",
+                "expression": "ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_Float",
+                "value": 25165824
+            },
+            {
+                "name": "ImGuiColorEditFlags_PickerMask_",
+                "expression": "ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_PickerHueBar",
+                "value": 100663296
+            },
+            {
+                "name": "ImGuiColorEditFlags_InputMask_",
+                "expression": "ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_InputHSV",
+                "value": 402653184
+            }
+        ]
+    },
+    {
+        "name": "ImGuiSliderFlags_",
+        "constants": [
+            {
+                "name": "ImGuiSliderFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiSliderFlags_AlwaysClamp",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiSliderFlags_Logarithmic",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiSliderFlags_NoRoundToFormat",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiSliderFlags_NoInput",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiSliderFlags_InvalidMask_",
+                "expression": "0x7000000F",
+                "value": 1879048207
+            },
+            {
+                "name": "ImGuiSliderFlags_ClampOnInput",
+                "expression": "ImGuiSliderFlags_AlwaysClamp",
+                "value": 16
+            }
+        ]
+    },
+    {
+        "name": "ImGuiMouseButton_",
+        "constants": [
+            {
+                "name": "ImGuiMouseButton_Left",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiMouseButton_Right",
+                "expression": "1",
+                "value": 1
+            },
+            {
+                "name": "ImGuiMouseButton_Middle",
+                "expression": "2",
+                "value": 2
+            },
+            {
+                "name": "ImGuiMouseButton_COUNT",
+                "expression": "5",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "name": "ImGuiMouseCursor_",
+        "constants": [
+            {
+                "name": "ImGuiMouseCursor_None",
+                "expression": "- 1",
+                "value": -1
+            },
+            {
+                "name": "ImGuiMouseCursor_Arrow",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiMouseCursor_TextInput",
+                "expression": "",
+                "value": 1
+            },
+            {
+                "name": "ImGuiMouseCursor_ResizeAll",
+                "expression": "",
+                "value": 2
+            },
+            {
+                "name": "ImGuiMouseCursor_ResizeNS",
+                "expression": "",
+                "value": 3
+            },
+            {
+                "name": "ImGuiMouseCursor_ResizeEW",
+                "expression": "",
+                "value": 4
+            },
+            {
+                "name": "ImGuiMouseCursor_ResizeNESW",
+                "expression": "",
+                "value": 5
+            },
+            {
+                "name": "ImGuiMouseCursor_ResizeNWSE",
+                "expression": "",
+                "value": 6
+            },
+            {
+                "name": "ImGuiMouseCursor_Hand",
+                "expression": "",
+                "value": 7
+            },
+            {
+                "name": "ImGuiMouseCursor_NotAllowed",
+                "expression": "",
+                "value": 8
+            },
+            {
+                "name": "ImGuiMouseCursor_COUNT",
+                "expression": "",
+                "value": 9
+            }
+        ]
+    },
+    {
+        "name": "ImGuiCond_",
+        "constants": [
+            {
+                "name": "ImGuiCond_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiCond_Always",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiCond_Once",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiCond_FirstUseEver",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiCond_Appearing",
+                "expression": "1 << 3",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "name": "ImDrawFlags_",
+        "constants": [
+            {
+                "name": "ImDrawFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImDrawFlags_Closed",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersTopLeft",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersTopRight",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersBottomLeft",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersBottomRight",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersNone",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersTop",
+                "expression": "ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight",
+                "value": 48
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersBottom",
+                "expression": "ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight",
+                "value": 192
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersLeft",
+                "expression": "ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersTopLeft",
+                "value": 80
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersRight",
+                "expression": "ImDrawFlags_RoundCornersBottomRight | ImDrawFlags_RoundCornersTopRight",
+                "value": 160
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersAll",
+                "expression": "ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight | ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight",
+                "value": 240
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersDefault_",
+                "expression": "ImDrawFlags_RoundCornersAll",
+                "value": 240
+            },
+            {
+                "name": "ImDrawFlags_RoundCornersMask_",
+                "expression": "ImDrawFlags_RoundCornersAll | ImDrawFlags_RoundCornersNone",
+                "value": 496
+            }
+        ]
+    },
+    {
+        "name": "ImDrawListFlags_",
+        "constants": [
+            {
+                "name": "ImDrawListFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImDrawListFlags_AntiAliasedLines",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImDrawListFlags_AntiAliasedLinesUseTex",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImDrawListFlags_AntiAliasedFill",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImDrawListFlags_AllowVtxOffset",
+                "expression": "1 << 3",
+                "value": 8
+            }
+        ]
+    },
+    {
+        "name": "ImFontAtlasFlags_",
+        "constants": [
+            {
+                "name": "ImFontAtlasFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImFontAtlasFlags_NoPowerOfTwoHeight",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImFontAtlasFlags_NoMouseCursors",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImFontAtlasFlags_NoBakedLines",
+                "expression": "1 << 2",
+                "value": 4
+            }
+        ]
+    },
+    {
+        "name": "ImGuiViewportFlags_",
+        "constants": [
+            {
+                "name": "ImGuiViewportFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiViewportFlags_IsPlatformWindow",
+                "expression": "1 << 0",
+                "value": 1
+            },
+            {
+                "name": "ImGuiViewportFlags_IsPlatformMonitor",
+                "expression": "1 << 1",
+                "value": 2
+            },
+            {
+                "name": "ImGuiViewportFlags_OwnedByApp",
+                "expression": "1 << 2",
+                "value": 4
+            },
+            {
+                "name": "ImGuiViewportFlags_NoDecoration",
+                "expression": "1 << 3",
+                "value": 8
+            },
+            {
+                "name": "ImGuiViewportFlags_NoTaskBarIcon",
+                "expression": "1 << 4",
+                "value": 16
+            },
+            {
+                "name": "ImGuiViewportFlags_NoFocusOnAppearing",
+                "expression": "1 << 5",
+                "value": 32
+            },
+            {
+                "name": "ImGuiViewportFlags_NoFocusOnClick",
+                "expression": "1 << 6",
+                "value": 64
+            },
+            {
+                "name": "ImGuiViewportFlags_NoInputs",
+                "expression": "1 << 7",
+                "value": 128
+            },
+            {
+                "name": "ImGuiViewportFlags_NoRendererClear",
+                "expression": "1 << 8",
+                "value": 256
+            },
+            {
+                "name": "ImGuiViewportFlags_TopMost",
+                "expression": "1 << 9",
+                "value": 512
+            },
+            {
+                "name": "ImGuiViewportFlags_Minimized",
+                "expression": "1 << 10",
+                "value": 1024
+            },
+            {
+                "name": "ImGuiViewportFlags_NoAutoMerge",
+                "expression": "1 << 11",
+                "value": 2048
+            },
+            {
+                "name": "ImGuiViewportFlags_CanHostOtherWindows",
+                "expression": "1 << 12",
+                "value": 4096
+            }
+        ]
+    },
+    {
+        "name": "ImDrawCornerFlags_",
+        "constants": [
+            {
+                "name": "ImDrawCornerFlags_None",
+                "expression": "ImDrawFlags_RoundCornersNone",
+                "value": 256
+            },
+            {
+                "name": "ImDrawCornerFlags_TopLeft",
+                "expression": "ImDrawFlags_RoundCornersTopLeft",
+                "value": 16
+            },
+            {
+                "name": "ImDrawCornerFlags_TopRight",
+                "expression": "ImDrawFlags_RoundCornersTopRight",
+                "value": 32
+            },
+            {
+                "name": "ImDrawCornerFlags_BotLeft",
+                "expression": "ImDrawFlags_RoundCornersBottomLeft",
+                "value": 64
+            },
+            {
+                "name": "ImDrawCornerFlags_BotRight",
+                "expression": "ImDrawFlags_RoundCornersBottomRight",
+                "value": 128
+            },
+            {
+                "name": "ImDrawCornerFlags_All",
+                "expression": "ImDrawFlags_RoundCornersAll",
+                "value": 240
+            },
+            {
+                "name": "ImDrawCornerFlags_Top",
+                "expression": "ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_TopRight",
+                "value": 48
+            },
+            {
+                "name": "ImDrawCornerFlags_Bot",
+                "expression": "ImDrawCornerFlags_BotLeft | ImDrawCornerFlags_BotRight",
+                "value": 192
+            },
+            {
+                "name": "ImDrawCornerFlags_Left",
+                "expression": "ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_BotLeft",
+                "value": 80
+            },
+            {
+                "name": "ImDrawCornerFlags_Right",
+                "expression": "ImDrawCornerFlags_TopRight | ImDrawCornerFlags_BotRight",
+                "value": 160
+            }
+        ]
+    },
+    {
+        "name": "ImGuiModFlags_",
+        "constants": [
+            {
+                "name": "ImGuiModFlags_None",
+                "expression": "0",
+                "value": 0
+            },
+            {
+                "name": "ImGuiModFlags_Ctrl",
+                "expression": "ImGuiMod_Ctrl",
+                "value": 4096
+            },
+            {
+                "name": "ImGuiModFlags_Shift",
+                "expression": "ImGuiMod_Shift",
+                "value": 8192
+            },
+            {
+                "name": "ImGuiModFlags_Alt",
+                "expression": "ImGuiMod_Alt",
+                "value": 16384
+            },
+            {
+                "name": "ImGuiModFlags_Super",
+                "expression": "ImGuiMod_Super",
+                "value": 32768
+            }
+        ]
+    }
+]

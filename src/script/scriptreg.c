@@ -5,7 +5,7 @@
 #include <cimgui.h>
 #include <assert.h>
 #include "culibc.h"
-#include "imgui_registrar.h"
+#include "imgui_lua.h"
 #include "log/log.h"
 
 #define JOIN_STR2(X, Y) X ## Y
@@ -480,8 +480,7 @@ void RegisterLuaFunctions(lua_State* L)
 
     REGISTER(L, log_log);
 
-    g_ImguiBindingsState = L;
-    LoadImguiBindings();
+    luaopen_imgui_lib(L);
 }
 
 #undef REGISTER

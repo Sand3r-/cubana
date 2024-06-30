@@ -29,7 +29,7 @@ static void SetSnapCursorToCenter(Game* game, bool enabled)
 
 static void GameControlsUpdate(Game* game)
 {
-    if (GetKeyState(KEY_F1) & KEY_STATE_PRESSED)
+    if (GetKeyState(KEY_ESC) & KEY_STATE_PRESSED)
     {
         SetSnapCursorToCenter(game, !game->mouse_snap);
     }
