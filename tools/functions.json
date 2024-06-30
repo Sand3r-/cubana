@@ -8,7 +8,8 @@
                 "name": "shared_font_atlas",
                 "default_value": "ImFontAtlas"
             }
-        ]
+        ],
+        "line": 294
     },
     {
         "name": "DestroyContext",
@@ -19,12 +20,14 @@
                 "name": "ctx",
                 "default_value": "ImGuiContext"
             }
-        ]
+        ],
+        "line": 295
     },
     {
         "name": "GetCurrentContext",
         "return_type": "ImGuiContext *",
-        "parameters": []
+        "parameters": [],
+        "line": 296
     },
     {
         "name": "SetCurrentContext",
@@ -35,37 +38,44 @@
                 "name": "ctx",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 297
     },
     {
         "name": "GetIO",
         "return_type": "ImGuiIO &",
-        "parameters": []
+        "parameters": [],
+        "line": 300
     },
     {
         "name": "GetStyle",
         "return_type": "ImGuiStyle &",
-        "parameters": []
+        "parameters": [],
+        "line": 301
     },
     {
         "name": "NewFrame",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 302
     },
     {
         "name": "EndFrame",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 303
     },
     {
         "name": "Render",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 304
     },
     {
         "name": "GetDrawData",
         "return_type": "ImDrawData *",
-        "parameters": []
+        "parameters": [],
+        "line": 305
     },
     {
         "name": "ShowDemoWindow",
@@ -76,7 +86,8 @@
                 "name": "p_open",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 308
     },
     {
         "name": "ShowMetricsWindow",
@@ -87,7 +98,8 @@
                 "name": "p_open",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 309
     },
     {
         "name": "ShowDebugLogWindow",
@@ -98,7 +110,8 @@
                 "name": "p_open",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 310
     },
     {
         "name": "ShowStackToolWindow",
@@ -109,7 +122,8 @@
                 "name": "p_open",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 311
     },
     {
         "name": "ShowAboutWindow",
@@ -120,7 +134,8 @@
                 "name": "p_open",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 312
     },
     {
         "name": "ShowStyleEditor",
@@ -131,7 +146,8 @@
                 "name": "ref",
                 "default_value": "ImGuiStyle"
             }
-        ]
+        ],
+        "line": 313
     },
     {
         "name": "ShowStyleSelector",
@@ -142,7 +158,8 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 314
     },
     {
         "name": "ShowFontSelector",
@@ -153,17 +170,20 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 315
     },
     {
         "name": "ShowUserGuide",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 316
     },
     {
         "name": "GetVersion",
         "return_type": "const char *",
-        "parameters": []
+        "parameters": [],
+        "line": 317
     },
     {
         "name": "StyleColorsDark",
@@ -174,7 +194,8 @@
                 "name": "dst",
                 "default_value": "ImGuiStyle"
             }
-        ]
+        ],
+        "line": 320
     },
     {
         "name": "StyleColorsLight",
@@ -185,7 +206,8 @@
                 "name": "dst",
                 "default_value": "ImGuiStyle"
             }
-        ]
+        ],
+        "line": 321
     },
     {
         "name": "StyleColorsClassic",
@@ -196,7 +218,8 @@
                 "name": "dst",
                 "default_value": "ImGuiStyle"
             }
-        ]
+        ],
+        "line": 322
     },
     {
         "name": "Begin",
@@ -217,12 +240,14 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 336
     },
     {
         "name": "End",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 337
     },
     {
         "name": "BeginChild",
@@ -248,7 +273,8 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 347
     },
     {
         "name": "BeginChild",
@@ -274,22 +300,26 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 348
     },
     {
         "name": "EndChild",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 349
     },
     {
         "name": "IsWindowAppearing",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 353
     },
     {
         "name": "IsWindowCollapsed",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 354
     },
     {
         "name": "IsWindowFocused",
@@ -300,7 +330,8 @@
                 "name": "flags",
                 "default_value": "ImGuiFocusedFlags"
             }
-        ]
+        ],
+        "line": 355
     },
     {
         "name": "IsWindowHovered",
@@ -311,42 +342,50 @@
                 "name": "flags",
                 "default_value": "ImGuiHoveredFlags"
             }
-        ]
+        ],
+        "line": 356
     },
     {
         "name": "GetWindowDrawList",
         "return_type": "ImDrawList *",
-        "parameters": []
+        "parameters": [],
+        "line": 357
     },
     {
         "name": "GetWindowDpiScale",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 358
     },
     {
         "name": "GetWindowPos",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 359
     },
     {
         "name": "GetWindowSize",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 360
     },
     {
         "name": "GetWindowWidth",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 361
     },
     {
         "name": "GetWindowHeight",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 362
     },
     {
         "name": "GetWindowViewport",
         "return_type": "ImGuiViewport *",
-        "parameters": []
+        "parameters": [],
+        "line": 363
     },
     {
         "name": "SetNextWindowPos",
@@ -367,7 +406,8 @@
                 "name": "pivot",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 367
     },
     {
         "name": "SetNextWindowSize",
@@ -383,7 +423,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 368
     },
     {
         "name": "SetNextWindowSizeConstraints",
@@ -409,7 +450,8 @@
                 "name": "custom_callback_data",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 369
     },
     {
         "name": "SetNextWindowContentSize",
@@ -420,7 +462,8 @@
                 "name": "size",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 370
     },
     {
         "name": "SetNextWindowCollapsed",
@@ -436,12 +479,14 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 371
     },
     {
         "name": "SetNextWindowFocus",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 372
     },
     {
         "name": "SetNextWindowScroll",
@@ -452,7 +497,8 @@
                 "name": "scroll",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 373
     },
     {
         "name": "SetNextWindowBgAlpha",
@@ -463,7 +509,8 @@
                 "name": "alpha",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 374
     },
     {
         "name": "SetNextWindowViewport",
@@ -474,7 +521,8 @@
                 "name": "viewport_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 375
     },
     {
         "name": "SetWindowPos",
@@ -490,7 +538,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 376
     },
     {
         "name": "SetWindowSize",
@@ -506,7 +555,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 377
     },
     {
         "name": "SetWindowCollapsed",
@@ -522,12 +572,14 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 378
     },
     {
         "name": "SetWindowFocus",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 379
     },
     {
         "name": "SetWindowFontScale",
@@ -538,7 +590,8 @@
                 "name": "scale",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 380
     },
     {
         "name": "SetWindowPos",
@@ -559,7 +612,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 381
     },
     {
         "name": "SetWindowSize",
@@ -580,7 +634,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 382
     },
     {
         "name": "SetWindowCollapsed",
@@ -601,7 +656,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 383
     },
     {
         "name": "SetWindowFocus",
@@ -612,37 +668,44 @@
                 "name": "name",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 384
     },
     {
         "name": "GetContentRegionAvail",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 389
     },
     {
         "name": "GetContentRegionMax",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 390
     },
     {
         "name": "GetWindowContentRegionMin",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 391
     },
     {
         "name": "GetWindowContentRegionMax",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 392
     },
     {
         "name": "GetScrollX",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 397
     },
     {
         "name": "GetScrollY",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 398
     },
     {
         "name": "SetScrollX",
@@ -653,7 +716,8 @@
                 "name": "scroll_x",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 399
     },
     {
         "name": "SetScrollY",
@@ -664,17 +728,20 @@
                 "name": "scroll_y",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 400
     },
     {
         "name": "GetScrollMaxX",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 401
     },
     {
         "name": "GetScrollMaxY",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 402
     },
     {
         "name": "SetScrollHereX",
@@ -685,7 +752,8 @@
                 "name": "center_x_ratio",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 403
     },
     {
         "name": "SetScrollHereY",
@@ -696,7 +764,8 @@
                 "name": "center_y_ratio",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 404
     },
     {
         "name": "SetScrollFromPosX",
@@ -712,7 +781,8 @@
                 "name": "center_x_ratio",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 405
     },
     {
         "name": "SetScrollFromPosY",
@@ -728,7 +798,8 @@
                 "name": "center_y_ratio",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 406
     },
     {
         "name": "PushFont",
@@ -739,12 +810,14 @@
                 "name": "font",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 409
     },
     {
         "name": "PopFont",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 410
     },
     {
         "name": "PushStyleColor",
@@ -760,7 +833,8 @@
                 "name": "col",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 411
     },
     {
         "name": "PushStyleColor",
@@ -776,7 +850,8 @@
                 "name": "col",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 412
     },
     {
         "name": "PopStyleColor",
@@ -787,7 +862,8 @@
                 "name": "count",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 413
     },
     {
         "name": "PushStyleVar",
@@ -803,7 +879,8 @@
                 "name": "val",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 414
     },
     {
         "name": "PushStyleVar",
@@ -819,7 +896,8 @@
                 "name": "val",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 415
     },
     {
         "name": "PopStyleVar",
@@ -830,7 +908,8 @@
                 "name": "count",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 416
     },
     {
         "name": "PushAllowKeyboardFocus",
@@ -841,12 +920,14 @@
                 "name": "allow_keyboard_focus",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 417
     },
     {
         "name": "PopAllowKeyboardFocus",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 418
     },
     {
         "name": "PushButtonRepeat",
@@ -857,12 +938,14 @@
                 "name": "repeat",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 419
     },
     {
         "name": "PopButtonRepeat",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 420
     },
     {
         "name": "PushItemWidth",
@@ -873,12 +956,14 @@
                 "name": "item_width",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 423
     },
     {
         "name": "PopItemWidth",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 424
     },
     {
         "name": "SetNextItemWidth",
@@ -889,12 +974,14 @@
                 "name": "item_width",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 425
     },
     {
         "name": "CalcItemWidth",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 426
     },
     {
         "name": "PushTextWrapPos",
@@ -905,27 +992,32 @@
                 "name": "wrap_local_pos_x",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 427
     },
     {
         "name": "PopTextWrapPos",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 428
     },
     {
         "name": "GetFont",
         "return_type": "ImFont *",
-        "parameters": []
+        "parameters": [],
+        "line": 432
     },
     {
         "name": "GetFontSize",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 433
     },
     {
         "name": "GetFontTexUvWhitePixel",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 434
     },
     {
         "name": "GetColorU32",
@@ -941,7 +1033,8 @@
                 "name": "alpha_mul",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 435
     },
     {
         "name": "GetColorU32",
@@ -952,7 +1045,8 @@
                 "name": "col",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 436
     },
     {
         "name": "GetColorU32",
@@ -963,7 +1057,8 @@
                 "name": "col",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 437
     },
     {
         "name": "GetStyleColorVec4",
@@ -974,12 +1069,14 @@
                 "name": "idx",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 438
     },
     {
         "name": "Separator",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 447
     },
     {
         "name": "SameLine",
@@ -995,17 +1092,20 @@
                 "name": "spacing",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 448
     },
     {
         "name": "NewLine",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 449
     },
     {
         "name": "Spacing",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 450
     },
     {
         "name": "Dummy",
@@ -1016,7 +1116,8 @@
                 "name": "size",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 451
     },
     {
         "name": "Indent",
@@ -1027,7 +1128,8 @@
                 "name": "indent_w",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 452
     },
     {
         "name": "Unindent",
@@ -1038,32 +1140,38 @@
                 "name": "indent_w",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 453
     },
     {
         "name": "BeginGroup",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 454
     },
     {
         "name": "EndGroup",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 455
     },
     {
         "name": "GetCursorPos",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 456
     },
     {
         "name": "GetCursorPosX",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 457
     },
     {
         "name": "GetCursorPosY",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 458
     },
     {
         "name": "SetCursorPos",
@@ -1074,7 +1182,8 @@
                 "name": "local_pos",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 459
     },
     {
         "name": "SetCursorPosX",
@@ -1085,7 +1194,8 @@
                 "name": "local_x",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 460
     },
     {
         "name": "SetCursorPosY",
@@ -1096,17 +1206,20 @@
                 "name": "local_y",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 461
     },
     {
         "name": "GetCursorStartPos",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 462
     },
     {
         "name": "GetCursorScreenPos",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 463
     },
     {
         "name": "SetCursorScreenPos",
@@ -1117,32 +1230,38 @@
                 "name": "pos",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 464
     },
     {
         "name": "AlignTextToFramePadding",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 465
     },
     {
         "name": "GetTextLineHeight",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 466
     },
     {
         "name": "GetTextLineHeightWithSpacing",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 467
     },
     {
         "name": "GetFrameHeight",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 468
     },
     {
         "name": "GetFrameHeightWithSpacing",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 469
     },
     {
         "name": "PushID",
@@ -1153,7 +1272,8 @@
                 "name": "str_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 482
     },
     {
         "name": "PushID",
@@ -1169,7 +1289,8 @@
                 "name": "str_id_end",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 483
     },
     {
         "name": "PushID",
@@ -1180,7 +1301,8 @@
                 "name": "ptr_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 484
     },
     {
         "name": "PushID",
@@ -1191,12 +1313,14 @@
                 "name": "int_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 485
     },
     {
         "name": "PopID",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 486
     },
     {
         "name": "GetID",
@@ -1207,7 +1331,8 @@
                 "name": "str_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 487
     },
     {
         "name": "GetID",
@@ -1223,7 +1348,8 @@
                 "name": "str_id_end",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 488
     },
     {
         "name": "GetID",
@@ -1234,7 +1360,8 @@
                 "name": "ptr_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 489
     },
     {
         "name": "TextUnformatted",
@@ -1250,7 +1377,8 @@
                 "name": "text_end",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 492
     },
     {
         "name": "Text",
@@ -1261,7 +1389,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 493
     },
     {
         "name": "TextV",
@@ -1277,7 +1406,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 494
     },
     {
         "name": "TextColored",
@@ -1293,7 +1423,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 495
     },
     {
         "name": "TextColoredV",
@@ -1314,7 +1445,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 496
     },
     {
         "name": "TextDisabled",
@@ -1325,7 +1457,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 497
     },
     {
         "name": "TextDisabledV",
@@ -1341,7 +1474,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 498
     },
     {
         "name": "TextWrapped",
@@ -1352,7 +1486,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 499
     },
     {
         "name": "TextWrappedV",
@@ -1368,7 +1503,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 500
     },
     {
         "name": "LabelText",
@@ -1384,7 +1520,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 501
     },
     {
         "name": "LabelTextV",
@@ -1405,7 +1542,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 502
     },
     {
         "name": "BulletText",
@@ -1416,7 +1554,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 503
     },
     {
         "name": "BulletTextV",
@@ -1432,7 +1571,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 504
     },
     {
         "name": "SeparatorText",
@@ -1443,7 +1583,8 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 505
     },
     {
         "name": "Button",
@@ -1459,7 +1600,8 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 510
     },
     {
         "name": "SmallButton",
@@ -1470,7 +1612,8 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 511
     },
     {
         "name": "InvisibleButton",
@@ -1491,7 +1634,8 @@
                 "name": "flags",
                 "default_value": "ImGuiButtonFlags"
             }
-        ]
+        ],
+        "line": 512
     },
     {
         "name": "ArrowButton",
@@ -1507,7 +1651,8 @@
                 "name": "dir",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 513
     },
     {
         "name": "Checkbox",
@@ -1523,7 +1668,8 @@
                 "name": "v",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 514
     },
     {
         "name": "CheckboxFlags",
@@ -1544,7 +1690,8 @@
                 "name": "flags_value",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 515
     },
     {
         "name": "CheckboxFlags",
@@ -1565,7 +1712,8 @@
                 "name": "flags_value",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 516
     },
     {
         "name": "RadioButton",
@@ -1581,7 +1729,8 @@
                 "name": "active",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 517
     },
     {
         "name": "RadioButton",
@@ -1602,7 +1751,8 @@
                 "name": "v_button",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 518
     },
     {
         "name": "ProgressBar",
@@ -1623,12 +1773,14 @@
                 "name": "overlay",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 519
     },
     {
         "name": "Bullet",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 520
     },
     {
         "name": "Image",
@@ -1664,7 +1816,8 @@
                 "name": "border_col",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 524
     },
     {
         "name": "ImageButton",
@@ -1705,7 +1858,8 @@
                 "name": "tint_col",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 525
     },
     {
         "name": "BeginCombo",
@@ -1726,12 +1880,14 @@
                 "name": "flags",
                 "default_value": "ImGuiComboFlags"
             }
-        ]
+        ],
+        "line": 530
     },
     {
         "name": "EndCombo",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 531
     },
     {
         "name": "Combo",
@@ -1748,7 +1904,7 @@
                 "default_value": null
             },
             {
-                "type": "const char *const[]",
+                "type": "const char *const []",
                 "name": "items",
                 "default_value": null
             },
@@ -1762,7 +1918,8 @@
                 "name": "popup_max_height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 532
     },
     {
         "name": "Combo",
@@ -1788,7 +1945,8 @@
                 "name": "popup_max_height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 533
     },
     {
         "name": "Combo",
@@ -1824,7 +1982,8 @@
                 "name": "popup_max_height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 534
     },
     {
         "name": "DragFloat",
@@ -1865,7 +2024,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 548
     },
     {
         "name": "DragFloat2",
@@ -1877,7 +2037,7 @@
                 "default_value": null
             },
             {
-                "type": "float[2]",
+                "type": "float [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -1906,7 +2066,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 549
     },
     {
         "name": "DragFloat3",
@@ -1918,7 +2079,7 @@
                 "default_value": null
             },
             {
-                "type": "float[3]",
+                "type": "float [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -1947,7 +2108,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 550
     },
     {
         "name": "DragFloat4",
@@ -1959,7 +2121,7 @@
                 "default_value": null
             },
             {
-                "type": "float[4]",
+                "type": "float [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -1988,7 +2150,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 551
     },
     {
         "name": "DragFloatRange2",
@@ -2039,7 +2202,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 552
     },
     {
         "name": "DragInt",
@@ -2080,7 +2244,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 553
     },
     {
         "name": "DragInt2",
@@ -2092,7 +2257,7 @@
                 "default_value": null
             },
             {
-                "type": "int[2]",
+                "type": "int [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -2121,7 +2286,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 554
     },
     {
         "name": "DragInt3",
@@ -2133,7 +2299,7 @@
                 "default_value": null
             },
             {
-                "type": "int[3]",
+                "type": "int [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -2162,7 +2328,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 555
     },
     {
         "name": "DragInt4",
@@ -2174,7 +2341,7 @@
                 "default_value": null
             },
             {
-                "type": "int[4]",
+                "type": "int [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -2203,7 +2370,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 556
     },
     {
         "name": "DragIntRange2",
@@ -2254,7 +2422,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 557
     },
     {
         "name": "DragScalar",
@@ -2300,7 +2469,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 558
     },
     {
         "name": "DragScalarN",
@@ -2351,7 +2521,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 559
     },
     {
         "name": "SliderFloat",
@@ -2387,7 +2558,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 567
     },
     {
         "name": "SliderFloat2",
@@ -2399,7 +2571,7 @@
                 "default_value": null
             },
             {
-                "type": "float[2]",
+                "type": "float [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -2423,7 +2595,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 568
     },
     {
         "name": "SliderFloat3",
@@ -2435,7 +2608,7 @@
                 "default_value": null
             },
             {
-                "type": "float[3]",
+                "type": "float [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -2459,7 +2632,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 569
     },
     {
         "name": "SliderFloat4",
@@ -2471,7 +2645,7 @@
                 "default_value": null
             },
             {
-                "type": "float[4]",
+                "type": "float [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -2495,7 +2669,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 570
     },
     {
         "name": "SliderAngle",
@@ -2531,7 +2706,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 571
     },
     {
         "name": "SliderInt",
@@ -2567,7 +2743,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 572
     },
     {
         "name": "SliderInt2",
@@ -2579,7 +2756,7 @@
                 "default_value": null
             },
             {
-                "type": "int[2]",
+                "type": "int [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -2603,7 +2780,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 573
     },
     {
         "name": "SliderInt3",
@@ -2615,7 +2793,7 @@
                 "default_value": null
             },
             {
-                "type": "int[3]",
+                "type": "int [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -2639,7 +2817,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 574
     },
     {
         "name": "SliderInt4",
@@ -2651,7 +2830,7 @@
                 "default_value": null
             },
             {
-                "type": "int[4]",
+                "type": "int [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -2675,7 +2854,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 575
     },
     {
         "name": "SliderScalar",
@@ -2716,7 +2896,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 576
     },
     {
         "name": "SliderScalarN",
@@ -2762,7 +2943,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 577
     },
     {
         "name": "VSliderFloat",
@@ -2803,7 +2985,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 578
     },
     {
         "name": "VSliderInt",
@@ -2844,7 +3027,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 579
     },
     {
         "name": "VSliderScalar",
@@ -2890,7 +3074,8 @@
                 "name": "flags",
                 "default_value": "ImGuiSliderFlags"
             }
-        ]
+        ],
+        "line": 580
     },
     {
         "name": "InputText",
@@ -2926,7 +3111,8 @@
                 "name": "user_data",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 585
     },
     {
         "name": "InputTextMultiline",
@@ -2967,7 +3153,8 @@
                 "name": "user_data",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 586
     },
     {
         "name": "InputTextWithHint",
@@ -3008,7 +3195,8 @@
                 "name": "user_data",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 587
     },
     {
         "name": "InputFloat",
@@ -3044,7 +3232,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 588
     },
     {
         "name": "InputFloat2",
@@ -3056,7 +3245,7 @@
                 "default_value": null
             },
             {
-                "type": "float[2]",
+                "type": "float [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -3070,7 +3259,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 589
     },
     {
         "name": "InputFloat3",
@@ -3082,7 +3272,7 @@
                 "default_value": null
             },
             {
-                "type": "float[3]",
+                "type": "float [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -3096,7 +3286,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 590
     },
     {
         "name": "InputFloat4",
@@ -3108,7 +3299,7 @@
                 "default_value": null
             },
             {
-                "type": "float[4]",
+                "type": "float [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -3122,7 +3313,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 591
     },
     {
         "name": "InputInt",
@@ -3153,7 +3345,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 592
     },
     {
         "name": "InputInt2",
@@ -3165,7 +3358,7 @@
                 "default_value": null
             },
             {
-                "type": "int[2]",
+                "type": "int [2]",
                 "name": "v",
                 "default_value": null
             },
@@ -3174,7 +3367,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 593
     },
     {
         "name": "InputInt3",
@@ -3186,7 +3380,7 @@
                 "default_value": null
             },
             {
-                "type": "int[3]",
+                "type": "int [3]",
                 "name": "v",
                 "default_value": null
             },
@@ -3195,7 +3389,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 594
     },
     {
         "name": "InputInt4",
@@ -3207,7 +3402,7 @@
                 "default_value": null
             },
             {
-                "type": "int[4]",
+                "type": "int [4]",
                 "name": "v",
                 "default_value": null
             },
@@ -3216,7 +3411,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 595
     },
     {
         "name": "InputDouble",
@@ -3252,7 +3448,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 596
     },
     {
         "name": "InputScalar",
@@ -3293,7 +3490,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 597
     },
     {
         "name": "InputScalarN",
@@ -3339,7 +3537,8 @@
                 "name": "flags",
                 "default_value": "ImGuiInputTextFlags"
             }
-        ]
+        ],
+        "line": 598
     },
     {
         "name": "ColorEdit3",
@@ -3351,7 +3550,7 @@
                 "default_value": null
             },
             {
-                "type": "float[3]",
+                "type": "float [3]",
                 "name": "col",
                 "default_value": null
             },
@@ -3360,7 +3559,8 @@
                 "name": "flags",
                 "default_value": "ImGuiColorEditFlags"
             }
-        ]
+        ],
+        "line": 603
     },
     {
         "name": "ColorEdit4",
@@ -3372,7 +3572,7 @@
                 "default_value": null
             },
             {
-                "type": "float[4]",
+                "type": "float [4]",
                 "name": "col",
                 "default_value": null
             },
@@ -3381,7 +3581,8 @@
                 "name": "flags",
                 "default_value": "ImGuiColorEditFlags"
             }
-        ]
+        ],
+        "line": 604
     },
     {
         "name": "ColorPicker3",
@@ -3393,7 +3594,7 @@
                 "default_value": null
             },
             {
-                "type": "float[3]",
+                "type": "float [3]",
                 "name": "col",
                 "default_value": null
             },
@@ -3402,7 +3603,8 @@
                 "name": "flags",
                 "default_value": "ImGuiColorEditFlags"
             }
-        ]
+        ],
+        "line": 605
     },
     {
         "name": "ColorPicker4",
@@ -3414,7 +3616,7 @@
                 "default_value": null
             },
             {
-                "type": "float[4]",
+                "type": "float [4]",
                 "name": "col",
                 "default_value": null
             },
@@ -3428,7 +3630,8 @@
                 "name": "ref_col",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 606
     },
     {
         "name": "ColorButton",
@@ -3454,7 +3657,8 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 607
     },
     {
         "name": "SetColorEditOptions",
@@ -3465,7 +3669,8 @@
                 "name": "flags",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 608
     },
     {
         "name": "TreeNode",
@@ -3476,7 +3681,8 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 612
     },
     {
         "name": "TreeNode",
@@ -3492,7 +3698,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 613
     },
     {
         "name": "TreeNode",
@@ -3508,7 +3715,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 614
     },
     {
         "name": "TreeNodeV",
@@ -3529,7 +3737,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 615
     },
     {
         "name": "TreeNodeV",
@@ -3550,7 +3759,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 616
     },
     {
         "name": "TreeNodeEx",
@@ -3566,7 +3776,8 @@
                 "name": "flags",
                 "default_value": "ImGuiTreeNodeFlags"
             }
-        ]
+        ],
+        "line": 617
     },
     {
         "name": "TreeNodeEx",
@@ -3587,7 +3798,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 618
     },
     {
         "name": "TreeNodeEx",
@@ -3608,7 +3820,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 619
     },
     {
         "name": "TreeNodeExV",
@@ -3634,7 +3847,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 620
     },
     {
         "name": "TreeNodeExV",
@@ -3660,7 +3874,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 621
     },
     {
         "name": "TreePush",
@@ -3671,7 +3886,8 @@
                 "name": "str_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 622
     },
     {
         "name": "TreePush",
@@ -3682,17 +3898,20 @@
                 "name": "ptr_id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 623
     },
     {
         "name": "TreePop",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 624
     },
     {
         "name": "GetTreeNodeToLabelSpacing",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 625
     },
     {
         "name": "CollapsingHeader",
@@ -3708,7 +3927,8 @@
                 "name": "flags",
                 "default_value": "ImGuiTreeNodeFlags"
             }
-        ]
+        ],
+        "line": 626
     },
     {
         "name": "CollapsingHeader",
@@ -3729,7 +3949,8 @@
                 "name": "flags",
                 "default_value": "ImGuiTreeNodeFlags"
             }
-        ]
+        ],
+        "line": 627
     },
     {
         "name": "SetNextItemOpen",
@@ -3745,7 +3966,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 628
     },
     {
         "name": "Selectable",
@@ -3771,7 +3993,8 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 633
     },
     {
         "name": "Selectable",
@@ -3797,7 +4020,8 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 634
     },
     {
         "name": "BeginListBox",
@@ -3813,12 +4037,14 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 642
     },
     {
         "name": "EndListBox",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 643
     },
     {
         "name": "ListBox",
@@ -3835,7 +4061,7 @@
                 "default_value": null
             },
             {
-                "type": "const char *const[]",
+                "type": "const char *const []",
                 "name": "items",
                 "default_value": null
             },
@@ -3849,7 +4075,8 @@
                 "name": "height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 644
     },
     {
         "name": "ListBox",
@@ -3885,7 +4112,8 @@
                 "name": "height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 645
     },
     {
         "name": "PlotLines",
@@ -3936,7 +4164,8 @@
                 "name": "stride",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 649
     },
     {
         "name": "PlotLines",
@@ -3987,7 +4216,8 @@
                 "name": "graph_size",
                 "default_value": "ImVec2"
             }
-        ]
+        ],
+        "line": 650
     },
     {
         "name": "PlotHistogram",
@@ -4038,7 +4268,8 @@
                 "name": "stride",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 651
     },
     {
         "name": "PlotHistogram",
@@ -4089,7 +4320,8 @@
                 "name": "graph_size",
                 "default_value": "ImVec2"
             }
-        ]
+        ],
+        "line": 652
     },
     {
         "name": "Value",
@@ -4105,7 +4337,8 @@
                 "name": "b",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 656
     },
     {
         "name": "Value",
@@ -4121,7 +4354,8 @@
                 "name": "v",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 657
     },
     {
         "name": "Value",
@@ -4137,7 +4371,8 @@
                 "name": "v",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 658
     },
     {
         "name": "Value",
@@ -4158,27 +4393,32 @@
                 "name": "float_format",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 659
     },
     {
         "name": "BeginMenuBar",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 666
     },
     {
         "name": "EndMenuBar",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 667
     },
     {
         "name": "BeginMainMenuBar",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 668
     },
     {
         "name": "EndMainMenuBar",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 669
     },
     {
         "name": "BeginMenu",
@@ -4194,12 +4434,14 @@
                 "name": "enabled",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 670
     },
     {
         "name": "EndMenu",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 671
     },
     {
         "name": "MenuItem",
@@ -4225,7 +4467,8 @@
                 "name": "enabled",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 672
     },
     {
         "name": "MenuItem",
@@ -4251,17 +4494,20 @@
                 "name": "enabled",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 673
     },
     {
         "name": "BeginTooltip",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 677
     },
     {
         "name": "EndTooltip",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 678
     },
     {
         "name": "SetTooltip",
@@ -4272,7 +4518,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 679
     },
     {
         "name": "SetTooltipV",
@@ -4288,7 +4535,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 680
     },
     {
         "name": "BeginPopup",
@@ -4304,7 +4552,8 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 694
     },
     {
         "name": "BeginPopupModal",
@@ -4325,12 +4574,14 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 695
     },
     {
         "name": "EndPopup",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 696
     },
     {
         "name": "OpenPopup",
@@ -4346,7 +4597,8 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 706
     },
     {
         "name": "OpenPopup",
@@ -4362,7 +4614,8 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 707
     },
     {
         "name": "OpenPopupOnItemClick",
@@ -4378,12 +4631,14 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 708
     },
     {
         "name": "CloseCurrentPopup",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 709
     },
     {
         "name": "BeginPopupContextItem",
@@ -4399,7 +4654,8 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 716
     },
     {
         "name": "BeginPopupContextWindow",
@@ -4415,7 +4671,8 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 717
     },
     {
         "name": "BeginPopupContextVoid",
@@ -4431,7 +4688,8 @@
                 "name": "popup_flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 718
     },
     {
         "name": "IsPopupOpen",
@@ -4447,7 +4705,8 @@
                 "name": "flags",
                 "default_value": "ImGuiPopupFlags"
             }
-        ]
+        ],
+        "line": 724
     },
     {
         "name": "BeginTable",
@@ -4478,12 +4737,14 @@
                 "name": "inner_width",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 749
     },
     {
         "name": "EndTable",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 750
     },
     {
         "name": "TableNextRow",
@@ -4499,12 +4760,14 @@
                 "name": "min_row_height",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 751
     },
     {
         "name": "TableNextColumn",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 752
     },
     {
         "name": "TableSetColumnIndex",
@@ -4515,7 +4778,8 @@
                 "name": "column_n",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 753
     },
     {
         "name": "TableSetupColumn",
@@ -4541,7 +4805,8 @@
                 "name": "user_id",
                 "default_value": "ImGuiID"
             }
-        ]
+        ],
+        "line": 763
     },
     {
         "name": "TableSetupScrollFreeze",
@@ -4557,12 +4822,14 @@
                 "name": "rows",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 764
     },
     {
         "name": "TableHeadersRow",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 765
     },
     {
         "name": "TableHeader",
@@ -4573,27 +4840,32 @@
                 "name": "label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 766
     },
     {
         "name": "TableGetSortSpecs",
         "return_type": "ImGuiTableSortSpecs *",
-        "parameters": []
+        "parameters": [],
+        "line": 774
     },
     {
         "name": "TableGetColumnCount",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 775
     },
     {
         "name": "TableGetColumnIndex",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 776
     },
     {
         "name": "TableGetRowIndex",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 777
     },
     {
         "name": "TableGetColumnName",
@@ -4604,7 +4876,8 @@
                 "name": "column_n",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 778
     },
     {
         "name": "TableGetColumnFlags",
@@ -4615,7 +4888,8 @@
                 "name": "column_n",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 779
     },
     {
         "name": "TableSetColumnEnabled",
@@ -4631,7 +4905,8 @@
                 "name": "v",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 780
     },
     {
         "name": "TableSetBgColor",
@@ -4652,7 +4927,8 @@
                 "name": "column_n",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 781
     },
     {
         "name": "Columns",
@@ -4673,17 +4949,20 @@
                 "name": "border",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 785
     },
     {
         "name": "NextColumn",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 786
     },
     {
         "name": "GetColumnIndex",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 787
     },
     {
         "name": "GetColumnWidth",
@@ -4694,7 +4973,8 @@
                 "name": "column_index",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 788
     },
     {
         "name": "SetColumnWidth",
@@ -4710,7 +4990,8 @@
                 "name": "width",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 789
     },
     {
         "name": "GetColumnOffset",
@@ -4721,7 +5002,8 @@
                 "name": "column_index",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 790
     },
     {
         "name": "SetColumnOffset",
@@ -4737,12 +5019,14 @@
                 "name": "offset_x",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 791
     },
     {
         "name": "GetColumnsCount",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 792
     },
     {
         "name": "BeginTabBar",
@@ -4758,12 +5042,14 @@
                 "name": "flags",
                 "default_value": "ImGuiTabBarFlags"
             }
-        ]
+        ],
+        "line": 796
     },
     {
         "name": "EndTabBar",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 797
     },
     {
         "name": "BeginTabItem",
@@ -4784,12 +5070,14 @@
                 "name": "flags",
                 "default_value": "ImGuiTabItemFlags"
             }
-        ]
+        ],
+        "line": 798
     },
     {
         "name": "EndTabItem",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 799
     },
     {
         "name": "TabItemButton",
@@ -4805,7 +5093,8 @@
                 "name": "flags",
                 "default_value": "ImGuiTabItemFlags"
             }
-        ]
+        ],
+        "line": 800
     },
     {
         "name": "SetTabItemClosed",
@@ -4816,7 +5105,8 @@
                 "name": "tab_or_docked_window_label",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 801
     },
     {
         "name": "DockSpace",
@@ -4842,7 +5132,8 @@
                 "name": "window_class",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 816
     },
     {
         "name": "DockSpaceOverViewport",
@@ -4863,7 +5154,8 @@
                 "name": "window_class",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 817
     },
     {
         "name": "SetNextWindowDockID",
@@ -4879,7 +5171,8 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 818
     },
     {
         "name": "SetNextWindowClass",
@@ -4890,17 +5183,20 @@
                 "name": "window_class",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 819
     },
     {
         "name": "GetWindowDockID",
         "return_type": "ImGuiID",
-        "parameters": []
+        "parameters": [],
+        "line": 820
     },
     {
         "name": "IsWindowDocked",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 821
     },
     {
         "name": "LogToTTY",
@@ -4911,7 +5207,8 @@
                 "name": "auto_open_depth",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 825
     },
     {
         "name": "LogToFile",
@@ -4927,7 +5224,8 @@
                 "name": "filename",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 826
     },
     {
         "name": "LogToClipboard",
@@ -4938,17 +5236,20 @@
                 "name": "auto_open_depth",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 827
     },
     {
         "name": "LogFinish",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 828
     },
     {
         "name": "LogButtons",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 829
     },
     {
         "name": "LogText",
@@ -4959,7 +5260,8 @@
                 "name": "fmt",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 830
     },
     {
         "name": "LogTextV",
@@ -4975,7 +5277,8 @@
                 "name": "args",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 831
     },
     {
         "name": "BeginDragDropSource",
@@ -4986,7 +5289,8 @@
                 "name": "flags",
                 "default_value": "ImGuiDragDropFlags"
             }
-        ]
+        ],
+        "line": 838
     },
     {
         "name": "SetDragDropPayload",
@@ -5012,17 +5316,20 @@
                 "name": "cond",
                 "default_value": "ImGuiCond"
             }
-        ]
+        ],
+        "line": 839
     },
     {
         "name": "EndDragDropSource",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 840
     },
     {
         "name": "BeginDragDropTarget",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 841
     },
     {
         "name": "AcceptDragDropPayload",
@@ -5038,17 +5345,20 @@
                 "name": "flags",
                 "default_value": "ImGuiDragDropFlags"
             }
-        ]
+        ],
+        "line": 842
     },
     {
         "name": "EndDragDropTarget",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 843
     },
     {
         "name": "GetDragDropPayload",
         "return_type": "const ImGuiPayload *",
-        "parameters": []
+        "parameters": [],
+        "line": 844
     },
     {
         "name": "BeginDisabled",
@@ -5059,12 +5369,14 @@
                 "name": "disabled",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 850
     },
     {
         "name": "EndDisabled",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 851
     },
     {
         "name": "PushClipRect",
@@ -5085,17 +5397,20 @@
                 "name": "intersect_with_current_clip_rect",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 855
     },
     {
         "name": "PopClipRect",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 856
     },
     {
         "name": "SetItemDefaultFocus",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 860
     },
     {
         "name": "SetKeyboardFocusHere",
@@ -5106,7 +5421,8 @@
                 "name": "offset",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 861
     },
     {
         "name": "IsItemHovered",
@@ -5117,17 +5433,20 @@
                 "name": "flags",
                 "default_value": "ImGuiHoveredFlags"
             }
-        ]
+        ],
+        "line": 866
     },
     {
         "name": "IsItemActive",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 867
     },
     {
         "name": "IsItemFocused",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 868
     },
     {
         "name": "IsItemClicked",
@@ -5138,92 +5457,110 @@
                 "name": "mouse_button",
                 "default_value": "ImGuiMouseButton"
             }
-        ]
+        ],
+        "line": 869
     },
     {
         "name": "IsItemVisible",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 870
     },
     {
         "name": "IsItemEdited",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 871
     },
     {
         "name": "IsItemActivated",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 872
     },
     {
         "name": "IsItemDeactivated",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 873
     },
     {
         "name": "IsItemDeactivatedAfterEdit",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 874
     },
     {
         "name": "IsItemToggledOpen",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 875
     },
     {
         "name": "IsAnyItemHovered",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 876
     },
     {
         "name": "IsAnyItemActive",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 877
     },
     {
         "name": "IsAnyItemFocused",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 878
     },
     {
         "name": "GetItemID",
         "return_type": "ImGuiID",
-        "parameters": []
+        "parameters": [],
+        "line": 879
     },
     {
         "name": "GetItemRectMin",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 880
     },
     {
         "name": "GetItemRectMax",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 881
     },
     {
         "name": "GetItemRectSize",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 882
     },
     {
         "name": "SetItemAllowOverlap",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 883
     },
     {
         "name": "GetMainViewport",
         "return_type": "ImGuiViewport *",
-        "parameters": []
+        "parameters": [],
+        "line": 889
     },
     {
         "name": "GetBackgroundDrawList",
         "return_type": "ImDrawList *",
-        "parameters": []
+        "parameters": [],
+        "line": 892
     },
     {
         "name": "GetForegroundDrawList",
         "return_type": "ImDrawList *",
-        "parameters": []
+        "parameters": [],
+        "line": 893
     },
     {
         "name": "GetBackgroundDrawList",
@@ -5234,7 +5571,8 @@
                 "name": "viewport",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 894
     },
     {
         "name": "GetForegroundDrawList",
@@ -5245,7 +5583,8 @@
                 "name": "viewport",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 895
     },
     {
         "name": "IsRectVisible",
@@ -5256,7 +5595,8 @@
                 "name": "size",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 898
     },
     {
         "name": "IsRectVisible",
@@ -5272,22 +5612,26 @@
                 "name": "rect_max",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 899
     },
     {
         "name": "GetTime",
         "return_type": "double",
-        "parameters": []
+        "parameters": [],
+        "line": 900
     },
     {
         "name": "GetFrameCount",
         "return_type": "int",
-        "parameters": []
+        "parameters": [],
+        "line": 901
     },
     {
         "name": "GetDrawListSharedData",
         "return_type": "ImDrawListSharedData *",
-        "parameters": []
+        "parameters": [],
+        "line": 902
     },
     {
         "name": "GetStyleColorName",
@@ -5298,7 +5642,8 @@
                 "name": "idx",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 903
     },
     {
         "name": "SetStateStorage",
@@ -5309,12 +5654,14 @@
                 "name": "storage",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 904
     },
     {
         "name": "GetStateStorage",
         "return_type": "ImGuiStorage *",
-        "parameters": []
+        "parameters": [],
+        "line": 905
     },
     {
         "name": "BeginChildFrame",
@@ -5335,12 +5682,14 @@
                 "name": "flags",
                 "default_value": "ImGuiWindowFlags"
             }
-        ]
+        ],
+        "line": 906
     },
     {
         "name": "EndChildFrame",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 907
     },
     {
         "name": "CalcTextSize",
@@ -5366,7 +5715,8 @@
                 "name": "wrap_width",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 910
     },
     {
         "name": "ColorConvertU32ToFloat4",
@@ -5377,7 +5727,8 @@
                 "name": "in",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 913
     },
     {
         "name": "ColorConvertFloat4ToU32",
@@ -5388,7 +5739,8 @@
                 "name": "in",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 914
     },
     {
         "name": "ColorConvertRGBtoHSV",
@@ -5424,7 +5776,8 @@
                 "name": "out_v",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 915
     },
     {
         "name": "ColorConvertHSVtoRGB",
@@ -5460,7 +5813,8 @@
                 "name": "out_b",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 916
     },
     {
         "name": "IsKeyDown",
@@ -5471,7 +5825,8 @@
                 "name": "key",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 923
     },
     {
         "name": "IsKeyPressed",
@@ -5487,7 +5842,8 @@
                 "name": "repeat",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 924
     },
     {
         "name": "IsKeyReleased",
@@ -5498,7 +5854,8 @@
                 "name": "key",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 925
     },
     {
         "name": "GetKeyPressedAmount",
@@ -5519,7 +5876,8 @@
                 "name": "rate",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 926
     },
     {
         "name": "GetKeyName",
@@ -5530,7 +5888,8 @@
                 "name": "key",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 927
     },
     {
         "name": "SetNextFrameWantCaptureKeyboard",
@@ -5541,7 +5900,8 @@
                 "name": "want_capture_keyboard",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 928
     },
     {
         "name": "IsMouseDown",
@@ -5552,7 +5912,8 @@
                 "name": "button",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 934
     },
     {
         "name": "IsMouseClicked",
@@ -5568,7 +5929,8 @@
                 "name": "repeat",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 935
     },
     {
         "name": "IsMouseReleased",
@@ -5579,7 +5941,8 @@
                 "name": "button",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 936
     },
     {
         "name": "IsMouseDoubleClicked",
@@ -5590,7 +5953,8 @@
                 "name": "button",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 937
     },
     {
         "name": "GetMouseClickedCount",
@@ -5601,7 +5965,8 @@
                 "name": "button",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 938
     },
     {
         "name": "IsMouseHoveringRect",
@@ -5622,7 +5987,8 @@
                 "name": "clip",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 939
     },
     {
         "name": "IsMousePosValid",
@@ -5633,22 +5999,26 @@
                 "name": "mouse_pos",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 940
     },
     {
         "name": "IsAnyMouseDown",
         "return_type": "bool",
-        "parameters": []
+        "parameters": [],
+        "line": 941
     },
     {
         "name": "GetMousePos",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 942
     },
     {
         "name": "GetMousePosOnOpeningCurrentPopup",
         "return_type": "ImVec2",
-        "parameters": []
+        "parameters": [],
+        "line": 943
     },
     {
         "name": "IsMouseDragging",
@@ -5664,7 +6034,8 @@
                 "name": "lock_threshold",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 944
     },
     {
         "name": "GetMouseDragDelta",
@@ -5680,7 +6051,8 @@
                 "name": "lock_threshold",
                 "default_value": "float"
             }
-        ]
+        ],
+        "line": 945
     },
     {
         "name": "ResetMouseDragDelta",
@@ -5691,12 +6063,14 @@
                 "name": "button",
                 "default_value": "ImGuiMouseButton"
             }
-        ]
+        ],
+        "line": 946
     },
     {
         "name": "GetMouseCursor",
         "return_type": "ImGuiMouseCursor",
-        "parameters": []
+        "parameters": [],
+        "line": 947
     },
     {
         "name": "SetMouseCursor",
@@ -5707,7 +6081,8 @@
                 "name": "cursor_type",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 948
     },
     {
         "name": "SetNextFrameWantCaptureMouse",
@@ -5718,12 +6093,14 @@
                 "name": "want_capture_mouse",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 949
     },
     {
         "name": "GetClipboardText",
         "return_type": "const char *",
-        "parameters": []
+        "parameters": [],
+        "line": 953
     },
     {
         "name": "SetClipboardText",
@@ -5734,7 +6111,8 @@
                 "name": "text",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 954
     },
     {
         "name": "LoadIniSettingsFromDisk",
@@ -5745,7 +6123,8 @@
                 "name": "ini_filename",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 960
     },
     {
         "name": "LoadIniSettingsFromMemory",
@@ -5761,7 +6140,8 @@
                 "name": "ini_size",
                 "default_value": "size_t"
             }
-        ]
+        ],
+        "line": 961
     },
     {
         "name": "SaveIniSettingsToDisk",
@@ -5772,7 +6152,8 @@
                 "name": "ini_filename",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 962
     },
     {
         "name": "SaveIniSettingsToMemory",
@@ -5783,7 +6164,8 @@
                 "name": "out_ini_size",
                 "default_value": "size_t"
             }
-        ]
+        ],
+        "line": 963
     },
     {
         "name": "DebugTextEncoding",
@@ -5794,7 +6176,8 @@
                 "name": "text",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 966
     },
     {
         "name": "DebugCheckVersionAndDataLayout",
@@ -5835,7 +6218,8 @@
                 "name": "sz_drawidx",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 967
     },
     {
         "name": "SetAllocatorFunctions",
@@ -5856,7 +6240,8 @@
                 "name": "user_data",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 973
     },
     {
         "name": "GetAllocatorFunctions",
@@ -5877,7 +6262,8 @@
                 "name": "p_user_data",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 974
     },
     {
         "name": "MemAlloc",
@@ -5888,7 +6274,8 @@
                 "name": "size",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 975
     },
     {
         "name": "MemFree",
@@ -5899,17 +6286,20 @@
                 "name": "ptr",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 976
     },
     {
         "name": "GetPlatformIO",
         "return_type": "ImGuiPlatformIO &",
-        "parameters": []
+        "parameters": [],
+        "line": 981
     },
     {
         "name": "UpdatePlatformWindows",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 982
     },
     {
         "name": "RenderPlatformWindowsDefault",
@@ -5925,12 +6315,14 @@
                 "name": "renderer_render_arg",
                 "default_value": "void"
             }
-        ]
+        ],
+        "line": 983
     },
     {
         "name": "DestroyPlatformWindows",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 984
     },
     {
         "name": "FindViewportByID",
@@ -5941,7 +6333,8 @@
                 "name": "id",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 985
     },
     {
         "name": "FindViewportByPlatformHandle",
@@ -5952,7 +6345,8 @@
                 "name": "platform_handle",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 986
     },
     {
         "name": "operator new",
@@ -5973,7 +6367,8 @@
                 "name": "ptr",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 1818
     },
     {
         "name": "operator delete",
@@ -5994,7 +6389,8 @@
                 "name": "",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 1819
     },
     {
         "name": "GetKeyIndex",
@@ -6005,7 +6401,8 @@
                 "name": "key",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 3221
     },
     {
         "name": "ImageButton",
@@ -6046,7 +6443,8 @@
                 "name": "tint_col",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 3231
     },
     {
         "name": "CaptureKeyboardFromApp",
@@ -6057,7 +6455,8 @@
                 "name": "want_capture_keyboard",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 3233
     },
     {
         "name": "CaptureMouseFromApp",
@@ -6068,7 +6467,8 @@
                 "name": "want_capture_mouse",
                 "default_value": "bool"
             }
-        ]
+        ],
+        "line": 3234
     },
     {
         "name": "CalcListClipping",
@@ -6094,12 +6494,14 @@
                 "name": "out_items_display_end",
                 "default_value": null
             }
-        ]
+        ],
+        "line": 3236
     },
     {
         "name": "GetWindowContentRegionWidth",
         "return_type": "float",
-        "parameters": []
+        "parameters": [],
+        "line": 3238
     },
     {
         "name": "ListBoxHeader",
@@ -6120,7 +6522,8 @@
                 "name": "height_in_items",
                 "default_value": "int"
             }
-        ]
+        ],
+        "line": 3240
     },
     {
         "name": "ListBoxHeader",
@@ -6136,11 +6539,13 @@
                 "name": "size",
                 "default_value": "const"
             }
-        ]
+        ],
+        "line": 3241
     },
     {
         "name": "ListBoxFooter",
         "return_type": "void",
-        "parameters": []
+        "parameters": [],
+        "line": 3242
     }
 ]

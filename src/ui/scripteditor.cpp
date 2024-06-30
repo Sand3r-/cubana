@@ -2,7 +2,9 @@
 #include "TextEditor.h"
 #include "nfd.h"
 extern "C" {
+    #include "cld_parser.h"
     #include "culibc.h"
+    #include "buffer.h"
     #include "file.h"
     #include "log/log.h"
     #include "memory/arena.h"
@@ -15,13 +17,17 @@ extern "C" {
 
 static struct ScriptEditorContext
 {
-    // Defining it as pointer since its default constructor calls
+    // Defining editor as pointer since its default constructor calls
     // functions that require ImGUI to be already initialized
     TextEditor* editor;
+    TextEditor* help_window;
+    LuaBindDoc* imgui_docs;
     std::string* text;
+    std::string* help_text;
     char          file_name[MAX_PATH] = "scripts/level1.lua";
     char recovery_file_name[MAX_PATH] = "recovered_file.txt";
     const char*          DEFAULT_NAME = "Untitled";
+    bool is_help_window_open;
 } C;
 
 static void SaveFile(const char* filename);
@@ -35,20 +41,40 @@ void SaveFileOnCrash()
 
 void InitializeScriptEditor(Arena* arena)
 {
+    // Initialise the main script editor
     void* text_editor_address = (void*) PushStruct(arena, TextEditor);
     C.editor = new (text_editor_address) TextEditor();
     C.editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
     C.editor->SetTabSize(4);
     C.editor->SetCompletePairedGlyphs(true);
+    void* str_buffer = PushStruct(arena, std::string);
+    with_arena(arena)
     {
-        std::ifstream t(C.file_name);
-        if (t.good())
-        {
-            void* file_buffer = PushArray(arena, char, Kilobytes(512));
-            C.text = new(file_buffer) std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
-            C.editor->SetText(*C.text);
-        }
+        Buffer buffer = BufferFromFile(arena, C.file_name);
+        C.text = new(str_buffer) std::string((char*)buffer.ptr, buffer.length);
     }
+    C.editor->SetText(*C.text);
+
+    // Initialise help windows used for viewing source code of a C function called from lua
+    // Used for example for ImGui.
+    void* help_window_address = (void*) PushStruct(arena, TextEditor);
+    C.help_window = new (help_window_address) TextEditor();
+    C.help_window->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
+    C.help_window->SetReadOnlyEnabled(true);
+    str_buffer = PushStruct(arena, std::string);
+    with_arena(arena)
+    {
+        // TODO: replace this hard-coded string with path found in *.cld file
+        // once some sort of resource system will be in place.
+        // Also, probably put this into a loop so that there can be several
+        // *.cld files to benefit from.
+        Buffer buffer = BufferFromFile(arena, "../../external/imgui/imgui.h");
+        C.help_text = new(str_buffer) std::string((char*)buffer.ptr, buffer.length);
+    }
+    C.help_window->SetText(*C.help_text);
+
+    C.imgui_docs = LoadLuaDoc(arena, "assets/lua_docs/imgui.cld");
+
     NFD_Init();
     RegisterCrashCallback(SaveFileOnCrash);
 }
@@ -87,7 +113,6 @@ static void NewFile()
 
 static void SaveFile(const char* filename = nullptr)
 {
-
     // If neither argument is not-null nor was the path chosen, abort
     if (!filename && !GetPathFromFileDialog(C.file_name, MAX_PATH, true))
         return;
@@ -121,7 +146,50 @@ static void OpenFile(const char* filename = nullptr)
 
 static void Execute()
 {
-    ExecuteScript(C.editor->GetText().c_str());
+    SaveFile(C.file_name);
+    ExecuteScriptFile(C.file_name);
+}
+
+static void ShowHelp()
+{
+    std::string word = C.editor->GetCurrentIdentifier();
+    LuaBindDoc* docs = C.imgui_docs;
+
+    // Find the index of the function with the given name
+    int function_index = -1;
+    for (int i = 0; i < docs->num; i++)
+    {
+        if (!cu_strcmp(docs->names[i], word.c_str()))
+        {
+            function_index = i;
+            break;
+        }
+    }
+
+    static int last_function_index = -1;
+    static int overload_index = 0;
+    // If a function was found, set view at a given line
+    if (function_index != -1)
+    {
+        // Compute index to the lines array, +1 because the first element is
+        // the number of overloads
+        int line_index = overload_index + 1;
+        int line_number = docs->lines[function_index][line_index];
+        
+        C.help_window->SetViewAtLine(line_number,
+            TextEditor::SetViewAtLineMode::LastVisibleLine);
+        C.is_help_window_open = true;
+        
+        // Cycle through the available overloads for the next call
+        int overloads_num = docs->lines[function_index][0];
+        overload_index = (overload_index + 1) % overloads_num;
+    }
+    else
+    {
+        overload_index = 0;
+    }
+    
+    last_function_index = function_index;
 }
 
 static void HandleKeyboardInputs()
@@ -149,6 +217,11 @@ static void HandleKeyboardInputs()
         OpenFile(C.recovery_file_name);
     else if (ImGui::IsKeyPressed(ImGuiKey_F5))
         Execute();
+    else if (ImGui::IsKeyPressed(ImGuiKey_F1))
+        ShowHelp();
+    else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow) ||
+             ImGui::IsKeyPressed(ImGuiKey_UpArrow))
+        C.is_help_window_open = false;
 }
 
 static void DrawStatusBar()
@@ -165,6 +238,8 @@ static void DrawStatusBar()
 
 void UpdateScriptEditor(void)
 {
+    float window_width;
+    ImVec2 window_pos;
     if (ImGui::Begin("Script Editor", nullptr, ImGuiWindowFlags_MenuBar))
     {
         ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
@@ -222,6 +297,27 @@ void UpdateScriptEditor(void)
         }
         DrawStatusBar();
         HandleKeyboardInputs();
+        window_width = ImGui::GetWindowWidth();
+        window_pos = ImGui::GetWindowPos();
     }
     ImGui::End();
+
+    if (C.is_help_window_open)
+    {
+        int flags = ImGuiWindowFlags_NoTitleBar |
+                    ImGuiWindowFlags_NoScrollbar |
+                    ImGuiWindowFlags_NoBackground |
+                    ImGuiWindowFlags_NoResize;
+        if (ImGui::Begin("Help window", nullptr, flags))
+        {
+            const int help_window_height = 80;
+            ImGui::SetWindowSize(ImVec2(window_width, help_window_height), 0);
+            window_pos.y -= help_window_height;
+            ImGui::SetWindowPos(window_pos);
+            const ImVec2 temp;
+            C.help_window->Render("HelpWindow", false, temp, false,
+                ImGuiWindowFlags_NoScrollbar);
+        }
+        ImGui::End();
+    }
 }

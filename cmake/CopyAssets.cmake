@@ -2,7 +2,9 @@
 add_custom_target(copy_assets ALL
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/assets/fonts
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets/fonts ${CMAKE_BINARY_DIR}/bin/assets/fonts
-    DEPENDS ${CMAKE_SOURCE_DIR}/assets/fonts
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/assets/lua_docs
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets/lua_docs ${CMAKE_BINARY_DIR}/bin/assets/lua_docs
+    DEPENDS ${CMAKE_SOURCE_DIR}/assets/fonts ${CMAKE_SOURCE_DIR}/assets/lua_docs
 )
 
 # Add a custom target to copy shaders directory

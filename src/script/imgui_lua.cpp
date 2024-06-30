@@ -850,76 +850,6 @@ static int lua_InputInt(lua_State* L) {
     return 0;
 }
 
-static int lua_ColorEdit3(lua_State* L) {
-    int num_args = lua_gettop(L);
-    if (num_args <= 3 && num_args >= 2 && lua_isstring(L, 1) && lua_istable(L, 2)) {
-        const char * label = (const char *)luaL_checkstring(L, 1);
-        float col[3];
-        lua_pushnumber(L, 1);
-        lua_gettable(L, 2);
-        col[0] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_pushnumber(L, 2);
-        lua_gettable(L, 2);
-        col[1] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_pushnumber(L, 3);
-        lua_gettable(L, 2);
-        col[2] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        if (num_args == 2) {
-           bool result = ColorEdit3(label, col);
-           lua_pushboolean(L, result);
-           return 1;
-        }
-        ImGuiColorEditFlags flags = (ImGuiColorEditFlags)luaL_checkinteger(L, 3);
-        if (num_args == 3) {
-           bool result = ColorEdit3(label, col, flags);
-           lua_pushboolean(L, result);
-           return 1;
-        }
-    }
-    L_WARN("No matching overload found for ColorEdit3");
-    return 0;
-}
-
-static int lua_ColorEdit4(lua_State* L) {
-    int num_args = lua_gettop(L);
-    if (num_args <= 3 && num_args >= 2 && lua_isstring(L, 1) && lua_istable(L, 2)) {
-        const char * label = (const char *)luaL_checkstring(L, 1);
-        float col[4];
-        lua_pushnumber(L, 1);
-        lua_gettable(L, 2);
-        col[0] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_pushnumber(L, 2);
-        lua_gettable(L, 2);
-        col[1] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_pushnumber(L, 3);
-        lua_gettable(L, 2);
-        col[2] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_pushnumber(L, 4);
-        lua_gettable(L, 2);
-        col[3] = (float)luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        if (num_args == 2) {
-           bool result = ColorEdit4(label, col);
-           lua_pushboolean(L, result);
-           return 1;
-        }
-        ImGuiColorEditFlags flags = (ImGuiColorEditFlags)luaL_checkinteger(L, 3);
-        if (num_args == 3) {
-           bool result = ColorEdit4(label, col, flags);
-           lua_pushboolean(L, result);
-           return 1;
-        }
-    }
-    L_WARN("No matching overload found for ColorEdit4");
-    return 0;
-}
-
 static int lua_Selectable(lua_State* L) {
     int num_args = lua_gettop(L);
     if (num_args <= 4 && num_args >= 1 && lua_isstring(L, 1)) {
@@ -1708,50 +1638,48 @@ static void register_enums(lua_State* L) {
 }
 
 static const struct luaL_Reg imgui_lib[] = {
-    {"BeginTooltip", ImGui::lua_BeginTooltip},
-    {"ColorEdit4", ImGui::lua_ColorEdit4},
-    {"SetNextWindowSize", ImGui::lua_SetNextWindowSize},
-    {"DragInt", ImGui::lua_DragInt},
-    {"SliderFloat", ImGui::lua_SliderFloat},
-    {"RadioButton", ImGui::lua_RadioButton},
-    {"DragFloat", ImGui::lua_DragFloat},
-    {"IsItemHovered", ImGui::lua_IsItemHovered},
-    {"Button", ImGui::lua_Button},
-    {"SetNextWindowPos", ImGui::lua_SetNextWindowPos},
-    {"EndChild", ImGui::lua_EndChild},
+    {"BeginCombo", ImGui::lua_BeginCombo},
+    {"PopStyleColor", ImGui::lua_PopStyleColor},
     {"PopID", ImGui::lua_PopID},
-    {"Selectable", ImGui::lua_Selectable},
-    {"IsItemClicked", ImGui::lua_IsItemClicked},
-    {"TextUnformatted", ImGui::lua_TextUnformatted},
-    {"EndCombo", ImGui::lua_EndCombo},
+    {"InputText", ImGui::lua_InputText},
+    {"Separator", ImGui::lua_Separator},
+    {"Columns", ImGui::lua_Columns},
+    {"SameLine", ImGui::lua_SameLine},
+    {"Spacing", ImGui::lua_Spacing},
     {"IsItemActive", ImGui::lua_IsItemActive},
     {"Begin", ImGui::lua_Begin},
-    {"ColorEdit3", ImGui::lua_ColorEdit3},
-    {"PopStyleColor", ImGui::lua_PopStyleColor},
-    {"ProgressBar", ImGui::lua_ProgressBar},
-    {"PushID", ImGui::lua_PushID},
-    {"SameLine", ImGui::lua_SameLine},
-    {"OpenPopup", ImGui::lua_OpenPopup},
-    {"BeginCombo", ImGui::lua_BeginCombo},
-    {"EndPopup", ImGui::lua_EndPopup},
+    {"SliderFloat", ImGui::lua_SliderFloat},
     {"PushStyleColor", ImGui::lua_PushStyleColor},
-    {"PopStyleVar", ImGui::lua_PopStyleVar},
     {"End", ImGui::lua_End},
-    {"InputFloat", ImGui::lua_InputFloat},
-    {"BeginPopup", ImGui::lua_BeginPopup},
-    {"BeginListBox", ImGui::lua_BeginListBox},
-    {"NextColumn", ImGui::lua_NextColumn},
-    {"EndListBox", ImGui::lua_EndListBox},
-    {"InputText", ImGui::lua_InputText},
-    {"InputInt", ImGui::lua_InputInt},
-    {"CloseCurrentPopup", ImGui::lua_CloseCurrentPopup},
-    {"PushStyleVar", ImGui::lua_PushStyleVar},
-    {"Checkbox", ImGui::lua_Checkbox},
-    {"BeginChild", ImGui::lua_BeginChild},
     {"EndTooltip", ImGui::lua_EndTooltip},
-    {"Columns", ImGui::lua_Columns},
-    {"Spacing", ImGui::lua_Spacing},
-    {"Separator", ImGui::lua_Separator},
+    {"RadioButton", ImGui::lua_RadioButton},
+    {"EndCombo", ImGui::lua_EndCombo},
+    {"ProgressBar", ImGui::lua_ProgressBar},
+    {"BeginChild", ImGui::lua_BeginChild},
+    {"OpenPopup", ImGui::lua_OpenPopup},
+    {"CloseCurrentPopup", ImGui::lua_CloseCurrentPopup},
+    {"NextColumn", ImGui::lua_NextColumn},
+    {"DragFloat", ImGui::lua_DragFloat},
+    {"PushID", ImGui::lua_PushID},
+    {"InputFloat", ImGui::lua_InputFloat},
+    {"BeginListBox", ImGui::lua_BeginListBox},
+    {"EndChild", ImGui::lua_EndChild},
+    {"IsItemHovered", ImGui::lua_IsItemHovered},
+    {"PopStyleVar", ImGui::lua_PopStyleVar},
+    {"DragInt", ImGui::lua_DragInt},
+    {"BeginPopup", ImGui::lua_BeginPopup},
+    {"Checkbox", ImGui::lua_Checkbox},
+    {"TextUnformatted", ImGui::lua_TextUnformatted},
+    {"BeginTooltip", ImGui::lua_BeginTooltip},
+    {"SetNextWindowSize", ImGui::lua_SetNextWindowSize},
+    {"EndPopup", ImGui::lua_EndPopup},
+    {"IsItemClicked", ImGui::lua_IsItemClicked},
+    {"SetNextWindowPos", ImGui::lua_SetNextWindowPos},
+    {"PushStyleVar", ImGui::lua_PushStyleVar},
+    {"InputInt", ImGui::lua_InputInt},
+    {"Button", ImGui::lua_Button},
+    {"EndListBox", ImGui::lua_EndListBox},
+    {"Selectable", ImGui::lua_Selectable},
     {NULL, NULL}  // Sentinel
 };
 
