@@ -58,7 +58,7 @@ void InitializeScriptEditor(Arena* arena)
     // Used for example for ImGui.
     void* help_window_address = (void*) PushStruct(arena, TextEditor);
     C.help_window = new (help_window_address) TextEditor();
-    C.help_window->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
+    C.help_window->SetLanguageDefinition(TextEditor::LanguageDefinition::Cpp());
     C.help_window->SetReadOnlyEnabled(true);
     str_buffer = PushStruct(arena, std::string);
     with_arena(arena)
