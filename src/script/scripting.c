@@ -6,6 +6,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include "scriptreg.h"
+#include "ui/scripteditor.h"
 
 #include "math/vec.h"
 #include "math/mat.h"
@@ -45,7 +46,7 @@ static b32 HandleError(int error_code)
     if (error_code)
     {
         const char* error = lua_tostring(L, -1);
-        L_ERROR("Lua error: %s", error);
+        ReportLuaError(error);
     }
     return error_code;
 }

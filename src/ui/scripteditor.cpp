@@ -15,6 +15,7 @@ extern "C" {
 #include <fstream>
 #include <streambuf>
 
+
 static struct ScriptEditorContext
 {
     // Defining editor as pointer since its default constructor calls
@@ -24,13 +25,49 @@ static struct ScriptEditorContext
     LuaBindDoc* imgui_docs;
     std::string* text;
     std::string* help_text;
+    std::string console_text;
     char          file_name[MAX_PATH] = "scripts/level1.lua";
     char recovery_file_name[MAX_PATH] = "recovered_file.txt";
     const char*          DEFAULT_NAME = "Untitled";
     bool is_help_window_open;
+    bool should_console_scroll_down;
 } C;
 
-static void SaveFile(const char* filename);
+static bool SaveFile(const char* filename);
+
+void ReportLuaError(const char* error)
+{
+    if (C.editor)
+    {
+        char* substr_start = cu_strstr(error, C.file_name);
+        if (substr_start)
+        {
+            // Fetch line number
+            char* line_number_beg = substr_start + cu_strlen(C.file_name) + 1;
+            char* line_number_end = line_number_beg;
+            while (*line_number_end >= '0' && *line_number_end <= '9')
+                line_number_end++;
+            char line_number_str[5] = {0};
+            cu_strlcpy(line_number_str, line_number_beg, line_number_end - line_number_beg + 1);
+            int line_number = std::atoi(line_number_str);
+
+            // Fetch error message
+            char* error_msg = line_number_end + 2; // skip ':' and ' '
+            C.editor->SetErrorMarkers({ {line_number, error_msg} });
+
+            C.console_text = error;
+            C.should_console_scroll_down = true;
+            L_ERROR(error);
+        }
+    }
+}
+
+void LogToScriptEditorConsole(const char* string)
+{
+    C.console_text += string;
+    C.console_text += "\n";
+    C.should_console_scroll_down = true;
+}
 
 // Custom terminate handler
 void SaveFileOnCrash()
@@ -78,6 +115,8 @@ void InitializeScriptEditor(Arena* arena)
     lang_def.RegisterIdentifiers(C.imgui_docs->names, C.imgui_docs->num);
     C.editor->SetLanguageDefinition(lang_def);
 
+    C.console_text = "";
+
     NFD_Init();
     RegisterCrashCallback(SaveFileOnCrash);
 }
@@ -114,15 +153,16 @@ static void NewFile()
     C.editor->SetText(*C.text);
 }
 
-static void SaveFile(const char* filename = nullptr)
+// Returns true if file was saved, fails otherwise
+static bool SaveFile(const char* filename = nullptr)
 {
     // If neither argument is not-null nor was the path chosen, abort
     if (!filename && !GetPathFromFileDialog(C.file_name, MAX_PATH, true))
-        return;
+        return false;
     // If the file was created using "New" and is called Untitled,
     // but the user has canceled choosing file name, abort saving.
     else if (filename && !cu_strcmp(filename, C.DEFAULT_NAME) && !GetPathFromFileDialog(C.file_name, MAX_PATH, true))
-        return;
+        return false;
     // If the name was provided, set it as a current file.
     else if (filename)
         cu_strlcpy(C.file_name, filename, MAX_PATH);
@@ -130,6 +170,8 @@ static void SaveFile(const char* filename = nullptr)
     File file = FileOpen(C.file_name, "w");
     FileWrite(&file, (void*)C.editor->GetText().c_str(), sizeof(char), C.editor->GetText().size());
     FileClose(&file);
+
+    return true;
 }
 
 static void OpenFile(const char* filename = nullptr)
@@ -149,8 +191,11 @@ static void OpenFile(const char* filename = nullptr)
 
 static void Execute()
 {
-    SaveFile(C.file_name);
-    ExecuteScriptFile(C.file_name);
+    if (SaveFile(C.file_name))
+    {
+        C.editor->SetErrorMarkers({});
+        ExecuteScriptFile(C.file_name);
+    }
 }
 
 static void ShowHelp()
@@ -178,11 +223,11 @@ static void ShowHelp()
         // the number of overloads
         int line_index = overload_index + 1;
         int line_number = docs->lines[function_index][line_index];
-        
+
         C.help_window->SetViewAtLine(line_number,
             TextEditor::SetViewAtLineMode::LastVisibleLine);
         C.is_help_window_open = true;
-        
+
         // Cycle through the available overloads for the next call
         int overloads_num = docs->lines[function_index][0];
         overload_index = (overload_index + 1) % overloads_num;
@@ -191,7 +236,7 @@ static void ShowHelp()
     {
         overload_index = 0;
     }
-    
+
     last_function_index = function_index;
 }
 
@@ -241,10 +286,13 @@ static void DrawStatusBar()
 
 void UpdateScriptEditor(void)
 {
-    float window_width;
+    ImVec2 window_size;
     ImVec2 window_pos;
     if (ImGui::Begin("Script Editor", nullptr, ImGuiWindowFlags_MenuBar))
     {
+        window_size = ImGui::GetWindowSize();
+        window_pos = ImGui::GetWindowPos();
+
         ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
         if (ImGui::BeginMenuBar())
         {
@@ -289,7 +337,10 @@ void UpdateScriptEditor(void)
         }
         try
         {
-            C.editor->Render("TextEditor");
+            float editor_width = window_size.x;
+            // Shrink height if console window is to be shown
+            float editor_height = window_size.y - 150 * !C.console_text.empty();
+            C.editor->Render("TextEditor", false, ImVec2(editor_width, editor_height));
         }
         catch (...) // Any exception
         {
@@ -299,9 +350,20 @@ void UpdateScriptEditor(void)
             exit(EXIT_FAILURE);
         }
         DrawStatusBar();
+        // Draw console if there is a warning/error to be shown
+        if (!C.console_text.empty())
+        {
+            ImGui::BeginChild("Script Editor Error Log", { 0, 0 }, true);
+            ImGui::TextWrapped(C.console_text.c_str());
+            if (C.should_console_scroll_down)
+            {
+                ImGui::SetScrollHereY(1.0f);
+                C.should_console_scroll_down = false;
+            }
+            ImGui::EndChild();
+        }
         HandleKeyboardInputs();
-        window_width = ImGui::GetWindowWidth();
-        window_pos = ImGui::GetWindowPos();
+
     }
     ImGui::End();
 
@@ -314,7 +376,7 @@ void UpdateScriptEditor(void)
         if (ImGui::Begin("Help window", nullptr, flags))
         {
             const int help_window_height = 80;
-            ImGui::SetWindowSize(ImVec2(window_width, help_window_height), 0);
+            ImGui::SetWindowSize(ImVec2(window_size.x, help_window_height), 0);
             window_pos.y -= help_window_height;
             ImGui::SetWindowPos(window_pos);
             const ImVec2 temp;

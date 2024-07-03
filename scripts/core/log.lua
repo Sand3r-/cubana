@@ -10,6 +10,7 @@ log.LOG_ERROR = 4
 log.LOG_FATAL = 5
 log._log = function(level, fmt, ...)
     log_log(level, __FILE__(), __LINE__(), string.format(fmt, ...))
+    LogToScriptEditorConsole(string.format(fmt, ...))
 end
 log.trace = function(fmt, ...)
     log._log(log.LOG_TRACE, fmt, ...)

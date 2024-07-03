@@ -30,6 +30,11 @@ i32 cu_vasprintf(char **strp, const char *fmt, va_list ap)
     return SDL_vasprintf(strp, fmt, ap);
 }
 
+char* cu_strstr(const char *string, const char* substring)
+{
+    return SDL_strstr(string, substring);
+}
+
 size_t cu_strlen(const char *string)
 {
     return SDL_strlen(string);
