@@ -44,7 +44,6 @@ void InitializeScriptEditor(Arena* arena)
     // Initialise the main script editor
     void* text_editor_address = (void*) PushStruct(arena, TextEditor);
     C.editor = new (text_editor_address) TextEditor();
-    C.editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
     C.editor->SetTabSize(4);
     C.editor->SetCompletePairedGlyphs(true);
     void* str_buffer = PushStruct(arena, std::string);
@@ -74,6 +73,10 @@ void InitializeScriptEditor(Arena* arena)
     C.help_window->SetText(*C.help_text);
 
     C.imgui_docs = LoadLuaDoc(arena, "assets/lua_docs/imgui.cld");
+
+    TextEditor::LanguageDefinition& lang_def = TextEditor::LanguageDefinition::Lua();
+    lang_def.RegisterIdentifiers(C.imgui_docs->names, C.imgui_docs->num);
+    C.editor->SetLanguageDefinition(lang_def);
 
     NFD_Init();
     RegisterCrashCallback(SaveFileOnCrash);
