@@ -360,3 +360,5 @@ imgui.ini
 # RemedyBG
 *.rdbg
 
+
+ignored/

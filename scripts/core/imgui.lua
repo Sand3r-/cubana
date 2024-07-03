@@ -1,9 +1,11 @@
 -- imgui bindings
 
-imgui.Text = function(fmt, ...)
-    imgui.TextUnformatted(string.format(fmt, ...))
+ImGui.Text = function(fmt, ...)
+    if fmt ~= nil then
+        ImGui.TextUnformatted(string.format(fmt, ...))
+    end
 end
 
-imgui.InputTextAuto = function(label, buffer)
-    return imgui.InputText(label, buffer, imgui.constant.MAX_TEXT_BUFFER_SIZE)
+ImGui.InputTextAuto = function(label, buffer)
+    return ImGui.InputText(label, buffer, 1024)
 end

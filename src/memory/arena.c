@@ -126,7 +126,7 @@ void ArenaMarkerRollback(ArenaMarker marker)
 static void InitArenaDebugInfo(Arena* arena)
 {
     arena->debug_info = ArenaPush(arena, sizeof(ArenaDebugInfo));
-    arena->debug_info->print_new_allocations = true;
+    arena->debug_info->print_new_allocations = false;
     arena->debug_info->allocations_num = 1;
     arena->debug_info->allocation_ptrs[0] = arena->debug_info;
     cu_snprintf(

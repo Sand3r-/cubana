@@ -1,4 +1,5 @@
 #include "file.h"
+#include "buffer.h"
 #include "SDL.h"
 #include "error.h"
 #include <assert.h>
@@ -109,4 +110,11 @@ i32 FileClose(File* file)
 s64 FileSize(File* file)
 {
     return SDL_RWsize(file->_io);
+}
+
+char* CStringFromFile(Arena* arena, const char* file)
+{
+    Buffer buffer = BufferFromFile(arena, file);
+    char* string = (char*)buffer.ptr;
+    return string;
 }

@@ -5,8 +5,9 @@
 #include <cimgui.h>
 #include <assert.h>
 #include "culibc.h"
-#include "imgui_registrar.h"
+#include "imgui_lua.h"
 #include "log/log.h"
+#include "ui/scripteditor.h"
 
 #define JOIN_STR2(X, Y) X ## Y
 #define WRAP_NAME(NAME) JOIN_STR2(L_, NAME)
@@ -448,6 +449,7 @@ static int WRAP_NAME(igInputText)(lua_State* L)
 }
 
 WRAP_VOID_4_ARG_FUNCTION(log_log, int, const char*, int, const char*)
+WRAP_VOID_1_ARG_FUNCTION(LogToScriptEditorConsole, const char*);
 
 #define REGISTER(L, NAME) lua_register(L, #NAME, WRAP_NAME(NAME))
 
@@ -479,9 +481,9 @@ void RegisterLuaFunctions(lua_State* L)
     REGISTER(L, im3dGizmo);
 
     REGISTER(L, log_log);
+    REGISTER(L, LogToScriptEditorConsole);
 
-    g_ImguiBindingsState = L;
-    LoadImguiBindings();
+    luaopen_imgui_lib(L);
 }
 
 #undef REGISTER

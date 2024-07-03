@@ -1,15 +1,7 @@
 #include "buffer.h"
+#include "culibc.h"
 #include "error.h"
 #include "file.h"
-
-Buffer AllocBuffer(Arena* arena, size_t size, const char* alloc_name)
-{
-    Buffer buffer = {
-        .ptr = (void*)PushArray(arena, u8, size),
-        .length = size
-    };
-    return buffer;
-}
 
 Buffer BufferFromFile(Arena* arena, const char* filename)
 {
@@ -23,7 +15,10 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
 
     ArenaMarker marker = ArenaMarkerCreate(arena);
     s64 file_size =  FileSize(&file);
-    result = AllocBuffer(arena, file_size, filename);
+    // Add one more byte for string null termination \0
+    result.ptr = (void*)PushArray(arena, u8, file_size + 1);
+    result.length = file_size;
+
     char* fileContents = (char*)result.ptr;
 
     s64 totaj_objs_read = 0, objs_read = 1;
@@ -43,5 +38,12 @@ Buffer BufferFromFile(Arena* arena, const char* filename)
         return result;
     }
 
+    fileContents[file_size] = '\0';
     return result;
+}
+
+const char* CStringFromBuffer(Buffer* buffer)
+{
+    const char* c_string = (const char*)buffer->ptr;
+    return c_string;
 }

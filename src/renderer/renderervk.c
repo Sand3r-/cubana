@@ -8,6 +8,7 @@
 #include "log/log.h"
 #include "math/scalar.h"
 #include "math/mat.h"
+#include "vkhelper.h"
 #include <memory.h>
 #include <vulkan/vulkan.h>
 #include <cimgui.h>
@@ -849,15 +850,8 @@ static void CreatePushConstantsRange(void)
 
 static void CreateGraphicsPipeline(Arena* arena)
 {
-    VkShaderModule vertShaderModule, fragShaderModule;
-    with_arena(arena)
-    {
-        Buffer vertShaderCode = BufferFromFile(arena, "shaders/shader.vert.spv");
-        Buffer fragShaderCode = BufferFromFile(arena, "shaders/shader.frag.spv");
-
-        vertShaderModule = CreateShaderModule(vertShaderCode);
-        fragShaderModule = CreateShaderModule(fragShaderCode);
-    }
+    VkShaderModule vertShaderModule = VkShaderModuleFromFile("shaders/shader.vert.spv", C.device);
+    VkShaderModule fragShaderModule = VkShaderModuleFromFile("shaders/shader.frag.spv", C.device);
 
     VkPipelineShaderStageCreateInfo vertexShaderStageInfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
@@ -894,11 +888,8 @@ static void CreateGraphicsPipeline(Arena* arena)
         .pVertexAttributeDescriptions = attribute_descs,
     };
 
-    VkPipelineInputAssemblyStateCreateInfo inputAssembly = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
-        .topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
-        .primitiveRestartEnable = VK_FALSE,
-    };
+    VkPipelineInputAssemblyStateCreateInfo inputAssembly = 
+        VkCreateDefaultInputAssemblyInfo(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
     VkViewport viewport = {
         .x = 0.0f,
@@ -914,13 +905,8 @@ static void CreateGraphicsPipeline(Arena* arena)
         .extent = C.swapchain_extent,
     };
 
-    VkPipelineViewportStateCreateInfo viewportState = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
-        .viewportCount = 1,
-        .pViewports = &viewport,
-        .scissorCount = 1,
-        .pScissors = &scissor,
-    };
+    VkPipelineViewportStateCreateInfo viewportState =
+        VkCreateDefaultViewportInfo(&viewport, &scissor);
 
     VkPipelineRasterizationStateCreateInfo rasterizer = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
@@ -937,15 +923,8 @@ static void CreateGraphicsPipeline(Arena* arena)
     };
 
     // Requires enabling GPU Feature.
-    VkPipelineMultisampleStateCreateInfo multisampling = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO,
-        .sampleShadingEnable = VK_FALSE,
-        .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
-        .minSampleShading = 1.0f,
-        .pSampleMask = NULL,
-        .alphaToCoverageEnable = VK_FALSE,
-        .alphaToOneEnable = VK_FALSE,
-    };
+    VkPipelineMultisampleStateCreateInfo multisampling =
+        VkCreateDefaultMultisampleInfo();
 
     VkPipelineColorBlendAttachmentState colorBlendAttachement = {
         .colorWriteMask =
@@ -1485,7 +1464,7 @@ static void CreateSyncObjects(Arena* arena)
     L_INFO("Synchronisation objects created.");
 }
 
-static void InitImGui(Window window)
+static void InitImGui(Arena* arena, Window window)
 {
     QueueFamilyIndices indices;
     InitQueueFamilyIndices(&indices);
@@ -1505,7 +1484,7 @@ static void InitImGui(Window window)
         .Allocator = NULL,
         .CheckVkResultFn = ImGuiCheckVulkanResult
     };
-    ImGuiInit(window, init_info, C.render_pass);
+    ImGuiInit(arena, window, init_info, C.render_pass);
     ImGuiUploadFonts(C.device, C.graphics_queue, C.command_pool, C.command_buffers[0]);
     ImGuiNewFrame(0.0f);
 }
@@ -1548,7 +1527,7 @@ int VkRendererInit(Arena* arena, Window window)
     CreateDescriptorSets();
     CreateCommandBuffers(arena);
     CreateSyncObjects(arena);
-    InitImGui(window);
+    InitImGui(arena, window);
     InitIm3d(arena);
 
     DEBUG_ArenaPrintAllocations(arena);
