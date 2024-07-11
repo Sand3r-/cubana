@@ -17,8 +17,8 @@ static void UpdateFreeFlyingCameraRotation(Entity* camera)
 {
     static const f32 max_pitch =  0.5f * PI - 0.017f;
     static const f32 min_pitch = -0.5f * PI + 0.017f;
-    static f32 yaw = (3.0f / 2.0f) * PI;
-    static f32 pitch = 0.0f;
+    f32 yaw = camera->rotation.yaw;
+    f32 pitch = camera->rotation.pitch;
 
     v2 delta = GetMouseDelta();
 
@@ -34,6 +34,8 @@ static void UpdateFreeFlyingCameraRotation(Entity* camera)
     forward.z = cosf(pitch) * sinf(yaw);
 
     camera->direction = V3Normalize(forward);
+    camera->rotation.yaw = yaw;
+    camera->rotation.pitch = pitch;
 }
 
 static void UpdateFreeFlyingCameraPosition(Entity* camera, f32 delta)
@@ -55,8 +57,7 @@ static void UpdateFreeFlyingCameraPosition(Entity* camera, f32 delta)
         *position = V3Subtract(*position, V3Mul(velocity, right));
     else if (GetKeyState(KEY_D) & KEY_STATE_DOWN)
         *position = V3Add(*position, V3Mul(velocity, right));
-    if (GetKeyState(KEY_Q) & KEY_STATE_DOWN
-     || GetKeyState(KEY_CTRL) & KEY_STATE_DOWN)
+    if (GetKeyState(KEY_Q) & KEY_STATE_DOWN)
         *position = V3Subtract(*position, V3Mul(velocity, up));
     else if (GetKeyState(KEY_E) & KEY_STATE_DOWN
           || GetKeyState(KEY_SPACE) & KEY_STATE_DOWN)
@@ -76,6 +77,10 @@ Entity CreateFreeFlyingCameraEntity(v3 pos)
         .position = pos,
         .direction = v3(0.0f, 0.0f, -1.0f),
         .velocity = v3(0.0005f, 0.0005f, 0.0005f),
+        .rotation = {
+            .yaw = (3.0f / 2.0f) * PI,
+            .pitch = 0.0f
+        }
     };
 
     return e;
