@@ -1,4 +1,5 @@
 #pragma once
+#include "buffer.h"
 #include "types.h"
 #include "math/vec.h"
 
@@ -121,6 +122,8 @@ KeyStateBit GetMouseButtonState(u8 id);
 v2 GetMousePosition(void);
 v2 GetMouseDelta(void);
 void ResetInput(void);
+void ResetInputTo(KeyStateBit state);
 void SnapCursorToCenter(b8 enabled);
+Buffer GetInputState(void);
 
 void DEBUG_GamepadInput(void);

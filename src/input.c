@@ -19,6 +19,7 @@ typedef struct MouseState
     v2 position;
     v2 delta;
     b8 snap;
+    b8 initialised;
 } MouseState;
 
 static struct
@@ -157,8 +158,12 @@ static void HandleMouseMove(SDL_Event event)
         const f32 center_x = size.width  / 2;
         const f32 center_y = size.height / 2;
 
-        IO.mouse.delta = v2(-(center_x - event.motion.x) / (f32) size.width,
-                             (center_y - event.motion.y) / (f32) size.height);
+        if (IO.mouse.initialised)
+            IO.mouse.delta = v2(-(center_x - event.motion.x) / (f32) size.width,
+                                (center_y - event.motion.y) / (f32) size.height);
+        else
+            IO.mouse.initialised = true;
+
         SDL_WarpMouseInWindow(window, center_x, center_y);
     }
     else
@@ -228,16 +233,31 @@ v2 GetMouseDelta(void)
 void SnapCursorToCenter(b8 enabled)
 {
     IO.mouse.snap = enabled;
+    IO.mouse.initialised = false;
     SDL_SetRelativeMouseMode(enabled);
 }
 
-void ResetInput(void)
+void ResetInputTo(KeyStateBit state)
 {
     IO.mouse.delta = v2(0.0f);
     for (u32 i = 0; i < KEY_MAX; i++)
     {
-        IO.keyboard[i] &= KEY_STATE_DOWN;
+        IO.keyboard[i] &= state;
     }
+}
+
+void ResetInput(void)
+{
+    ResetInputTo(KEY_STATE_DOWN);
+}
+
+Buffer GetInputState(void)
+{
+    Buffer buffer = {
+        .ptr = &IO,
+        .length = sizeof(IO),
+    };
+    return buffer;
 }
 
 void DEBUG_MouseMotion(void)
