@@ -263,7 +263,7 @@ static void HandleKeyboardInputs()
         NewFile();
     else if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_R))
         OpenFile(C.recovery_file_name);
-    else if (ImGui::IsKeyPressed(ImGuiKey_F5))
+    else if (isAltOnly && ImGui::IsKeyPressed(ImGuiKey_F5))
         Execute();
     else if (ImGui::IsKeyPressed(ImGuiKey_F1))
         ShowHelp();
