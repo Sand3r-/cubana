@@ -109,6 +109,12 @@ void ArenaReset(Arena* arena)
     ArenaPopTo(arena, 0);
 }
 
+void ArenaResize(Arena* arena, u64 size)
+{
+    if (size > arena->size)
+        ArenaPush(arena, size - arena->pos);
+}
+
 ArenaMarker ArenaMarkerCreate(Arena* arena)
 {
     ArenaMarker marker = {arena, arena->pos};

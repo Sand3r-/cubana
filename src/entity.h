@@ -19,6 +19,17 @@ typedef struct Entity
     v3 velocity;
     v3 direction;
     v3 target;
+
+    union euler
+    {
+        v3 angles;
+        struct
+        {
+            f32 yaw;
+            f32 pitch;
+            f32 roll;
+        };
+    } rotation;
 } Entity;
 
 Entity CreateFreeFlyingCameraEntity(v3 pos);

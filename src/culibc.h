@@ -13,5 +13,6 @@ size_t cu_strcmp(const char* str1, const char* str2);
 size_t cu_strlcpy(char* dst, const char* src, size_t max_len);
 size_t cu_strlcat(char* dst, const char* src, size_t max_len);
 void cu_memset(void* dst, int c, size_t len);
+void cu_memcpy(void* dst, void* src, size_t len);
 char* cu_getcwd();
 void cu_freecwdptr();
