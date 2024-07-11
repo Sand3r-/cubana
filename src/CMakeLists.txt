@@ -43,6 +43,7 @@ set(SOURCES
     renderer/i3integration.c
     renderer/imfont_storage.c
     renderer/vkhelper.c
+    replay.c
     script/scripting.c
     script/scriptreg.c
     script/imgui_lua.cpp

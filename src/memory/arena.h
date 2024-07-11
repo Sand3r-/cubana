@@ -47,6 +47,7 @@ void ArenaShutdown(Arena* arena);
 void ArenaPopTo(Arena* arena, u64 pos);
 void ArenaPop(Arena* arena, u64 size);
 void ArenaReset(Arena* arena);
+void ArenaResize(Arena* arena, u64 size);
 
 // Internal API
 void* ArenaPushNoZero(Arena* arena, u64 size);

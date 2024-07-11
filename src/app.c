@@ -13,6 +13,7 @@
 #include "memory/thread_scratch.h"
 #include "os/crash_handler.h"
 #include "platform.h"
+#include "replay.h"
 #include "renderer/renderer.h"
 #include "timer.h"
 #include "window.h"
@@ -35,9 +36,11 @@
 
 struct Application
 {
-    Game game;
+    ReplayBuffer replay_buffers[REPLAY_BUFFER_NUM];
+    Game* game;
     Window window;
     CmdArgs cmd_args;
+    Arena vk_arena;
     Arena perm_storage_arena;
     Arena frame_arenas[FRAME_ARENAS_NUM];
     u8 frame_arena_index;
@@ -72,22 +75,44 @@ static int InitConfig(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
-static int InitPermamentStorage(void)
+static int InitArenas(void)
 {
+    // Init main permament storage arena
     void* base_address = (void*)(Gigabytes(64));
     g_app.perm_storage_arena = ArenaInitialise(base_address, Megabytes(1), Megabytes(1024));
-    return CU_SUCCESS;
-}
 
-static int InitFrameArenas(void)
-{
-    void* base_address = (void*)(Gigabytes(3 * 64));
+    // Init frame arenas
+    base_address = (void*)(Gigabytes(3 * 64));
     g_app.frame_arenas[0] = ArenaInitialise(base_address, Megabytes(16), Megabytes(1024));
     DEBUG_SetPrintNewAllocations(&g_app.frame_arenas[0], false);
 
     base_address = (void*)(Gigabytes(4 * 64));
     g_app.frame_arenas[1] = ArenaInitialise(base_address, Megabytes(16), Megabytes(1024));
     DEBUG_SetPrintNewAllocations(&g_app.frame_arenas[1], false);
+
+    // Init vk arena
+    base_address = (void*)(Gigabytes(5 * 64));
+    g_app.vk_arena = ArenaInitialise(base_address, Kilobytes(512), Megabytes(1));
+
+    // Init scratch arena
+    ThreadScratchArenaInitialise();
+
+    return CU_SUCCESS;
+}
+
+static int InitReplaySystemInfo(void)
+{
+    ReplaySystemInitInfo info = {
+        .replay_buffers = g_app.replay_buffers,
+        .arenas = {
+            &g_app.perm_storage_arena,
+            &g_app.frame_arenas[0],
+            &g_app.frame_arenas[1]
+        },
+    };
+
+    InitReplaySystem(&info);
+    L_INFO("Replay system initialized");
 
     return CU_SUCCESS;
 }
@@ -109,12 +134,13 @@ static int InitWindow(void)
 
 static int InitRenderer(void)
 {
-    return RendererInit(&g_app.perm_storage_arena, g_app.window);
+    return RendererInit(&g_app.vk_arena, g_app.window);
 }
 
 static int InitGame(void)
 {
-    return GameInit(&g_app.perm_storage_arena, &g_app.game);
+    g_app.game = PushStruct(&g_app.perm_storage_arena, Game);
+    return GameInit(&g_app.perm_storage_arena, g_app.game);
 }
 
 static f32 GetTimeDelta(void)
@@ -132,9 +158,8 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitLogger());
     ReturnOnFailure(InitExternalLibs());
     ReturnOnFailure(InitConfig(argc, argv));
-    ReturnOnFailure(InitPermamentStorage());
-    ReturnOnFailure(ThreadScratchArenaInitialise());
-    ReturnOnFailure(InitFrameArenas());
+    ReturnOnFailure(InitArenas());
+    ReturnOnFailure(InitReplaySystemInfo());
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(ScriptEngineInit());
@@ -161,7 +186,7 @@ static void PropagateEvents(void)
     Event event;
     while (PollEvent(&event))
     {
-        GameProcessEvent(&g_app.game, event);
+        GameProcessEvent(g_app.game, event);
         ScriptEngineProcessEvent(event);
     }
 }
@@ -178,10 +203,11 @@ static int AppLoop(void)
     {
         done = ProcessPlatformEvents();
         f32 delta = GetTimeDelta();
+        UpdateReplaySystem();
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
-        GameUpdate(&g_app.game, delta);
+        GameUpdate(g_app.game, delta);
         RendererDraw(&g_app.frame_arenas[g_app.frame_arena_index], delta);
         ResetInput();
         SwapFrameArenas();
@@ -191,7 +217,7 @@ static int AppLoop(void)
 
 static int Shutdown(void)
 {
-    GameDestroy(&g_app.game);
+    GameDestroy(g_app.game);
     CloseGamepadControllers();
     i32 error_code = FileClose(&g_log_file);
     if (error_code != CU_SUCCESS)
