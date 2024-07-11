@@ -60,6 +60,11 @@ void cu_memset(void* dst, int c, size_t len)
     SDL_memset(dst, c, len);
 }
 
+void cu_memcpy(void* dst, void* src, size_t len)
+{
+    SDL_memcpy(dst, src, len);
+}
+
 char* cu_getcwd()
 {
     return SDL_GetBasePath();
