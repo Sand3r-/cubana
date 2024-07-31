@@ -186,17 +186,18 @@ void UpdateReplaySystem()
     for (s8 i = 0; i < REPLAY_BUFFER_NUM; i++)
     {
         b8 ctrl = GetKeyState(KEY_CTRL) & KEY_STATE_DOWN;
+        b8 alt = GetKeyState(KEY_ALT) & KEY_STATE_DOWN;
         b8 shift = GetKeyState(KEY_SHIFT) & KEY_STATE_DOWN;
         b8 fx = GetKeyState(C.bindings[i]) & KEY_STATE_PRESSED;
 
-        if (ctrl && fx && !C.playing)
+        if (!alt && ctrl && fx && !C.playing)
         {
             if (C.recording_index == -1)
                 BeginRecordingInput(i);
             else if (C.recording_index == i)
                 EndRecordingInput(i);
         }
-        else if (fx && C.recording_index == -1)
+        else if (!alt && fx && C.recording_index == -1)
         {
             if (C.playback_index == -1)
                 BeginInputPlayback(i, !shift);
