@@ -213,8 +213,31 @@ static int AppLoop(void)
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
+        RendererBeginFrame(&g_app.frame_arenas[g_app.frame_arena_index]);
+
+        // Ground (5x5 grid)
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                RendererDrawCube(v3(x, -1, z), v3(0.3, 0.3, 0.3)); // Gray ground cubes
+            }
+        }
+
+        // A few obstacles
+        RendererDrawCube(v3(0, 0, 0), v3(1, 0, 0));   // Red cube in the center
+        RendererDrawCube(v3(1, 0, 1), v3(0, 1, 0));   // Green cube near center
+        RendererDrawCube(v3(-1, 0, 1), v3(0, 0, 1));  // Blue cube near center
+
+        // Stacked cubes
+        RendererDrawCube(v3(1, 1, 1), v3(1, 1, 0));  // Yellow cube on green
+        RendererDrawCube(v3(-1, 1, 1), v3(1, 0, 1)); // Pink cube on blue
+
+        // Floating cubes
+        RendererDrawCube(v3(0, 2, 0), v3(0, 1, 1));  // Cyan floating cube
+        RendererDrawCube(v3(2, 3, 2), v3(1, 0.5, 0)); // Orange floating cube
+
+
         GameUpdate(g_app.game, delta);
-        RendererDraw(&g_app.frame_arenas[g_app.frame_arena_index], delta);
+        RendererRender(&g_app.frame_arenas[g_app.frame_arena_index], delta);
         ResetInput();
         SwapFrameArenas();
     }

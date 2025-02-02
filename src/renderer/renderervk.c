@@ -16,6 +16,13 @@
 #include <cim3d.h>
 
 #define MAX_FRAMES_IN_FLIGHT 2
+#define MAX_DRAW_REQUESTS 1024
+
+typedef struct CubeDrawRequest
+{
+    v3 position;
+    v3 colour;
+} CubeDrawRequest;
 
 static struct Context
 {
@@ -64,6 +71,8 @@ static struct Context
     VkBool32 enable_validation_layers;
 
     Window window;
+    CubeDrawRequest* draw_requests;
+    u16 draw_requests_num;
 } C;
 
 static struct PhysicalDeviceCapabilities
@@ -107,6 +116,8 @@ typedef struct UniformBufferObject
 typedef struct PushConstantsObject
 {
     m4 view;
+    v4 position;
+    v4 colour;
 } PushConstantsObject;
 
 typedef struct Vertex
@@ -888,7 +899,7 @@ static void CreateGraphicsPipeline(Arena* arena)
         .pVertexAttributeDescriptions = attribute_descs,
     };
 
-    VkPipelineInputAssemblyStateCreateInfo inputAssembly = 
+    VkPipelineInputAssemblyStateCreateInfo inputAssembly =
         VkCreateDefaultInputAssemblyInfo(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
     VkViewport viewport = {
@@ -1422,9 +1433,17 @@ static void RecordCommandBuffer(Arena* arena, u32 current_image)
     vkCmdBindIndexBuffer(cmd_buffer, C.index_buffer, 0, VK_INDEX_TYPE_UINT16);
     vkCmdBindDescriptorSets(cmd_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
         C.pipeline_layout, 0, 1, &C.descriptor_sets[C.current_frame], 0, NULL);
-    vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
-        0, sizeof(PushConstantsObject), &D.push_constants);
-    vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 64, 0, 0, 0);
+
+    for (u16 i = 0; i < C.draw_requests_num; i++)
+    {
+        PushConstantsObject push_constants = D.push_constants;
+        push_constants.position = v4(C.draw_requests[i].position, 1.0f);
+        push_constants.colour = v4(C.draw_requests[i].colour, 1.0f);
+
+        vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
+            0, sizeof(PushConstantsObject), &push_constants);
+        vkCmdDrawIndexed(cmd_buffer, ArrayCount(D.cube_indices), 1, 0, 0, 0);
+    }
 
     im3dVkEndFrame(arena, cmd_buffer);
     ImGuiRender(cmd_buffer);
@@ -1535,7 +1554,12 @@ int VkRendererInit(Arena* arena, Window window)
     return CU_SUCCESS;
 }
 
-void VkRendererDraw(Arena* arena, f32 delta)
+void VkRendererBeginFrame(Arena* arena)
+{
+    C.draw_requests = PushArray(arena, CubeDrawRequest, MAX_DRAW_REQUESTS);
+}
+
+void VkRendererRender(Arena* arena, f32 delta)
 {
     vkWaitForFences(C.device, 1, &C.in_flight_fences[C.current_frame], VK_TRUE, UINT64_MAX);
 
@@ -1545,6 +1569,7 @@ void VkRendererDraw(Arena* arena, f32 delta)
 
     if (C.images_in_flight[image_index] != VK_NULL_HANDLE)
         vkWaitForFences(C.device, 1, &C.images_in_flight[image_index], VK_TRUE, UINT64_MAX);
+
 
     RecordCommandBuffer(arena, image_index);
 
@@ -1585,9 +1610,23 @@ void VkRendererDraw(Arena* arena, f32 delta)
     vkQueuePresentKHR(C.present_queue, &present_info);
 
     C.current_frame = (C.current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
+    C.draw_requests_num = 0;
+    C.draw_requests = NULL;
 
     ImGuiNewFrame(delta);
     im3dVkNewFrame();
+}
+
+void VkRendererDrawCube(v3 position, v3 colour)
+{
+    if (C.draw_requests_num >= MAX_DRAW_REQUESTS)
+    {
+        ERROR("Too many draw requests");
+        return;
+    }
+    C.draw_requests[C.draw_requests_num].position = position;
+    C.draw_requests[C.draw_requests_num].colour = colour;
+    C.draw_requests_num++;
 }
 
 void VkRendererShutdown(void)
