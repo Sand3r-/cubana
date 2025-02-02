@@ -5,6 +5,7 @@
 #include "log/log.h"
 
 #include "renderer/renderer.h"
+#include "script/scripting.h"
 #include "ui/ui.h"
 
 static void CreateFreeFlyingCamera(Game* game)
@@ -69,6 +70,8 @@ void GameProcessEvent(Game* game, Event event)
     {
         case EVENT_GAME_BEGIN:
             L_INFO("Oh yes, and so the game begun");
+            break;
+        default:
             break;
     }
     // mmm yes consume the events

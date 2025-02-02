@@ -133,18 +133,18 @@ union iv4
 // for C++ this header is only used for creating bindings with C++ libraries.
 #ifndef __cplusplus
 // Vector initialisers
-inline v2 V2Default() { return (v2){0.0f, 0.0f}; }
+inline v2 V2Default(void) { return (v2){0.0f, 0.0f}; }
 inline v2 V2FromValue(f32 v) { return (v2){v, v}; }
 inline v2 V2FromValues(f32 x, f32 y) { return (v2){x, y}; }
 
-inline v3 V3Default() { return (v3){0.0f, 0.0f, 0.0f}; }
+inline v3 V3Default(void) { return (v3){0.0f, 0.0f, 0.0f}; }
 inline v3 V3FromValue(f32 v) { return (v3){v, v, v}; }
 inline v3 V3FromV4(v4 v) { return (v3){v.x, v.y, v.z}; }
 inline v3 V3FromV2(v2 v) { return (v3){v.x, v.y}; }
 inline v3 V3FromV2AndZ(v2 v, f32 z) { return (v3){v.x, v.y, z}; }
 inline v3 V3FromValues(f32 x, f32 y, f32 z) { return (v3){x, y, z}; }
 
-inline v4 V4Default() { return (v4){0.0f, 0.0f, 0.0f}; }
+inline v4 V4Default(void) { return (v4){0.0f, 0.0f, 0.0f}; }
 inline v4 V4FromValue(f32 v) { return (v4){v, v, v, v}; }
 inline v4 V4FromV3(v3 v) { return (v4){v.x, v.y, v.z, 0.0f}; }
 inline v4 V4FromV3AndW(v3 v, f32 w) { return (v4){v.x, v.y, v.z, w}; }

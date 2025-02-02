@@ -19,4 +19,4 @@ typedef struct ReplaySystemInitInfo
 } ReplaySystemInitInfo;
 
 void InitReplaySystem(ReplaySystemInitInfo* info);
-void UpdateReplaySystem();
+void UpdateReplaySystem(void);
