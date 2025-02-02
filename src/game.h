@@ -1,15 +1,12 @@
 #pragma once
-#include "entity.h"
 #include "memory/arena.h"
-
-#define MAX_ENTITIES 8
+#include "world.h"
 
 typedef union Event Event;
 
 typedef struct Game
 {
-    Entity entities[MAX_ENTITIES];
-    u16    entities_num;
+    World world;
     b16    mouse_snap;
 } Game;
 

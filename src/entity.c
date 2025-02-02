@@ -85,3 +85,15 @@ Entity CreateFreeFlyingCameraEntity(v3 pos)
 
     return e;
 }
+
+Entity CreateStaticEntity(v3 pos, v3 dimensions, v3 colour)
+{
+    Entity e = {
+        .type = ENTITY_STATIC_BIT,
+        .position = pos,
+        .dimensions = dimensions,
+        .colour = colour
+    };
+
+    return e;
+}

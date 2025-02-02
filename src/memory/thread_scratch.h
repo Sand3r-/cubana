@@ -4,6 +4,6 @@
     Per-thread scratch arena.
 */
 
-int ThreadScratchArenaInitialise();
-Arena* GetScratchArena();
-void ThreadScratchArenaShutdown();
+int ThreadScratchArenaInitialise(void);
+Arena* GetScratchArena(void);
+void ThreadScratchArenaShutdown(void);

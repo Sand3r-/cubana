@@ -138,9 +138,9 @@ CIM3D_API void im3dSetColor(u32 color);
 CIM3D_API void im3dSetSize(f32 size);
 
 CIM3D_API void im3dPushMatrix(m4 matrix);
-CIM3D_API void im3dPopMatrix();
-CIM3D_API void im3dPushDrawState();
-CIM3D_API void im3dPopDrawState();
+CIM3D_API void im3dPopMatrix(void);
+CIM3D_API void im3dPushDrawState(void);
+CIM3D_API void im3dPopDrawState(void);
 
 CIM3D_API void im3dDrawXyzAxes(void);
 CIM3D_API void im3dDrawPoint(v3 position, float size, u32 color);

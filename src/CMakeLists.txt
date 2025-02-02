@@ -11,6 +11,17 @@ set_property(TARGET ${TARGET} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BI
 set_target_properties(${TARGET} PROPERTIES C_STANDARD 17)
 set_target_properties(${TARGET} PROPERTIES CMAKE_C_STANDARD_REQUIRED True)
 
+# Enable warnings and warnings-as-errors
+if(MSVC)
+    # TODO: Consider enabling at some point
+    # target_compile_options(${TARGET} PRIVATE /Wall )
+    # target_compile_options(${TARGET} PRIVATE /WX )
+    target_compile_options(${TARGET} PRIVATE /wd4820)
+    target_compile_options(${TARGET} PRIVATE /wd5045)
+    target_compile_options(${TARGET} PRIVATE /wd4668)
+    target_compile_options(${TARGET} PRIVATE /wd4061)
+endif(MSVC)
+
 # Specify extenral sources for the target
 # Import IMGUI_COLOR_TEXT_EDIT_SOURCES and IMGUI_COLOR_TEXT_EDIT_INCLUDE_DIRECTORIES
 include(ImGuiColorTextEdit)
@@ -30,6 +41,7 @@ set(SOURCES
     game.c
     input.c
     log/log.c
+    level_loader.c
     main.c
     math/mat.c
     math/vec.c
@@ -52,6 +64,7 @@ set(SOURCES
     ui/scripteditor.cpp
     ui/ui.c
     ui/cld_parser.c
+    world.c
     window.c
 )
 

@@ -22,10 +22,10 @@ void RendererRender(Arena* arena, f32 delta)
 #endif
 }
 
-void RendererDrawCube(v3 position, v3 colour)
+void RendererDrawCube(v3 position, v3 dimensions, v3 colour)
 {
 #ifdef USE_VK_RENDERER
-    VkRendererDrawCube(position, colour);
+    VkRendererDrawCube(position, dimensions, colour);
 #endif
 }
 

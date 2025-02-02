@@ -32,7 +32,7 @@ static inline void HandleGamepadConnected(SDL_Event event)
                 supported", MAX_GAMEPADS_NUM);
         return;
     }
-    u8 device_index = event.cdevice.which;
+    u8 device_index = (u8)event.cdevice.which;
     u8 slot = G.controller[0] == NULL ? 0 : 1;
 
     G.controller[slot] = SDL_GameControllerOpen(device_index);
