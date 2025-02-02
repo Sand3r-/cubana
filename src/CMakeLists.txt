@@ -41,6 +41,7 @@ set(SOURCES
     game.c
     input.c
     log/log.c
+    level_loader.c
     main.c
     math/mat.c
     math/vec.c
@@ -63,6 +64,7 @@ set(SOURCES
     ui/scripteditor.cpp
     ui/ui.c
     ui/cld_parser.c
+    world.c
     window.c
 )
 

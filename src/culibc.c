@@ -45,6 +45,11 @@ size_t cu_strcmp(const char* str1, const char* str2)
     return SDL_strcmp(str1, str2);
 }
 
+size_t cu_strncmp(const char* str1, const char* str2, size_t maxlen)
+{
+    return SDL_strncmp(str1, str2, maxlen);
+}
+
 size_t cu_strlcpy(char* dst, const char* src, size_t max_len)
 {
     return SDL_strlcpy(dst, src, max_len);
@@ -53,6 +58,16 @@ size_t cu_strlcpy(char* dst, const char* src, size_t max_len)
 size_t cu_strlcat(char* dst, const char* src, size_t max_len)
 {
     return SDL_strlcat(dst, src, max_len);
+}
+
+int cu_sscanf(const char* str, const char* fmt, ...)
+{
+    int rc;
+    va_list ap;
+    va_start(ap, fmt);
+    rc = SDL_vsscanf(str, fmt, ap);
+    va_end(ap);
+    return rc;
 }
 
 void cu_memset(void* dst, int c, size_t len)
@@ -65,7 +80,7 @@ void cu_memcpy(void* dst, void* src, size_t len)
     SDL_memcpy(dst, src, len);
 }
 
-char* cu_getcwd()
+char* cu_getcwd(void)
 {
     return SDL_GetBasePath();
 }

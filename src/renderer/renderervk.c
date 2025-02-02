@@ -21,6 +21,7 @@
 typedef struct CubeDrawRequest
 {
     v3 position;
+    v3 dimensions;
     v3 colour;
 } CubeDrawRequest;
 
@@ -117,6 +118,7 @@ typedef struct PushConstantsObject
 {
     m4 view;
     v4 position;
+    v4 dimensions;
     v4 colour;
 } PushConstantsObject;
 
@@ -1438,6 +1440,7 @@ static void RecordCommandBuffer(Arena* arena, u32 current_image)
     {
         PushConstantsObject push_constants = D.push_constants;
         push_constants.position = v4(C.draw_requests[i].position, 1.0f);
+        push_constants.dimensions = v4(C.draw_requests[i].dimensions, 1.0f);
         push_constants.colour = v4(C.draw_requests[i].colour, 1.0f);
 
         vkCmdPushConstants(cmd_buffer, C.pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT,
@@ -1617,7 +1620,7 @@ void VkRendererRender(Arena* arena, f32 delta)
     im3dVkNewFrame();
 }
 
-void VkRendererDrawCube(v3 position, v3 colour)
+void VkRendererDrawCube(v3 position, v3 dimensions, v3 colour)
 {
     if (C.draw_requests_num >= MAX_DRAW_REQUESTS)
     {
@@ -1625,6 +1628,7 @@ void VkRendererDrawCube(v3 position, v3 colour)
         return;
     }
     C.draw_requests[C.draw_requests_num].position = position;
+    C.draw_requests[C.draw_requests_num].dimensions = dimensions;
     C.draw_requests[C.draw_requests_num].colour = colour;
     C.draw_requests_num++;
 }

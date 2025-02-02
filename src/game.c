@@ -8,19 +8,7 @@
 #include "script/scripting.h"
 #include "ui/ui.h"
 
-static void CreateFreeFlyingCamera(Game* game)
-{
-    // Check for existing free flying camera
-    for (u16 i = 0; i < game->entities_num; i++)
-    {
-        if (game->entities[i].type & ENTITY_FREE_FLY_CAMERA_BIT)
-            ERROR("An existing free flying camera already exists.");
-    }
 
-    // Create a camera
-    v3 position = v3(2.0f, 2.0f, 2.0f);
-    game->entities[game->entities_num++] = CreateFreeFlyingCameraEntity(position);
-}
 
 static void SetSnapCursorToCenter(Game* game, bool enabled)
 {
@@ -40,7 +28,7 @@ int GameInit(Arena* arena, Game* game)
 {
     InitUI(arena);
     SetSnapCursorToCenter(game, true);
-    CreateFreeFlyingCamera(game);
+    WorldInit(arena, &game->world);
     ExecuteScriptFile("scripts/level1.lua");
     EmitEvent(CreateEventGameBegin());
     return CU_SUCCESS;
@@ -48,18 +36,7 @@ int GameInit(Arena* arena, Game* game)
 
 void GameUpdate(Game* game, f32 delta)
 {
-    for (u16 i = 0; i < game->entities_num; i++)
-    {
-        if (game->entities[i].type & ENTITY_FREE_FLY_CAMERA_BIT)
-        {
-            if (game->mouse_snap)
-            {
-                UpdateFreeFlyingCamera(&game->entities[i], delta);
-                RendererSetCamera(game->entities[i].position, game->entities[i].direction);
-            }
-        }
-    }
-
+    WorldUpdate(&game->world, delta, game->mouse_snap);
     GameControlsUpdate(game);
     UpdateUI();
 }
