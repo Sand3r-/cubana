@@ -69,8 +69,8 @@ function im3d_demo()
 end
 
 function tick_test(event)
-    imgui_demo(event.dt)
-    im3d_demo()
+    -- imgui_demo(event.dt) -- Disable menus for now
+    -- im3d_demo()
 end
 
 register("EVENT_GAME_BEGIN", init_world)

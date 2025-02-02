@@ -107,6 +107,7 @@ void ArenaPop(Arena* arena, u64 size)
 void ArenaReset(Arena* arena)
 {
     ArenaPopTo(arena, 0);
+    InitArenaDebugInfo(arena);
 }
 
 void ArenaResize(Arena* arena, u64 size)
@@ -135,9 +136,12 @@ static void InitArenaDebugInfo(Arena* arena)
     arena->debug_info->print_new_allocations = false;
     arena->debug_info->allocations_num = 1;
     arena->debug_info->allocation_ptrs[0] = arena->debug_info;
-    cu_snprintf(
-        arena->debug_info->allocation_names[0], MAX_ALLOC_NAME, "Arena debug info");
-    L_DEBUG("New alloc: %s:%d - %llu", "Arena debug info", 1337, sizeof(ArenaDebugInfo));
+    if (arena->debug_info->print_new_allocations)
+    {
+        cu_snprintf(
+            arena->debug_info->allocation_names[0], MAX_ALLOC_NAME, "Arena debug info");
+        L_DEBUG("New alloc: %s:%d - %llu", "Arena debug info", 1337, sizeof(ArenaDebugInfo));
+    }
 }
 
 static void UpdateDebugAllocations(Arena* arena)

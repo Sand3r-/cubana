@@ -8,10 +8,24 @@ int RendererInit(Arena* arena, Window window)
 #endif
 }
 
-void RendererDraw(Arena* arena, f32 delta)
+void RendererBeginFrame(Arena* arena)
 {
 #ifdef USE_VK_RENDERER
-    VkRendererDraw(arena, delta);
+    VkRendererBeginFrame(arena);
+#endif
+}
+
+void RendererRender(Arena* arena, f32 delta)
+{
+#ifdef USE_VK_RENDERER
+    VkRendererRender(arena, delta);
+#endif
+}
+
+void RendererDrawCube(v3 position, v3 colour)
+{
+#ifdef USE_VK_RENDERER
+    VkRendererDrawCube(position, colour);
 #endif
 }
 
