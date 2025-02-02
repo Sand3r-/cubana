@@ -8,5 +8,5 @@ void InitUI(Arena* arena)
 
 void UpdateUI()
 {
-    UpdateScriptEditor();
+    // UpdateScriptEditor(); // Disable Script editor for now.
 }
