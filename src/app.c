@@ -196,11 +196,17 @@ static void SwapFrameArenas(void)
     g_app.frame_arena_index = !g_app.frame_arena_index;
 }
 
+static void ClearCurrentArena(void)
+{
+    ArenaReset(&g_app.frame_arenas[g_app.frame_arena_index]);
+}
+
 static int AppLoop(void)
 {
     b8 done = false;
     while (!done)
     {
+        ClearCurrentArena();
         done = ProcessPlatformEvents();
         f32 delta = GetTimeDelta();
         UpdateReplaySystem();
