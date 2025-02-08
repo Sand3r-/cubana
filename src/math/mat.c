@@ -1,6 +1,5 @@
 #include "math/mat.h"
 #include "math/scalar.h"
-#include <math.h>
 
 m4 M4Init(f32 diagonal)
 {
@@ -49,7 +48,7 @@ v4 M4MultiplyV4(m4 m, v4 v)
 m4 Perspective(f32 fov_deg, f32 aspect, f32 near_z, f32 far_z)
 {
     f32 fov_rad = radians(fov_deg);
-    f32 focal_length = 1.0f / (tanf(fov_rad / 2.0f));
+    f32 focal_length = 1.0f / (tan(fov_rad / 2.0f));
     m4 r = {
         .elems[0][0] = focal_length / aspect,
         .elems[1][1] = -focal_length,

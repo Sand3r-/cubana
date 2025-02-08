@@ -174,6 +174,11 @@ static int Init(int argc, char* argv[])
     return CU_SUCCESS;
 }
 
+static Arena* GetCurrentFrameArena()
+{
+    return &g_app.frame_arenas[g_app.frame_arena_index];
+}
+
 static void DrawPerformanceStatistics(f32 delta)
 {
     int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
@@ -212,13 +217,14 @@ static int AppLoop(void)
         ClearCurrentArena();
         done = ProcessPlatformEvents();
         f32 delta = GetTimeDelta();
+        Arena* frame_arena = GetCurrentFrameArena();
         UpdateReplaySystem();
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();
-        RendererBeginFrame(&g_app.frame_arenas[g_app.frame_arena_index]);
-        GameUpdate(g_app.game, delta);
-        RendererRender(&g_app.frame_arenas[g_app.frame_arena_index], delta);
+        RendererBeginFrame(frame_arena);
+        GameUpdate(frame_arena, g_app.game, delta);
+        RendererRender(frame_arena, delta);
         ResetInput();
         SwapFrameArenas();
     }

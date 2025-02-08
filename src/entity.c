@@ -2,7 +2,6 @@
 #include "math/constants.h"
 #include "math/scalar.h"
 #include "input.h"
-#include <math.h>
 
 static v3 CalcCameraRightDirection(Entity* camera)
 {
@@ -29,9 +28,9 @@ static void UpdateFreeFlyingCameraRotation(Entity* camera)
     pitch = max(min(pitch, max_pitch), min_pitch);
 
     v3 forward;
-    forward.x = cosf(pitch) * cosf(yaw);
-    forward.y = sinf(pitch);
-    forward.z = cosf(pitch) * sinf(yaw);
+    forward.x = cos(pitch) * cos(yaw);
+    forward.y = sin(pitch);
+    forward.z = cos(pitch) * sin(yaw);
 
     camera->direction = V3Normalize(forward);
     camera->rotation.yaw = yaw;
@@ -73,7 +72,7 @@ void UpdateFreeFlyingCamera(Entity* camera, f32 delta)
 Entity CreateFreeFlyingCameraEntity(v3 pos)
 {
     Entity e = {
-        .type = ENTITY_FREE_FLY_CAMERA_BIT,
+        .flags = ENTITY_FREE_FLY_CAMERA_BIT,
         .position = pos,
         .direction = v3(0.0f, 0.0f, -1.0f),
         .velocity = v3(0.0005f, 0.0005f, 0.0005f),
@@ -89,7 +88,45 @@ Entity CreateFreeFlyingCameraEntity(v3 pos)
 Entity CreateStaticEntity(v3 pos, v3 dimensions, v3 colour)
 {
     Entity e = {
-        .type = ENTITY_STATIC_BIT,
+        .flags = ENTITY_STATIC_BIT | ENTITY_COLLIDES_BIT | ENTITY_VISIBLE_BIT,
+        .position = pos,
+        .dimensions = dimensions,
+        .colour = colour
+    };
+
+    return e;
+}
+
+void UpdatePlayer(Entity* player)
+{
+    v3 velocity = v3(0.0f);
+    if (GetKeyState(KEY_UP) & KEY_STATE_DOWN)
+        velocity.x = -0.01f;
+    else if (GetKeyState(KEY_DOWN) & KEY_STATE_DOWN)
+        velocity.x = 0.01f;
+    if (GetKeyState(KEY_LEFT) & KEY_STATE_DOWN)
+        velocity.z = 0.01f;
+    else if (GetKeyState(KEY_RIGHT) & KEY_STATE_DOWN)
+        velocity.z = -0.01f;
+    player->velocity = velocity;
+}
+
+Entity CreatePlayerEntity(v3 pos, v3 dimensions, v3 colour)
+{
+    Entity e = {
+        .flags = ENTITY_PLAYER_BIT | ENTITY_COLLIDES_BIT | ENTITY_GRAVITY_BIT | ENTITY_VISIBLE_BIT,
+        .position = pos,
+        .dimensions = dimensions,
+        .colour = colour
+    };
+
+    return e;
+}
+
+Entity CreateEnemyEntity(v3 pos, v3 dimensions, v3 colour)
+{
+    Entity e = {
+        .flags = ENTITY_ENEMY_BIT | ENTITY_COLLIDES_BIT | ENTITY_GRAVITY_BIT | ENTITY_VISIBLE_BIT,
         .position = pos,
         .dimensions = dimensions,
         .colour = colour
