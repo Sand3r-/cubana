@@ -8,8 +8,19 @@ function print_available_symbols()
     for n in pairs(_G) do print(n) end
 end
 
+function spawn_sample_entity()
+    local pos = vec3(0, 5, 0)
+    local dim = vec3(1, 1, 1)
+    local colour = vec3(1, 1, 1)
+    local flags = ENTITY_COLLIDES_BIT | ENTITY_VISIBLE_BIT | ENTITY_GRAVITY_BIT
+    local entity = SpawnEntity(flags, pos, dim, colour)
+    entity:SetFlags(ENTITY_ENEMY_BIT | entity:GetFlags())
+    entity:SetColour(vec3(1, 0, 1))
+end
+
 function init_world(event)
     log.info("And so the game begun from the lua point of view.")
+    spawn_sample_entity()
 end
 
 function tern(condition, true_, false_)

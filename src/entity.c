@@ -72,7 +72,7 @@ void UpdateFreeFlyingCamera(Entity* camera, f32 delta)
 Entity CreateFreeFlyingCameraEntity(v3 pos)
 {
     Entity e = {
-        .flags = ENTITY_FREE_FLY_CAMERA_BIT,
+        .flags = ENTITY_FREE_FLY_CAMERA_BIT | ENTITY_STATIC_BIT,
         .position = pos,
         .direction = v3(0.0f, 0.0f, -1.0f),
         .velocity = v3(0.0005f, 0.0005f, 0.0005f),

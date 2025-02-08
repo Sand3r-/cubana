@@ -7,6 +7,7 @@
 #include <lauxlib.h>
 #include "scriptreg.h"
 #include "ui/scripteditor.h"
+#include "world_lua.h"
 
 #include "math/vec.h"
 #include "math/mat.h"
@@ -94,6 +95,7 @@ static b32 InitEventHandler(void)
 static void RegisterFunctions(lua_State* L)
 {
     RegisterLuaFunctions(L);
+    RegisterWorldLuaFunctions(L);
 }
 
 static void RegisterModulePaths(lua_State* L)

@@ -13,7 +13,7 @@ void PhysicsUpdate(Arena* arena, Entity* entities, u32 entities_num, f32 delta)
             {
                 entities[i].velocity.y = -.0098f;
             }
-            if (entities[i].flags & (ENTITY_PLAYER_BIT | ENTITY_ENEMY_BIT))
+            if (!(entities[i].flags & ENTITY_STATIC_BIT))
             {
                 entities[i].position.x += entities[i].velocity.x * delta;
                 entities[i].position.y += entities[i].velocity.y * delta;
