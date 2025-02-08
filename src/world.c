@@ -45,7 +45,7 @@ static void WorldLoadLevel(Arena* arena, World* world, char* path)
 void WorldInit(Arena* arena, World* world)
 {
     CreateFreeFlyingCamera(world);
-    WorldLoadLevel(arena, world, "FirstMap.cmt");
+    WorldLoadLevel(arena, world, "assets/TestLevel.cmt");
 }
 
 void WorldUpdate(Arena* arena, World* world, f32 delta, b16 mouse_snap)
