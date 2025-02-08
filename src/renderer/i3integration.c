@@ -9,7 +9,6 @@
 #include "types.h"
 #include "vkhelper.h"
 #include <cim3d.h>
-#include <math.h>
 #include <cimgui.h>
 
 #define VERTEX_BUFFER_SIZE (0x8000 * sizeof(im3dVertexData))

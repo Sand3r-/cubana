@@ -34,9 +34,9 @@ int GameInit(Arena* arena, Game* game)
     return CU_SUCCESS;
 }
 
-void GameUpdate(Game* game, f32 delta)
+void GameUpdate(Arena* arena, Game* game, f32 delta)
 {
-    WorldUpdate(&game->world, delta, game->mouse_snap);
+    WorldUpdate(arena, &game->world, delta, game->mouse_snap);
     GameControlsUpdate(game);
     UpdateUI();
 }

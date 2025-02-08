@@ -31,6 +31,7 @@ set(SOURCES
     app.c
     argparser.c
     buffer.c
+    collision.c
     culibc.c
     entity.c
     error.c
@@ -45,9 +46,10 @@ set(SOURCES
     main.c
     math/mat.c
     math/vec.c
-    math/scalar.c
+    math/scalar_impl.c
     memory/arena.c
     memory/thread_scratch.c
+    physics.c
     platform.c
     renderer/renderer.c
     renderer/renderervk.c

@@ -10,4 +10,4 @@ typedef struct World
 } World;
 
 void WorldInit(Arena* arena, World* world);
-void WorldUpdate(World* world, f32 delta, b16 mouse_snap);
+void WorldUpdate(Arena* arena, World* world, f32 delta, b16 mouse_snap);

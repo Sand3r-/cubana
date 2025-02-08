@@ -11,6 +11,6 @@ typedef struct Game
 } Game;
 
 int GameInit(Arena* arena, Game* game);
-void GameUpdate(Game* game, f32 delta);
+void GameUpdate(Arena* arena, Game* game, f32 delta);
 void GameProcessEvent(Game* game, Event event);
 void GameDestroy(Game* game);
