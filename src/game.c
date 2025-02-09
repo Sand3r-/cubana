@@ -29,6 +29,7 @@ int GameInit(Arena* arena, Game* game)
     InitUI(arena);
     SetSnapCursorToCenter(game, true);
     WorldInit(arena, &game->world);
+    LuaWorldSetCurrentWorld(&game->world);
     ExecuteScriptFile("scripts/level1.lua");
     EmitEvent(CreateEventGameBegin());
     return CU_SUCCESS;

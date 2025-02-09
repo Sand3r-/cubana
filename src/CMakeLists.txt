@@ -62,6 +62,7 @@ set(SOURCES
     script/scripting.c
     script/scriptreg.c
     script/imgui_lua.cpp
+    script/world_lua.c
     timer.c
     types_str.c
     ui/scripteditor.cpp

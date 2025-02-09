@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "error.h"
 #include "level_loader.h"
+#include "math/scalar.h"
 #include "memory/thread_scratch.h"
 #include "physics.h"
 
@@ -75,3 +76,77 @@ void WorldUpdate(Arena* arena, World* world, f32 delta, b16 mouse_snap)
     }
     PhysicsUpdate(arena, world->entities, world->entities_num, delta);
 }
+
+u32 WorldSpawnEntity(World* world, u32 flags, v3 position, v3 dimensions, v3 colour)
+{
+    Entity e = {
+        .flags = flags,
+        .position = position,
+        .dimensions = dimensions,
+        .colour = colour
+    };
+
+    for (u32 i = 0; i < MAX_ENTITIES; i++)
+    {
+        if (world->entities[i].flags == ENTITY_NONE)
+        {
+            world->entities[i] = e;
+            world->entities_num = max(world->entities_num, i + 1);
+            return i;
+        }
+    }
+
+    ERROR("Failed to spawn entity. MAX_ENTITIES is too small.");
+    return -1;
+}
+
+void WorldKillEntity(World* world, u32 entity_id)
+{
+    world->entities[entity_id].flags = ENTITY_NONE;
+}
+
+void WorldEntityMove(World* world, u32 entity_id, v3 velocity)
+{
+    world->entities[entity_id].velocity = velocity;
+}
+
+void WorldEntitySetPosition(World* world, u32 entity_id, v3 position)
+{
+    world->entities[entity_id].position = position;
+}
+
+void WorldEntitySetDimensions(World* world, u32 entity_id, v3 dimensions)
+{
+    world->entities[entity_id].dimensions = dimensions;
+}
+
+void WorldEntitySetColour(World* world, u32 entity_id, v3 colour)
+{
+    world->entities[entity_id].colour = colour;
+}
+
+void WorldEntitySetFlags(World* world, u32 entity_id, u32 flags)
+{
+    world->entities[entity_id].flags = flags;
+}
+
+v3 WorldEntityGetPosition(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].position;
+}
+
+v3 WorldEntityGetDimensions(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].dimensions;
+}
+
+v3 WorldEntityGetColour(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].colour;
+}
+
+u32 WorldEntityGetFlags(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].flags;
+}
+
