@@ -15,6 +15,7 @@
 #include "platform.h"
 #include "replay.h"
 #include "renderer/renderer.h"
+#include "save.h"
 #include "script/scripting.h"
 #include "timer.h"
 #include "window.h"
@@ -118,6 +119,22 @@ static int InitReplaySystemInfo(void)
     return CU_SUCCESS;
 }
 
+static int InitSaveSystemInfo(void)
+{
+    SaveSystemInitInfo info = {
+        .arenas = {
+            &g_app.perm_storage_arena,
+            &g_app.frame_arenas[0],
+            &g_app.frame_arenas[1]
+        },
+    };
+
+    InitSaveSystem(&info);
+    L_INFO("Save system initialized");
+
+    return CU_SUCCESS;
+}
+
 static int InitWindow(void)
 {
     WindowResult window_result = CreateWindow(1024, 768, "Cubana");
@@ -161,6 +178,7 @@ static int Init(int argc, char* argv[])
     ReturnOnFailure(InitConfig(argc, argv));
     ReturnOnFailure(InitArenas());
     ReturnOnFailure(InitReplaySystemInfo());
+    ReturnOnFailure(InitSaveSystemInfo())
     ReturnOnFailure(InitWindow());
     ReturnOnFailure(InitRenderer());
     ReturnOnFailure(ScriptEngineInit());
@@ -219,6 +237,7 @@ static int AppLoop(void)
         f32 delta = GetTimeDelta();
         Arena* frame_arena = GetCurrentFrameArena();
         UpdateReplaySystem();
+        UpdateSaveSystem();
         DrawPerformanceStatistics(delta);
         EmitEvent(CreateEventTick(delta));
         PropagateEvents();

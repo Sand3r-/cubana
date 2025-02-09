@@ -58,6 +58,7 @@ set(SOURCES
     renderer/imfont_storage.c
     renderer/vkhelper.c
     replay.c
+    save.c
     script/scripting.c
     script/scriptreg.c
     script/imgui_lua.cpp
