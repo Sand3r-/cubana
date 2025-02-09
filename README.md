@@ -17,7 +17,7 @@ The exception to this rule are tools and third-party libraries used during devel
 Before the actual game will begin its development, it is important to lay foundations that will make the development a smooth and pleasureable experience.
 This includes creation of basic utilities, data structures, memory allocators, debugging tools, platform abstraction layer, I/O handling and others.
 Currently, the following features are present in the engine:
-- Basic instanced cube rendering (using a Vulkan backend)
+- Basic cube rendering in arbitrary positions, sizes and colours (using a Vulkan backend)
 - Debug UI (thanks to ImGUI and C/lua bindings, currently being reworked)
 - In-game script editing and execution with lua
 - Basic 3D primitives drawing
@@ -26,17 +26,21 @@ Currently, the following features are present in the engine:
 - Basic platform abstraction layer
 - Keyboard and GamePad input handling
 - Basic event system
+- Save/Load and Replay systems
+- Entity system based on megastruct philosophy (at least for now)
+- AABB collision detection
+- Simple AABB-based physics engine
+- Level loading from .ctm files
 
-<img src="https://github.com/Sand3r-/cubana/assets/4967505/218cb5e4-f3e9-487f-b7dd-bed38926cc37" width=50% height=50%>
+![image](https://github.com/user-attachments/assets/ecbea400-3fe5-4b5c-b8f2-7fac0d2cee70)
 
 
 # Development
 In the nearest fututre, I'll be working on:
-- Simplifying memory allocation strategy by re-writining current solution to arena allocators
-- Improving an in-game lua script editor for better suggestions when typing
-- Writing own imgui lua bindings generator for a greater ease of use
-- Creating a pre-execution parsing pass for lua scripts
-- Automatic docs generator for C-registred lua functions
+- Creating a Trigger entity for launching a chosen lua script upon collision
+- Creating a Camera following player
+- Making lua scripts hot-reloadable
+- Preventing whole-program crashes on lua errors
 
 ## Building
 ```shell
