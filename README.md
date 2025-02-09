@@ -32,8 +32,7 @@ Currently, the following features are present in the engine:
 - Simple AABB-based physics engine
 - Level loading from .ctm files
 
-![image](https://github.com/user-attachments/assets/ecbea400-3fe5-4b5c-b8f2-7fac0d2cee70)
-
+![image](https://github.com/user-attachments/assets/b3cab94f-e798-4536-a1e7-76a711492dda)
 
 # Development
 In the nearest fututre, I'll be working on:
