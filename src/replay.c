@@ -3,6 +3,7 @@
 #include "file.h"
 #include "input.h"
 #include "log/log.h"
+#include "save.h"
 #include <cimgui.h>
 #include <assert.h>
 #include <math.h>
@@ -63,18 +64,15 @@ static void BeginRecordingInput(s8 recording_index)
     ReplayBuffer* replay_buffer = GetReplayBuffer(recording_index);
     C.recording_index = recording_index;
     C.playback_index = -1;
-    
+
+    char save_filename[32];
+    cu_snprintf(save_filename, sizeof(save_filename), "Replay%02d.csf", recording_index + 1);
+
+    // Save game state before input recording
+    SaveGameState(save_filename);
+
     File file = FileOpen(replay_buffer->name, "wb");
     replay_buffer->file = file;
-
-    // Dump current game state
-    // Write size of arena in bytes as the first u64 before storing its memory
-    for (u8 i = 0; i < REPLAY_ARENAS_NUM; i++)
-    {
-        Arena* arena = C.arenas[i];
-        FileWrite(&file, arena, sizeof(Arena), 1);
-        FileWrite(&file, arena->base, arena->size, 1);
-    }
 
     L_INFO("Recording to %s", replay_buffer->name);
 }
@@ -106,7 +104,13 @@ static void BeginInputPlayback(s8 playback_index, b8 looping)
     ReplayBuffer* replay_buffer = GetReplayBuffer(playback_index);
     C.recording_index = -1;
     C.playback_index = playback_index;
-    
+
+    char save_filename[32];
+    cu_snprintf(save_filename, sizeof(save_filename), "Replay%02d.csf", playback_index + 1);
+
+    // Load game state before playing back input
+    LoadGameState(save_filename);
+
     File file = FileOpen(replay_buffer->name, "rb");
     if (!file.valid)
     {
@@ -116,19 +120,6 @@ static void BeginInputPlayback(s8 playback_index, b8 looping)
     }
 
     replay_buffer->file = file;
-
-    // Dump current game state
-    for (u8 i = 0; i < REPLAY_ARENAS_NUM; i++)
-    {
-        Arena* arena = C.arenas[i];
-        Arena serialised_arena = {0};
-        FileRead(&file, &serialised_arena, sizeof(Arena), 1);
-        // If arena requires more than the initial size, alloc enough before copy
-        if (serialised_arena.size > arena->size)
-            ArenaResize(arena, serialised_arena.size);
-        cu_memcpy(arena, &serialised_arena, sizeof(Arena));
-        FileRead(&file, arena->base, arena->size, 1);
-    }
 
     C.playing = true;
     if (!C.looping)
