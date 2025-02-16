@@ -1652,7 +1652,7 @@ void VkRendererShutdown(void)
 
 void VkRendererSetCamera(v3 position, v3 direction)
 {
-    v3 up = v3(0.0f, 1.0f, 0.0f);
+    v3 up = Y_AXIS;
     D.push_constants.view = LookAt(position, V3Add(position, direction), up);
     im3dVkSetCamera(position, direction);
 }

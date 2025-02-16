@@ -26,6 +26,10 @@ f32 absf32(f32 a)
     return a < 0.0f ? -a : a;
 }
 
+f32 sqrtf32(f32 a)
+{
+    return sqrtf(a);
+}
 
 u64 minu64(u64 a, u64 b)
 {
@@ -98,6 +102,16 @@ f32 cosf32(f32 a)
 f32 tanf32(f32 a)
 {
     return tanf(a);
+}
+
+f32 asinf32(f32 a)
+{
+    return asinf(a);
+}
+
+f32 atanf32(f32 a, f32 b)
+{
+    return atan2f(a, b);
 }
 
 f32 radians(f32 degrees)

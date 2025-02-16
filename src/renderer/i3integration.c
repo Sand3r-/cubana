@@ -419,7 +419,7 @@ void im3dVkNewFrame(void)
     ad->m_viewportSize  = v2(C.swapchain_extent.width, C.swapchain_extent.height);
     ad->m_viewOrigin    = C.camera_position;
     ad->m_viewDirection = C.camera_direction;
-    ad->m_worldUp       = v3(0.0f, 1.0f, 0.0f);
+    ad->m_worldUp       = Y_AXIS;
     ad->m_projOrtho     = false;
     ad->m_projScaleY    = tanf(radians(90.0f) * 0.5f) * 2.0f;
 
@@ -549,7 +549,7 @@ void im3dVkEndFrame(Arena* arena, VkCommandBuffer cmd_buffer)
 
 void im3dVkSetCamera(v3 position, v3 direction)
 {
-    v3 up = v3(0.0f, 1.0f, 0.0f);
+    v3 up = Y_AXIS;
     C.view_matrix = LookAt(position, V3Add(position, direction), up);
     C.push_constants.proj_view = M4Multiply(C.projection_matrix, C.view_matrix);
     C.camera_position = position;

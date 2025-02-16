@@ -164,8 +164,8 @@ void RegisterEntityFlags(lua_State* L)
     lua_pushinteger(L, ENTITY_NONE);
     lua_setglobal(L, "ENTITY_NONE");
 
-    lua_pushinteger(L, ENTITY_STATIC_CAMERA_BIT);
-    lua_setglobal(L, "ENTITY_STATIC_CAMERA_BIT");
+    lua_pushinteger(L, ENTITY_CAMERA_BIT);
+    lua_setglobal(L, "ENTITY_CAMERA_BIT");
 
     lua_pushinteger(L, ENTITY_STATIC_BIT);
     lua_setglobal(L, "ENTITY_STATIC_BIT");

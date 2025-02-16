@@ -6,6 +6,8 @@ f32 copysignf32(f32 mag, f32 sign);
 i32 absi32(i32 a);
 f32 absf32(f32 a);
 
+f32 sqrtf32(f32 a);
+
 u64 minu64(u64 a, u64 b);
 u32 minu32(u32 a, u32 b);
 i32 mini32(i32 a, i32 b);
@@ -24,5 +26,7 @@ f32 clampf32(f32 value, f32 min, f32 max);
 f32 sinf32(f32 a);
 f32 cosf32(f32 a);
 f32 tanf32(f32 a);
+f32 asinf32(f32 a);
+f32 atanf32(f32 a, f32 b);
 
 f32 radians(f32 degrees);

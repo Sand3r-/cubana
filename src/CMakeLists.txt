@@ -46,6 +46,7 @@ set(SOURCES
     main.c
     math/mat.c
     math/vec.c
+    math/qat.c
     math/scalar_impl.c
     memory/arena.c
     memory/thread_scratch.c

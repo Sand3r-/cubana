@@ -185,6 +185,14 @@ inline v4 V4FromValues(f32 x, f32 y, f32 z, f32 w) { return (v4){x, y, z, w}; }
 #define iv3(...) (iv3){ __VA_ARGS__ }
 #define iv4(...) (iv4){ __VA_ARGS__ }
 
+#define X_AXIS v3(1.0f, 0.0f, 0.0f)
+#define Y_AXIS v3(0.0f, 1.0f, 0.0f)
+#define Z_AXIS v3(0.0f, 0.0f, 1.0f)
+
+#define NEG_X_AXIS v3(-1.0f, 0.0f, 0.0f)
+#define NEG_Y_AXIS v3(0.0f, -1.0f, 0.0f)
+#define NEG_Z_AXIS v3(0.0f, 0.0f, -1.0f)
+
 f32 V3Length(v3 v);
 v3 V3Normalize(v3 v);
 f32 V3Dot(v3 a, v3 b);

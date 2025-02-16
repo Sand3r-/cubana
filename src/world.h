@@ -5,6 +5,7 @@
 #define MAX_ENTITIES 32
 typedef struct World
 {
+    Entity* current_camera;
     Entity entities[MAX_ENTITIES]; // TODO: make it dynamic
     u32    entities_num;
 } World;
