@@ -9,6 +9,13 @@
 #include "physics.h"
 #include "cimgui.h"
 
+static Entity* WorldAddEntity(World* world, Entity entity)
+{
+    assert(world->entities_num < MAX_ENTITIES);
+    world->entities[world->entities_num] = entity;
+    return &world->entities[world->entities_num++];
+}
+
 static char* PushString(Arena* arena, char* source)
 {
     size_t source_len = cu_strlen(source);
@@ -28,8 +35,7 @@ static Entity* CreateFreeFlyingCamera(World* world)
 
     // Create a camera
     v3 position = v3(2.0f, 2.0f, 2.0f);
-    world->entities[world->entities_num++] = CreateFreeFlyingCameraEntity(position);
-    return &world->entities[world->entities_num - 1];
+    return WorldAddEntity(world, CreateFreeFlyingCameraEntity(position));
 }
 
 static void WorldLoadLevel(Arena* arena, World* world, char* path)
@@ -42,30 +48,31 @@ static void WorldLoadLevel(Arena* arena, World* world, char* path)
         {
             ObjectData* obj = &level_data->objects[i];
             char* name = PushString(arena, obj->name);
-            world->entities[world->entities_num++] =
-                CreateStaticEntity(name, obj->position, obj->dimensions, obj->colour);
+            Entity entity = CreateStaticEntity(name, obj->position, obj->dimensions, obj->colour);
+            WorldAddEntity(world, entity);
         }
     }
 
     // Add example player and enemy
     Entity player = CreatePlayerEntity(v3(0.0f, 10.0f, 0.0f), v3(1.0f, 1.0f, 1.0f), v3(0.64f, 1.f, 1.f));
     v3 camera_pos = v3(0.0f, 1.0f, 2.0f);
-    v3 camera_vel = v3(0.5f);
+    v3 camera_vel = v3(0.0f);
     q4 camera_rot = Q4FromAngleAxis(radians(-30.0f), X_AXIS);
     Entity camera = CreateCameraEntity("Player's Camera", camera_pos, camera_vel, camera_rot);
-    world->entities[world->entities_num++] = player;
-    EntityAddChild(arena, &world->entities[world->entities_num - 1], &camera);
-    world->current_camera = &world->entities[world->entities_num - 1].children[0];
+    Entity* p_Player = WorldAddEntity(world, player);
+    Entity* p_Camera = WorldAddEntity(world, camera);
+    EntityAddChild(arena, p_Player, p_Camera);
+    world->current_camera = p_Camera;
 
     Entity enemy = CreateEnemyEntity("Enemy", v3(3.0f, 10.0f, 0.0f), v3(1.0f, 1.0f, 1.0f), v3(1.0f, 0.0f, 0.0f));
-    world->entities[world->entities_num++] = enemy;
+    WorldAddEntity(world, enemy);
 }
 
 void WorldInit(Arena* arena, World* world)
 {
     WorldLoadLevel(arena, world, "assets/TestLevel.cmt");
     Entity* camera = CreateFreeFlyingCamera(world);
-    world->current_camera = camera;
+    // world->current_camera = camera;
 }
 
 static void RenderEntity(Entity* entity)
@@ -79,11 +86,6 @@ static void RenderEntity(Entity* entity)
 // TODO: Remove mouse_snap from here
 static void UpdateEntity(Entity* entity, f32 delta, b16 mouse_snap)
 {
-    for (u32 c = 0; c < entity->children_num; c++)
-    {
-        UpdateEntity(&entity->children[c], delta, mouse_snap);
-    }
-
     if (entity->flags & ENTITY_PLAYER_BIT)
     {
         UpdatePlayer(entity);
@@ -145,7 +147,8 @@ u32 WorldSpawnEntity(World* world, u32 flags, v3 position, v3 dimensions, v3 col
 
 void WorldKillEntity(World* world, u32 entity_id)
 {
-    world->entities[entity_id].flags = ENTITY_NONE;
+    // Sets flags to ENTITY_NONE
+    cu_memset(&world->entities[entity_id], 0, sizeof(Entity));
 }
 
 void WorldEntityMove(World* world, u32 entity_id, v3 velocity)

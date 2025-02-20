@@ -34,12 +34,12 @@ typedef struct Entity
     v3 velocity;
 
     Entity* parent;
-    Entity* children;
+    Entity** children;
     u32 children_num;
 } Entity;
 
 const char* EntityGetName(Entity* entity);
-void EntityAddChild(Arena* arena, Entity* entity, Entity* child);
+void EntityAddChild(Arena* arena, Entity* parent, Entity* child);
 m4 EntityGetWorldTransform(Entity* entity);
 m4 EntityGetLocalTransform(Entity* entity);
 

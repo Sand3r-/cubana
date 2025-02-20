@@ -33,16 +33,16 @@ const char* EntityGetName(Entity* entity)
         return "Unnamed entity";
 }
 
-void EntityAddChild(Arena* arena, Entity* entity, Entity* child)
+void EntityAddChild(Arena* arena, Entity* parent, Entity* child)
 {
-    if (entity->children == NULL)
-        entity->children = PushArray(arena, Entity, ENTITY_MAX_CHILDREN_NUM);
+    if (parent->children == NULL)
+        parent->children = PushArray(arena, Entity*, ENTITY_MAX_CHILDREN_NUM);
 
-    if (entity->children_num == ENTITY_MAX_CHILDREN_NUM)
-        ERROR("Entity %s has too many children", EntityGetName(entity));
+    if (parent->children_num == ENTITY_MAX_CHILDREN_NUM)
+        ERROR("Entity %s has too many children", EntityGetName(parent));
 
-    child->parent = entity;
-    entity->children[entity->children_num++] = *child;
+    child->parent = parent;
+    parent->children[parent->children_num++] = child;
 }
 
 static v3 CalcForwardDirection(Entity* entity)
@@ -193,7 +193,7 @@ void UpdatePlayer(Entity* player)
     player->rotation = rotations[rotation_idx];
 
     // Update Player's camera rotation
-    Entity* camera = &player->children[0];
+    Entity* camera = player->children[0];
     v3 world_camera_pos = PositionFromTransform(EntityGetWorldTransform(camera));
     v3 world_player_pos = PositionFromTransform(EntityGetWorldTransform(player));
     m4 look_at = LookAt(world_camera_pos, world_player_pos, up);
