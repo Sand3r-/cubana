@@ -140,7 +140,6 @@ m4 Q4ToMatrix(q4 q)
     return m;
 }
 
-// TODO: ensure this is correct for column-major
 q4 Q4FromMatrix(m4 m)
 {
     q4 q;

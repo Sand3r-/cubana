@@ -52,27 +52,19 @@ static void WorldLoadLevel(Arena* arena, World* world, char* path)
             WorldAddEntity(world, entity);
         }
     }
-
-    // Add example player and enemy
-    Entity player = CreatePlayerEntity(v3(0.0f, 10.0f, 0.0f), v3(1.0f, 1.0f, 1.0f), v3(0.64f, 1.f, 1.f));
-    v3 camera_pos = v3(0.0f, 1.0f, 2.0f);
-    v3 camera_vel = v3(0.0f);
-    q4 camera_rot = Q4FromAngleAxis(radians(-30.0f), X_AXIS);
-    Entity camera = CreateCameraEntity("Player's Camera", camera_pos, camera_vel, camera_rot);
-    Entity* p_Player = WorldAddEntity(world, player);
-    Entity* p_Camera = WorldAddEntity(world, camera);
-    EntityAddChild(arena, p_Player, p_Camera);
-    world->current_camera = p_Camera;
-
-    Entity enemy = CreateEnemyEntity("Enemy", v3(3.0f, 10.0f, 0.0f), v3(1.0f, 1.0f, 1.0f), v3(1.0f, 0.0f, 0.0f));
-    WorldAddEntity(world, enemy);
 }
 
 void WorldInit(Arena* arena, World* world)
 {
     WorldLoadLevel(arena, world, "assets/TestLevel.cmt");
     Entity* camera = CreateFreeFlyingCamera(world);
-    // world->current_camera = camera;
+    world->current_camera = camera;
+}
+
+void WorldSetCamera(World* world, u32 entity_id)
+{
+    Entity* camera = &world->entities[entity_id];
+    world->current_camera = camera;
 }
 
 static void RenderEntity(Entity* entity)
@@ -83,8 +75,7 @@ static void RenderEntity(Entity* entity)
     RendererDrawCube(position, dimensions, colour);
 }
 
-// TODO: Remove mouse_snap from here
-static void UpdateEntity(Entity* entity, f32 delta, b16 mouse_snap)
+static void UpdateEntity(Entity* entity, f32 delta)
 {
     if (entity->flags & ENTITY_PLAYER_BIT)
     {
@@ -92,15 +83,7 @@ static void UpdateEntity(Entity* entity, f32 delta, b16 mouse_snap)
     }
     else if (entity->flags & ENTITY_FREE_FLY_CAMERA_BIT)
     {
-        if (mouse_snap)
-        {
-            UpdateFreeFlyingCamera(entity, delta);
-        }
-    }
-
-    if (entity->flags & ENTITY_VISIBLE_BIT)
-    {
-        RenderEntity(entity);
+        UpdateFreeFlyingCamera(entity, delta);
     }
 }
 
@@ -112,30 +95,27 @@ static void SetCamera(World* world)
     RendererSetCamera(position, direction);
 }
 
-void WorldUpdate(Arena* arena, World* world, f32 delta, b16 mouse_snap)
+void WorldUpdate(Arena* arena, World* world, f32 delta, b16 edit_mode)
 {
     for (u16 i = 0; i < world->entities_num; i++)
     {
-        UpdateEntity(&world->entities[i], delta, mouse_snap);
+        Entity* entity = &world->entities[i];
+        if (!edit_mode)
+            UpdateEntity(entity, delta);
+        if (entity->flags & ENTITY_VISIBLE_BIT)
+            RenderEntity(entity);
     }
     PhysicsUpdate(arena, world->entities, world->entities_num, delta);
     SetCamera(world);
 }
 
-u32 WorldSpawnEntity(World* world, u32 flags, v3 position, v3 dimensions, v3 colour)
+u32 WorldSpawnEntity(World* world, Entity entity)
 {
-    Entity e = {
-        .flags = flags,
-        .position = position,
-        .dimensions = dimensions,
-        .colour = colour
-    };
-
     for (u32 i = 0; i < MAX_ENTITIES; i++)
     {
         if (world->entities[i].flags == ENTITY_NONE)
         {
-            world->entities[i] = e;
+            world->entities[i] = entity;
             world->entities_num = max(world->entities_num, i + 1);
             return i;
         }
@@ -156,9 +136,19 @@ void WorldEntityMove(World* world, u32 entity_id, v3 velocity)
     world->entities[entity_id].velocity = velocity;
 }
 
+void WorldEntitySetName(World* world, u32 entity_id, const char* name)
+{
+    world->entities[entity_id].name = name;
+}
+
 void WorldEntitySetPosition(World* world, u32 entity_id, v3 position)
 {
     world->entities[entity_id].position = position;
+}
+
+void WorldEntitySetRotation(World* world, u32 entity_id, q4 rotation)
+{
+    world->entities[entity_id].rotation = rotation;
 }
 
 void WorldEntitySetDimensions(World* world, u32 entity_id, v3 dimensions)
@@ -176,9 +166,19 @@ void WorldEntitySetFlags(World* world, u32 entity_id, u32 flags)
     world->entities[entity_id].flags = flags;
 }
 
+const char* WorldEntityGetName(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].name;
+}
+
 v3 WorldEntityGetPosition(World* world, u32 entity_id)
 {
     return world->entities[entity_id].position;
+}
+
+q4 WorldEntityGetRotation(World* world, u32 entity_id)
+{
+    return world->entities[entity_id].rotation;
 }
 
 v3 WorldEntityGetDimensions(World* world, u32 entity_id)
@@ -196,3 +196,7 @@ u32 WorldEntityGetFlags(World* world, u32 entity_id)
     return world->entities[entity_id].flags;
 }
 
+void WorldEntityAddChild(Arena* arena, World* world, u32 parent, u32 child)
+{
+    EntityAddChild(arena, &world->entities[parent], &world->entities[child]);
+}
