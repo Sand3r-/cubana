@@ -59,11 +59,11 @@ static v3 CalcRightDirection(v3 forward)
     return V3Normalize(perpendicular);
 }
 
-// TODO: Handle corner cases with min and max pitch
 static void UpdateFreeFlyingCameraRotation(Entity* camera)
 {
-    static const f32 max_pitch =  0.5f * PI - 0.017f;
-    static const f32 min_pitch = -0.5f * PI + 0.017f;
+#define deg2rad(degrees) ((degrees) * PI / 180.0f)
+    static const f32 max_pitch = deg2rad(89);
+    static const f32 min_pitch = deg2rad(-89);
     static const f32 sensitivity = 1.0f;
 
     q4 rotation = camera->rotation;
@@ -74,6 +74,13 @@ static void UpdateFreeFlyingCameraRotation(Entity* camera)
 
     v3 forward = CalcForwardDirection(camera);
     v3 right = CalcRightDirection(forward);
+
+    // Clamp pitch_delta if it's application would cross 90 deg of pitch rot
+    f32 pitch = asin(forward.y);
+    f32 new_pitch = pitch + pitch_delta;
+
+    if (new_pitch > max_pitch) pitch_delta = max_pitch - pitch;
+    if (new_pitch < min_pitch) pitch_delta = min_pitch - pitch;
 
     q4 yaw_rotation = Q4FromAngleAxis(-yaw_delta, Y_AXIS);
     q4 pitch_rotation = Q4FromAngleAxis(pitch_delta, right);
