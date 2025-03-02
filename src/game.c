@@ -10,34 +10,37 @@
 
 
 
-static void SetSnapCursorToCenter(Game* game, bool enabled)
+static void EnableEditMode(Game* game, bool enabled)
 {
-    game->mouse_snap = enabled;
-    SnapCursorToCenter(enabled);
+    game->edit_mode = enabled;
+    SnapCursorToCenter(!enabled);
 }
 
 static void GameControlsUpdate(Game* game)
 {
     if (GetKeyState(KEY_ESC) & KEY_STATE_PRESSED)
     {
-        SetSnapCursorToCenter(game, !game->mouse_snap);
+        EnableEditMode(game, !game->edit_mode);
     }
 }
 
 int GameInit(Arena* arena, Game* game)
 {
     InitUI(arena);
-    SetSnapCursorToCenter(game, true);
+    EnableEditMode(game, false);
     WorldInit(arena, &game->world);
     LuaWorldSetCurrentWorld(&game->world);
+    LuaWorldSetCurrentArena(arena);
     ExecuteScriptFile("scripts/level1.lua");
+    ExecuteScriptFile("scripts/player.lua");
+    ExecuteScriptFile("scripts/enemy.lua");
     EmitEvent(CreateEventGameBegin());
     return CU_SUCCESS;
 }
 
 void GameUpdate(Arena* arena, Game* game, f32 delta)
 {
-    WorldUpdate(arena, &game->world, delta, game->mouse_snap);
+    WorldUpdate(arena, &game->world, delta, game->edit_mode);
     GameControlsUpdate(game);
     UpdateUI();
 }

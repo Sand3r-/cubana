@@ -9,13 +9,17 @@ function print_available_symbols()
 end
 
 function spawn_sample_entity()
-    local pos = vec3(0, 5, 0)
-    local dim = vec3(1, 1, 1)
-    local colour = vec3(1, 1, 1)
-    local flags = ENTITY_COLLIDES_BIT | ENTITY_VISIBLE_BIT | ENTITY_GRAVITY_BIT
-    local entity = SpawnEntity(flags, pos, dim, colour)
+    local desc = {
+        position = vec3.new(0, 5, 0),
+        dimensions = vec3.new(1, 1, 1),
+        colour = vec3.new(1, 1, 1),
+        flags = ENTITY_COLLIDES_BIT | ENTITY_VISIBLE_BIT | ENTITY_GRAVITY_BIT,
+    }
+
+    local entity = SpawnEntity(desc)
     entity:SetFlags(ENTITY_ENEMY_BIT | entity:GetFlags())
-    entity:SetColour(vec3(1, 0, 1))
+    entity:SetColour(vec3.new(1, 0, 1))
+    entity:SetName("Sample entity")
 end
 
 function init_world(event)

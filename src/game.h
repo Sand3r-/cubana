@@ -7,7 +7,7 @@ typedef union Event Event;
 typedef struct Game
 {
     World world;
-    b16    mouse_snap;
+    b16   edit_mode;
 } Game;
 
 int GameInit(Arena* arena, Game* game);
